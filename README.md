@@ -9,10 +9,11 @@ Here're some of the project's best features:
 
 <h2>🛠️ Installation Steps:</h2>
 
-<p>1. TBC</p>
+<p>1. Backend Setup</p>
 
 ```
-TBC
+npm install
+npm run server
 ```
 
 <p>2. TBC</p>
