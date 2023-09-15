@@ -13,14 +13,21 @@ Here're some of the project's best features:
 
 ```
 npm install
-npm run server
 ```
 
-<p>2. TBC</p>
+<p>2. Frontend Setup</p>
 
 ```
-TBC
+cd client
+npm install
 ```
+
+<p>3. Run the project</p>
+
+```
+npm run dev
+```
+
 
   
   
