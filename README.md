@@ -9,17 +9,25 @@ Here're some of the project's best features:
 
 <h2>🛠️ Installation Steps:</h2>
 
-<p>1. TBC</p>
+<p>1. Backend Setup</p>
 
 ```
-TBC
+npm install
 ```
 
-<p>2. TBC</p>
+<p>2. Frontend Setup</p>
 
 ```
-TBC
+cd client
+npm install
 ```
+
+<p>3. Run the project</p>
+
+```
+npm run dev
+```
+
 
   
   
