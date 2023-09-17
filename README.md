@@ -35,7 +35,7 @@ npm run dev
 
 Technologies used in the project:
 
-*   MongoDB
+*   MySQL
 *   ExpressJS
 *   ReactJS
 *   NodeJS
