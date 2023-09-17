@@ -1,27 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Fragment } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
-import { Button } from 'antd';
+import Navbar from './components/layout/Navbar';
+import Home from './components/pages/Home';
+import Roles from './components/pages/Roles';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <Button type="primary">Button</Button>
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+        <Fragment>
+            <Navbar />
+            {/*Create route for Home*/}
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/roles" element={<Roles />} />
+            </Routes>
+        </Fragment>
+      </Router>
   );
 }
 
