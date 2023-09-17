@@ -19,6 +19,7 @@
     "request": "^2.88.2"
   },
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.4.9",
     "concurrently": "^8.2.1",
     "dotenv": "^16.3.1",
     "nodemon": "^3.0.1"
