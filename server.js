@@ -1,14 +1,16 @@
 // Load libraries and variables
 const express = require('express');
-const connectDB = require('./config/db');
+const connection= require('./config/db');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Connect to database
-connectDB();
 
 // Load routes
 app.get('/', (req, res) => { res.send('API Running'); });
+
+// Define routes
+app.use('/api/roles', require('./routes/api/roles'));
 
 // Start server
 app.listen(PORT, () => {
