@@ -1,28 +1,29 @@
 import React from 'react';
-import type { MenuProps } from 'antd';
-import { Menu } from 'antd';
-import { Link } from 'react-router-dom';
+import { Tabs } from 'antd';
+import type { TabsProps } from 'antd';
+import MyApplications from './MyApplications';
+import Favourties from './Favourites';
 
-const items: MenuProps['items'] = [
+const onChange = (key: string) => {
+    console.log(key);
+};
+
+const items: TabsProps['items'] = [
     {
-        label: (<Link to={"/roles"}>{"My Applications"}</Link>),
-        key: '/roles',
-        icon: '',
+        key: 'applications',
+        label: 'My Applications',
+        children: (<MyApplications />),
     },
     {
-        label: (<Link to={"/roles"}>{"Favourties"}</Link>),
-        key: '/roles',
-        icon: '',
+        key: 'favourites',
+        label: 'Favourites',
+        children: (<Favourties />),
     },
 ];
 
 function ApplicationBar() {
-    const onClick: MenuProps['onClick'] = ({ key }) => {
-        // go to the react route
-        // code here
-    }
     return (
-        <Menu items={items} mode="horizontal" />
+        <Tabs defaultActiveKey="applications" items={items} onChange={onChange} />
     )
 }
 
