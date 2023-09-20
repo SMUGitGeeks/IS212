@@ -3,6 +3,7 @@ import {Container} from "react-bootstrap";
 import { connect } from 'react-redux';
 import { getRoles } from '../../actions/role';
 import PropTypes from 'prop-types';
+import ApplicationBar from '../layout/ApplicationBar';
 
 
 const Roles = ({ getRoles, role: { roles, loading } }: any) => {
@@ -16,6 +17,7 @@ const Roles = ({ getRoles, role: { roles, loading } }: any) => {
             {roles.map((role: any)=> (
                 <div> {role.rl_desc} </div>
                 ))}
+            <ApplicationBar />
         </Container>
 
 }
