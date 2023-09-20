@@ -21,7 +21,7 @@ const data = [
       'Department Name, time etc',
     content:
       'Short description',
-    link: '/',
+    id: '1',
     imgSrc: 'test'
   },
   {
@@ -30,7 +30,7 @@ const data = [
       'Department Name, time etc',
     content:
       'Short description',
-    link: '/',
+    id: '2',
     imgSrc: 'test'
   }
 ]
@@ -42,7 +42,7 @@ const data = [
 //   </Space>
 // );
 
-function JobList() {
+function RoleList() {
     return (
         <List
           itemLayout="vertical"
@@ -60,7 +60,7 @@ function JobList() {
             </div>
           }
           renderItem={(item) => (
-            <Link to={item.link}>
+            <Link to={`/roles/${item.id}`}>
               <List.Item
               key={item.title}
               // actions={[
@@ -94,4 +94,4 @@ function JobList() {
       );
 } 
 
-export default JobList;
+export default RoleList;

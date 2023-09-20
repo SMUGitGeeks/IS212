@@ -6,6 +6,7 @@ import Home from './components/pages/Home';
 import Roles from './components/pages/Roles';
 import { Provider } from 'react-redux';
 import store from './store';
+import RolePage from './components/pages/RolePage';
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/roles" element={<Roles />} />
+                    <Route path="/roles/:roleListingId" element={<RolePage />} />
                 </Routes>
             </Fragment>
           </Router>
