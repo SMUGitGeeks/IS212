@@ -1,4 +1,4 @@
-import { LikeOutlined, MessageOutlined, StarOutlined } from '@ant-design/icons';
+import { StarFilled } from '@ant-design/icons';
 import React from 'react';
 
 import { Avatar, List, Space } from 'antd';
@@ -21,7 +21,8 @@ const data = [
       'Department Name, time etc',
     content:
       'Short description',
-    link: '/'
+    link: '/',
+    imgSrc: 'test'
   },
   {
     title: `Role Title`,
@@ -29,16 +30,17 @@ const data = [
       'Department Name, time etc',
     content:
       'Short description',
-    link: '/'
+    link: '/',
+    imgSrc: 'test'
   }
 ]
 
-const IconText = ({ icon, text }: { icon: React.FC; text: string }) => (
-  <Space>
-    {React.createElement(icon)}
-    {text}
-  </Space>
-);
+// const IconText = ({ icon, text }: { icon: React.FC; text: string }) => (
+//   <Space>
+//     {React.createElement(icon)}
+//     {text}
+//   </Space>
+// );
 
 function JobList() {
     return (
@@ -49,7 +51,7 @@ function JobList() {
             onChange: (page) => {
               console.log(page);
             },
-            pageSize: 3,
+            pageSize: 10,
           }}
           dataSource={data}
           footer={
@@ -67,11 +69,16 @@ function JobList() {
               //   <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
               // ]}
               extra={
-                <img
-                  width={272}
-                  alt="logo"
-                  src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
-                />
+                <>
+                  <Space direction='vertical'>
+                    <StarFilled style={{ fontSize: '18px'}}/>
+                    <img
+                      width={200}
+                      alt="logo"
+                      src={item.imgSrc}
+                    />
+                  </Space>
+                </>
               }
             >
               <List.Item.Meta
