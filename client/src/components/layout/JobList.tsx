@@ -2,16 +2,36 @@ import { LikeOutlined, MessageOutlined, StarOutlined } from '@ant-design/icons';
 import React from 'react';
 
 import { Avatar, List, Space } from 'antd';
+import { Link } from 'react-router-dom';
 
-const data = Array.from({ length: 23 }).map((_, i) => ({
-  href: 'https://ant.design',
-  title: `ant design part ${i}`,
-  avatar: `https://xsgames.co/randomusers/avatar.php?g=pixel&key=${i}`,
-  description:
-    'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-  content:
-    'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-}));
+// const data = Array.from({ length: 23 }).map((_, i) => ({
+//   href: 'https://ant.design',
+//   title: `ant design part ${i}`,
+//   avatar: `https://xsgames.co/randomusers/avatar.php?g=pixel&key=${i}`,
+//   description:
+//     'Ant Design, a design language for background applications, is refined by Ant UED Team.',
+//   content:
+//     'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
+// }));
+
+const data = [
+  {
+    title: `Role Title`,
+    description:
+      'Department Name, time etc',
+    content:
+      'Short description',
+    link: '/'
+  },
+  {
+    title: `Role Title`,
+    description:
+      'Department Name, time etc',
+    content:
+      'Short description',
+    link: '/'
+  }
+]
 
 const IconText = ({ icon, text }: { icon: React.FC; text: string }) => (
   <Space>
@@ -38,13 +58,14 @@ function JobList() {
             </div>
           }
           renderItem={(item) => (
-            <List.Item
+            <Link to={item.link}>
+              <List.Item
               key={item.title}
-              actions={[
-                <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
-                <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
-                <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
-              ]}
+              // actions={[
+              //   <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
+              //   <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
+              //   <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
+              // ]}
               extra={
                 <img
                   width={272}
@@ -54,12 +75,13 @@ function JobList() {
               }
             >
               <List.Item.Meta
-                avatar={<Avatar src={item.avatar} />}
-                title={<a href={item.href}>{item.title}</a>}
+                title={item.title}
                 description={item.description}
               />
               {item.content}
             </List.Item>
+            </Link>
+            
           )}
         />
       );
