@@ -4,6 +4,7 @@ import {Container} from "react-bootstrap";
 import JobList from '../layout/JobList';
 import { AudioOutlined } from '@ant-design/icons';
 import {Row, Col, Input, Space} from 'antd';
+import { SearchProps } from 'antd/es/input';
 
 const { Search } = Input;
 const suffix = (
@@ -14,8 +15,8 @@ const suffix = (
       }}
     />
   );
-// const onSearch: SearchProps['onSearch'] = (value, _e, info) => console.log(info?.source, value);
-const onSearch = (value: String, _e: any) => console.log(value);
+const onSearch: SearchProps['onSearch'] = (value, _e, info) => console.log(info?.source, value);
+// const onSearch = (value: String, _e: any) => console.log(value);
 
 function Home() {
     return (
