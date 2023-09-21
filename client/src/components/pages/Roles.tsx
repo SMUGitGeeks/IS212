@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { getRoles } from '../../actions/role';
 import PropTypes from 'prop-types';
 import RoleList from '../layout/RoleList';
-import {Row, Col, Space, Typography} from 'antd';
+import {Row, Col, Space, Typography, Button} from 'antd';
 import SearchBar from '../layout/SearchBar';
 import TagSearchBar from '../layout/TagSearchBar';
 import RelatedSelector from '../layout/RelatedSelector';
@@ -19,6 +19,10 @@ const Roles = ({ getRoles, role: { roles, loading } }: any) => {
     
     const roleType: String[] = []; //to be added in
     // const locations: String[] = []; //to be added in
+
+    const filter = () => {
+        // code to confirm filter options and filter
+    }
 
     return loading ?
         <Container> Loading </Container> :
@@ -45,6 +49,7 @@ const Roles = ({ getRoles, role: { roles, loading } }: any) => {
                             
                             <Title level={5}>Location</Title>
                             <RelatedSelector />
+                            <Button onClick={filter}>Filter Results</Button>
                         </Space>
                     </Col>
                     <Col span={17}>
