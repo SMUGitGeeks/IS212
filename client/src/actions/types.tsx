@@ -1,2 +1,2 @@
-export const GET_ROLES = 'GET_ROLES';
-export const ROLE_ERROR = 'ROLE_ERROR';
+export const GET_ROLE_LISTINGS = 'GET_ROLE_LISTINGS';
+export const ROLE_LISTINGS_ERROR = 'ROLE_LISTINGS_ERROR';

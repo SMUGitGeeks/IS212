@@ -1,6 +1,6 @@
 import {
-    GET_ROLES,
-    ROLE_ERROR
+    GET_ROLE_LISTINGS,
+    ROLE_LISTINGS_ERROR
 } from '../actions/types';
 
 const initialState = {
@@ -14,13 +14,13 @@ export default function(state = initialState, action: any) {
     const { type, payload } = action;
 
     switch(type) {
-        case GET_ROLES:
+        case GET_ROLE_LISTINGS:
             return {
                 ...state,
                 roles: payload,
                 loading: false
             };
-        case ROLE_ERROR:
+        case ROLE_LISTINGS_ERROR:
             return {
                 ...state,
                 error: payload,

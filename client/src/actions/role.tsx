@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {
-    GET_ROLES,
-    ROLE_ERROR
+    GET_ROLE_LISTINGS,
+    ROLE_LISTINGS_ERROR
 } from './types';
 
 // Get all roles
@@ -10,12 +10,12 @@ export const getRoles = () => async (dispatch: any) => {
         const res = await axios.get('/api/role_listing/details');
 
         dispatch({
-            type: GET_ROLES,
+            type: GET_ROLE_LISTINGS,
             payload: res.data
         });
     } catch (err: any) {
         dispatch({
-            type: ROLE_ERROR,
+            type: ROLE_LISTINGS_ERROR,
             payload: { msg: err.response.statusText, status: err.response.status }
         });
     }
