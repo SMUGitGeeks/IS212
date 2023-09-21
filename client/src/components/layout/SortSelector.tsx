@@ -9,7 +9,7 @@ interface Option {
     label: string;
 }
 
-const SortSelector = ({ getRoleListings, role: { roles, loading } }: any) => {
+const SortSelector = ({ getRoleListings, roleListing: { roleListings, loading } }: any) => {
     useEffect(() => {
         getRoleListings();
     }, [getRoleListings]);
@@ -46,10 +46,10 @@ const SortSelector = ({ getRoleListings, role: { roles, loading } }: any) => {
 
 SortSelector.propTypes = {
     getRoleListings: PropTypes.func.isRequired,
-    role: PropTypes.object.isRequired
+    roleListing: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state: any) => ({
-    role: state.role
+    roleListing: state.roleListing
 });
 export default connect(mapStateToProps, { getRoleListings })(SortSelector);

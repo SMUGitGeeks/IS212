@@ -4,8 +4,8 @@ import {
 } from '../actions/types';
 
 const initialState = {
-    roles: [],
-    role: null,
+    roleListings: [],
+    roleListing: null,
     loading: true,
     error: {}
 }
@@ -17,7 +17,7 @@ export default function(state = initialState, action: any) {
         case GET_ROLE_LISTINGS:
             return {
                 ...state,
-                roles: payload,
+                roleListings: payload,
                 loading: false
             };
         case ROLE_LISTINGS_ERROR:

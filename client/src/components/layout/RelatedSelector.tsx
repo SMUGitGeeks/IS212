@@ -58,7 +58,7 @@ const filter = (inputValue: string, path: DefaultOptionType[]) =>
         (option) => (option.label as string).toLowerCase().indexOf(inputValue.toLowerCase()) > -1,
     );
 
-const RelatedSelector = ({ getRoleListings, role: { roles, loading } }: any) => {
+const RelatedSelector = ({ getRoleListings, roleListing: { roleListings, loading } }: any) => {
     useEffect(() => {
         getRoleListings();
     }, [getRoleListings]);
@@ -81,11 +81,11 @@ const RelatedSelector = ({ getRoleListings, role: { roles, loading } }: any) => 
 
 RelatedSelector.propTypes = {
     getRoleListings: PropTypes.func.isRequired,
-    role: PropTypes.object.isRequired
+    roleListing: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state: any) => ({
-    role: state.role
+    roleListing: state.roleListing
 });
     
 export default connect(mapStateToProps, { getRoleListings })(RelatedSelector);

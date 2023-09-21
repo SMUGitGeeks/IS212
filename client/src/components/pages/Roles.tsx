@@ -12,7 +12,7 @@ import SortSelector from '../layout/SortSelector';
 
 const { Title } = Typography;
 
-const Roles = ({ getRoles, role: { roles, loading } }: any) => {
+const Roles = ({ getRoles, roleListing: { roleListings, loading } }: any) => {
     useEffect(() => {
         getRoleListings();
     }, [getRoleListings]);
@@ -64,10 +64,10 @@ const Roles = ({ getRoles, role: { roles, loading } }: any) => {
 
 Roles.propTypes = {
     getRoleListings: PropTypes.func.isRequired,
-    role: PropTypes.object.isRequired
+    roleListing: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state: any) => ({
-    role: state.role
+    roleListing: state.roleListing
 });
 export default connect(mapStateToProps, { getRoleListings })(Roles);

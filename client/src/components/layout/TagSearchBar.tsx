@@ -17,7 +17,7 @@ const options: SelectProps['options'] = [
     }
 ];
 
-const TagSearchBar = ({ getRoleListings, role: { roles, loading } }: any) => {
+const TagSearchBar = ({ getRoleListings, roleListing: { roleListings, loading } }: any) => {
 
     const handleChange = (value: string[]) => {
         console.log(`selected ${value}`);
@@ -39,11 +39,11 @@ const TagSearchBar = ({ getRoleListings, role: { roles, loading } }: any) => {
 
 TagSearchBar.propTypes = {
     getRoleListings: PropTypes.func.isRequired,
-    role: PropTypes.object.isRequired
+    roleListing: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state: any) => ({
-    role: state.role
+    roleListing: state.roleListing
 });
 
 export default connect(mapStateToProps, { getRoleListings })(TagSearchBar);

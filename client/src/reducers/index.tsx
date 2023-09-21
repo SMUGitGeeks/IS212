@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
-import role from "./roleListings";
+import roleListing from "./roleListings";
 
 export default combineReducers({
-    role
+    roleListing
 })

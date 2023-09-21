@@ -36,7 +36,7 @@ import { Link } from 'react-router-dom';
 //   }
 // ]
 
-const RoleList = ({ getRoleListings, role: { roles, loading } }: any) => {
+const RoleList = ({ getRoleListings, roleListing: { roleListings, loading } }: any) => {
   useEffect(() => {
       getRoleListings();
 }, [getRoleListings]);
@@ -54,7 +54,7 @@ const RoleList = ({ getRoleListings, role: { roles, loading } }: any) => {
             },
             pageSize: 10,
           }}
-          dataSource={roles}
+          dataSource={roleListings}
           footer={
             <div>
               <b>ant design</b> footer part
@@ -98,11 +98,11 @@ const RoleList = ({ getRoleListings, role: { roles, loading } }: any) => {
 
 RoleList.propTypes = {
     getRoleListings: PropTypes.func.isRequired,
-    role: PropTypes.object.isRequired
+    roleListing: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state: any) => ({
-    role: state.role
+    roleListing: state.roleListing
 });
 
 export default connect(mapStateToProps, { getRoleListings })(RoleList);
