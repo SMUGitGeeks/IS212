@@ -1,6 +1,6 @@
 import { Select } from 'antd';
 import { connect } from 'react-redux';
-import { getRoles } from '../../actions/roleListings';
+import { getRoleListings } from '../../actions/roleListings';
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
@@ -9,10 +9,10 @@ interface Option {
     label: string;
 }
 
-const SortSelector = ({ getRoles, role: { roles, loading } }: any) => {
+const SortSelector = ({ getRoleListings, role: { roles, loading } }: any) => {
     useEffect(() => {
-        getRoles();
-    }, [getRoles]);
+        getRoleListings();
+    }, [getRoleListings]);
 
     // Test:
     const sortOptions: Option[] = [
@@ -45,11 +45,11 @@ const SortSelector = ({ getRoles, role: { roles, loading } }: any) => {
 }
 
 SortSelector.propTypes = {
-    getRoles: PropTypes.func.isRequired,
+    getRoleListings: PropTypes.func.isRequired,
     role: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state: any) => ({
     role: state.role
 });
-export default connect(mapStateToProps, { getRoles })(SortSelector);
+export default connect(mapStateToProps, { getRoleListings })(SortSelector);

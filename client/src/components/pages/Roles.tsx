@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import {Container} from "react-bootstrap";
 import { connect } from 'react-redux';
-import { getRoles } from '../../actions/roleListings';
+import { getRoleListings } from '../../actions/roleListings';
 import PropTypes from 'prop-types';
 import RoleList from '../layout/RoleList';
 import {Row, Col, Space, Typography, Button} from 'antd';
@@ -14,8 +14,8 @@ const { Title } = Typography;
 
 const Roles = ({ getRoles, role: { roles, loading } }: any) => {
     useEffect(() => {
-        getRoles();
-    }, [getRoles]);
+        getRoleListings();
+    }, [getRoleListings]);
     
     const roleType: String[] = []; //to be added in
     // const locations: String[] = []; //to be added in
@@ -63,11 +63,11 @@ const Roles = ({ getRoles, role: { roles, loading } }: any) => {
 }
 
 Roles.propTypes = {
-    getRoles: PropTypes.func.isRequired,
+    getRoleListings: PropTypes.func.isRequired,
     role: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state: any) => ({
     role: state.role
 });
-export default connect(mapStateToProps, { getRoles })(Roles);
+export default connect(mapStateToProps, { getRoleListings })(Roles);

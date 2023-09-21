@@ -4,7 +4,7 @@ import { Select } from 'antd';
 import React from 'react';
 // import { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { getRoles } from '../../actions/roleListings';
+import { getRoleListings } from '../../actions/roleListings';
 import PropTypes from 'prop-types';
 
 
@@ -17,7 +17,7 @@ const options: SelectProps['options'] = [
     }
 ];
 
-const TagSearchBar = ({ getRoles, role: { roles, loading } }: any) => {
+const TagSearchBar = ({ getRoleListings, role: { roles, loading } }: any) => {
 
     const handleChange = (value: string[]) => {
         console.log(`selected ${value}`);
@@ -38,7 +38,7 @@ const TagSearchBar = ({ getRoles, role: { roles, loading } }: any) => {
 } 
 
 TagSearchBar.propTypes = {
-    getRoles: PropTypes.func.isRequired,
+    getRoleListings: PropTypes.func.isRequired,
     role: PropTypes.object.isRequired
 }
 
@@ -46,4 +46,4 @@ const mapStateToProps = (state: any) => ({
     role: state.role
 });
 
-export default connect(mapStateToProps, { getRoles })(TagSearchBar);
+export default connect(mapStateToProps, { getRoleListings })(TagSearchBar);

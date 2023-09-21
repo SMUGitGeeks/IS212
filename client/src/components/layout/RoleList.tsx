@@ -2,7 +2,7 @@ import { StarFilled } from '@ant-design/icons';
 import React from 'react';
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { getRoles } from '../../actions/roleListings';
+import { getRoleListings } from '../../actions/roleListings';
 import PropTypes from 'prop-types';
 import { Avatar, List, Space } from 'antd';
 import { Link } from 'react-router-dom';
@@ -36,10 +36,10 @@ import { Link } from 'react-router-dom';
 //   }
 // ]
 
-const RoleList = ({ getRoles, role: { roles, loading } }: any) => {
+const RoleList = ({ getRoleListings, role: { roles, loading } }: any) => {
   useEffect(() => {
-    getRoles();
-}, [getRoles]);
+      getRoleListings();
+}, [getRoleListings]);
 
   const date = new Date();
 
@@ -97,12 +97,12 @@ const RoleList = ({ getRoles, role: { roles, loading } }: any) => {
 } 
 
 RoleList.propTypes = {
-  getRoles: PropTypes.func.isRequired,
-  role: PropTypes.object.isRequired
+    getRoleListings: PropTypes.func.isRequired,
+    role: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state: any) => ({
-  role: state.role
+    role: state.role
 });
 
-export default connect(mapStateToProps, { getRoles })(RoleList);
+export default connect(mapStateToProps, { getRoleListings })(RoleList);
