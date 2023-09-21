@@ -55,7 +55,7 @@ const Roles = ({ getRoles, role: { roles, loading } }: any) => {
                         </Space>
                     </Col>
                     <Col span={17}>
-                        <SortSelector onSorted={onRolesFiltered}/>
+                        <SortSelector />
                         <RoleList />
                     </Col>
                 </Row>

@@ -1,12 +1,18 @@
 import { Select } from 'antd';
+import { connect } from 'react-redux';
+import { getRoles } from '../../actions/role';
+import { useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 interface Option {
     value: string;
     label: string;
 }
 
-function SortSelector(props: any) {
-    // const { sortOptions, listData, roleListingIdList } = props
+const SortSelector = ({ getRoles, role: { roles, loading } }: any) => {
+    useEffect(() => {
+        getRoles();
+    }, [getRoles]);
 
     // Test:
     const sortOptions: Option[] = [
@@ -22,17 +28,10 @@ function SortSelector(props: any) {
 
     const onSelect = (value: string) => {
         console.log(value)
-        
-        if (value === 'skillMatch') {
-            // const skillsDescending = listData.sort((a, b) => {a})....
-            // input code to ort by skills
-        }
-        else {
-            // input code to default sorting
-        }
     }
 
-    return (
+    return loading ? 
+        <div>loading</div> : (
         <Select
             style={{ width: 200 }}
             // placeholder="Search to Select"
@@ -45,5 +44,12 @@ function SortSelector(props: any) {
     );
 }
 
+SortSelector.propTypes = {
+    getRoles: PropTypes.func.isRequired,
+    role: PropTypes.object.isRequired
+}
 
-export default SortSelector;
+const mapStateToProps = (state: any) => ({
+    role: state.role
+});
+export default connect(mapStateToProps, { getRoles })(SortSelector);
