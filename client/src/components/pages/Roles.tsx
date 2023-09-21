@@ -17,20 +17,22 @@ const Roles = ({ getRoles, role: { roles, loading } }: any) => {
         getRoles();
     }, [getRoles]);
 
-    const [filteredRoles, setFilteredRoles] = useState({}); //to get list of roles (or role list id first)
-    const onRolesFiltered = (input: []) => {
-        setFilteredRoles(input);
-    }
+    // const [filteredRoles, setFilteredRoles] = useState({}); //to get list of roles (or role list id first)
+    // const onRolesFiltered = (input: []) => {
+    //     setFilteredRoles(input);
+    // }
 
+    
     const roleType: String[] = []; //to be added in
     const locations: String[] = []; //to be added in
+    console.log(roles);
 
     return loading ?
         <Container> Loading </Container> :
         <Container>
-            {roles.map((role: any)=> (
+            {/* {roles.map((role: any)=> (
                 <div> {role.rl_desc} </div>
-                ))}
+                ))} */}
 
             {/* Design section */}
             <Space direction="vertical" size={48} style={{ display: 'flex' }}>
@@ -54,7 +56,7 @@ const Roles = ({ getRoles, role: { roles, loading } }: any) => {
                     </Col>
                     <Col span={17}>
                         <SortSelector onSorted={onRolesFiltered}/>
-                        <RoleList data={filteredRoles}/>
+                        <RoleList />
                     </Col>
                 </Row>
             </Space>
