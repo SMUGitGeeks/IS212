@@ -1,7 +1,11 @@
 import type { SelectProps } from 'antd';
 import { Select } from 'antd';
-import { title } from 'process';
+// import { title } from 'process';
 import React from 'react';
+// import { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { getRoles } from '../../actions/role';
+import PropTypes from 'prop-types';
 
 
 // Format:
@@ -13,20 +17,15 @@ const options: SelectProps['options'] = [
     }
 ];
 
-function TagSearchBar(props: any) {
-    // const { options, listData, onFilter } = props;
+const TagSearchBar = ({ getRoles, role: { roles, loading } }: any) => {
 
     const handleChange = (value: string[]) => {
         console.log(`selected ${value}`);
-        // let newList = [];
-        // for (let i = 0; i < listData.length; i++) {
-            // insert code logic to filter by options
-        //     newList.push(listData[i])
-        // }
-        // onFilter(newList);          // change displaying list to filtered list
     };
 
-    return (
+    return loading ? 
+    <div>loading</div> :
+    (
         <Select
             mode="multiple"
             style={{ width: '100%' }}
@@ -38,4 +37,13 @@ function TagSearchBar(props: any) {
     );
 } 
 
-export default TagSearchBar;
+TagSearchBar.propTypes = {
+    getRoles: PropTypes.func.isRequired,
+    role: PropTypes.object.isRequired
+}
+
+const mapStateToProps = (state: any) => ({
+    role: state.role
+});
+
+export default connect(mapStateToProps, { getRoles })(TagSearchBar);

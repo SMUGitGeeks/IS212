@@ -32,7 +32,7 @@ const Roles = ({ getRoles, role: { roles, loading } }: any) => {
                 <div></div>
                 <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify={'center'}>
                     <Col span={22}>
-                        <SearchBar data={filteredRoles}/>
+                        <SearchBar />
                     </Col>
                 </Row>
                 
@@ -41,7 +41,7 @@ const Roles = ({ getRoles, role: { roles, loading } }: any) => {
                         <Space direction='vertical' size="small">
                             <Title level={4}>Filters</Title>
                             <Title level={5}>Role Type</Title>
-                            <TagSearchBar list={roleType} onFilter={onRolesFiltered}/>
+                            <TagSearchBar />
                             
                             <Title level={5}>Location</Title>
                             <RelatedSelector />

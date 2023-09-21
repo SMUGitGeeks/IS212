@@ -65,12 +65,6 @@ const RelatedSelector = ({ getRoles, role: { roles, loading } }: any) => {
 
     const onChange = (value: any) => {
         console.log(value)
-        // value contains list of all clicked value (eg ['Singapore', 'Orchard'])
-        // let newList = [];
-        // for (let i = 0; i < listData.length; i++) {
-        //     // insert code logic to compare location to role
-        // }
-        // onFilter(newList);
     }
 
     return loading ? 
