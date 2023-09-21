@@ -35,14 +35,10 @@ const data = [
   }
 ]
 
-// const IconText = ({ icon, text }: { icon: React.FC; text: string }) => (
-//   <Space>
-//     {React.createElement(icon)}
-//     {text}
-//   </Space>
-// );
+function RoleList(props: any) {
+  // const { data } = props;
+  // ^ Uncomment when arguments are passed.
 
-function RoleList() {
     return (
         <List
           itemLayout="vertical"
