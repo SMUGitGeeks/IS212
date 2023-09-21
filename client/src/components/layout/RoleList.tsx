@@ -2,7 +2,7 @@ import { StarFilled } from '@ant-design/icons';
 import React from 'react';
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { getRoles } from '../../actions/role';
+import { getRoles } from '../../actions/roleListings';
 import PropTypes from 'prop-types';
 import { Avatar, List, Space } from 'antd';
 import { Link } from 'react-router-dom';

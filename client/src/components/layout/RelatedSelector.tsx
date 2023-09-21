@@ -1,7 +1,7 @@
 import { Cascader } from 'antd';
 import type { DefaultOptionType } from 'antd/es/cascader';
 import { connect } from 'react-redux';
-import { getRoles } from '../../actions/role';
+import { getRoles } from '../../actions/roleListings';
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 

@@ -4,7 +4,7 @@ import { Select } from 'antd';
 import React from 'react';
 // import { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { getRoles } from '../../actions/role';
+import { getRoles } from '../../actions/roleListings';
 import PropTypes from 'prop-types';
 
 

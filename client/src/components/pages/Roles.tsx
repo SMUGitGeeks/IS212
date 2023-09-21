@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import {Container} from "react-bootstrap";
 import { connect } from 'react-redux';
-import { getRoles } from '../../actions/role';
+import { getRoles } from '../../actions/roleListings';
 import PropTypes from 'prop-types';
 import RoleList from '../layout/RoleList';
 import {Row, Col, Space, Typography, Button} from 'antd';
