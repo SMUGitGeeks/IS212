@@ -7,7 +7,7 @@ const router = express.Router();
 // @desc    Test route
 // @access  Public
 router.route("/details").get(controllers.getRoleListings);
-router.route("/details/:id").get(controllers.getRoleListing);
+router.route("/detail/:id").get(controllers.getRoleListing);
 router.route("/updaters").get(controllers.getRoleListingUpdaters);
 router.route("/updater/:id").get(controllers.getRoleListingUpdater);
 router.route("/managers").get(controllers.getRoleListingManagers);

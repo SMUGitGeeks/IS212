@@ -7,7 +7,7 @@ import {
 // Get all roles
 export const getRoles = () => async (dispatch: any) => {
     try {
-        const res = await axios.get('/api/roles');
+        const res = await axios.get('/api/role_listing/details');
 
         dispatch({
             type: GET_ROLES,
