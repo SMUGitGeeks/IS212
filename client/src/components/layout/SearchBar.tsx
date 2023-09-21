@@ -14,9 +14,16 @@ const { Search } = Input;
 const onSearch: SearchProps['onSearch'] = (value, _e, info) => {
     console.log(value)
 };
-// const onSearch = (value: String, _e: any) => console.log(value);
 
-function SearchBar() {
+function SearchBar(props: any) {
+    const { data } = props;
+
+    const onSearch = (value: String, _e: any) => {
+        console.log(value)
+        // insert logic to filter by search
+    };
+
+
     return (
         <Search placeholder="Search Roles" onSearch={onSearch} />
     )

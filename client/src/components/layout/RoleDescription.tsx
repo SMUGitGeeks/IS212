@@ -1,7 +1,6 @@
 import { Col, Space, Row, Button, Tooltip, Divider, Descriptions } from "antd";
 import { Container } from "react-bootstrap";
 import {StarOutlined } from '@ant-design/icons';
-import '../styles/RoleDescription.css';
 import SkillsCollapsable from "./SkillsCollapsable";
 import type { DescriptionsProps } from 'antd';
 

@@ -1,20 +1,19 @@
 import { StarFilled } from '@ant-design/icons';
 import React from 'react';
+import { useState } from 'react';
 
 import { Avatar, List, Space } from 'antd';
 import { Link } from 'react-router-dom';
 
-// const data = Array.from({ length: 23 }).map((_, i) => ({
-//   href: 'https://ant.design',
-//   title: `ant design part ${i}`,
-//   avatar: `https://xsgames.co/randomusers/avatar.php?g=pixel&key=${i}`,
-//   description:
-//     'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-//   content:
-//     'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-// }));
+interface RoleSimpleDetail {
+  title: string;
+  description: string;  // sub details
+  content: string;      // body of content
+  id: string;           // role list id
+  imgSrc?: any;         // if image used include, if no image don't use
+}
 
-const data = [
+const data:RoleSimpleDetail[] = [
   {
     title: `Role Title`,
     description:
@@ -68,11 +67,11 @@ function RoleList(props: any) {
                 <>
                   <Space direction='vertical'>
                     <StarFilled style={{ fontSize: '18px'}}/>
-                    <img
+                    {/* <img
                       width={200}
                       alt="logo"
                       src={item.imgSrc}
-                    />
+                    /> */}
                   </Space>
                 </>
               }
