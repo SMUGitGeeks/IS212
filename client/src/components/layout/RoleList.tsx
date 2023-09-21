@@ -1,44 +1,50 @@
 import { StarFilled } from '@ant-design/icons';
 import React from 'react';
-import { useState } from 'react';
-
+import { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { getRoles } from '../../actions/role';
+import PropTypes from 'prop-types';
 import { Avatar, List, Space } from 'antd';
 import { Link } from 'react-router-dom';
 
-interface RoleSimpleDetail {
-  title: string;
-  description: string;  // sub details
-  content: string;      // body of content
-  id: string;           // role list id
-  imgSrc?: any;         // if image used include, if no image don't use
-}
+// interface RoleSimpleDetail {
+//   title: string;
+//   description: string;  // sub details
+//   content: string;      // body of content
+//   id: string;           // role list id
+//   imgSrc?: any;         // if image used include, if no image don't use
+// }
 
-const data:RoleSimpleDetail[] = [
-  {
-    title: `Role Title`,
-    description:
-      'Department Name, time etc',
-    content:
-      'Short description',
-    id: '1',
-    imgSrc: 'test'
-  },
-  {
-    title: `Role Title`,
-    description:
-      'Department Name, time etc',
-    content:
-      'Short description',
-    id: '2',
-    imgSrc: 'test'
-  }
-]
+// const data:RoleSimpleDetail[] = [
+//   {
+//     title: `Role Title`,
+//     description:
+//       'Department Name, time etc',
+//     content:
+//       'Short description',
+//     id: '1',
+//     imgSrc: 'test'
+//   },
+//   {
+//     title: `Role Title`,
+//     description:
+//       'Department Name, time etc',
+//     content:
+//       'Short description',
+//     id: '2',
+//     imgSrc: 'test'
+//   }
+// ]
 
-function RoleList(props: any) {
-  // const { data } = props;
-  // ^ Uncomment when arguments are passed.
+const RoleList = ({ getRoles, role: { roles, loading } }: any) => {
+  useEffect(() => {
+    getRoles();
+}, [getRoles]);
 
-    return (
+  const date = new Date();
+
+    return loading ?
+      <div>Loading</div> :
         <List
           itemLayout="vertical"
           size="large"
@@ -48,16 +54,16 @@ function RoleList(props: any) {
             },
             pageSize: 10,
           }}
-          dataSource={data}
+          dataSource={roles}
           footer={
             <div>
               <b>ant design</b> footer part
             </div>
           }
-          renderItem={(item) => (
-            <Link to={`/roles/${item.id}`}>
+          renderItem={(item: any) => (
+            <Link to={`/roles/${item.rl_id}`}>
               <List.Item
-              key={item.title}
+              key={item.rl_desc}
               // actions={[
               //   <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
               //   <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
@@ -77,16 +83,26 @@ function RoleList(props: any) {
               }
             >
               <List.Item.Meta
-                title={item.title}
-                description={item.description}
+                title={item.rl_desc}
+                // description={item.description}
+                description={date.getDate() - new Date(item.rl_open).getDate() + " days ago"}
               />
-              {item.content}
+              {/* {item.content} */}
             </List.Item>
             </Link>
             
           )}
         />
-      );
+      
 } 
 
-export default RoleList;
+RoleList.propTypes = {
+  getRoles: PropTypes.func.isRequired,
+  role: PropTypes.object.isRequired
+}
+
+const mapStateToProps = (state: any) => ({
+  role: state.role
+});
+
+export default connect(mapStateToProps, { getRoles })(RoleList);
