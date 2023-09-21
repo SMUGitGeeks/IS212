@@ -16,16 +16,9 @@ const Roles = ({ getRoles, role: { roles, loading } }: any) => {
     useEffect(() => {
         getRoles();
     }, [getRoles]);
-
-    // const [filteredRoles, setFilteredRoles] = useState({}); //to get list of roles (or role list id first)
-    // const onRolesFiltered = (input: []) => {
-    //     setFilteredRoles(input);
-    // }
-
     
     const roleType: String[] = []; //to be added in
-    const locations: String[] = []; //to be added in
-    console.log(roles);
+    // const locations: String[] = []; //to be added in
 
     return loading ?
         <Container> Loading </Container> :
@@ -51,7 +44,7 @@ const Roles = ({ getRoles, role: { roles, loading } }: any) => {
                             <TagSearchBar list={roleType} onFilter={onRolesFiltered}/>
                             
                             <Title level={5}>Location</Title>
-                            <RelatedSelector list={locations} onFilter={onRolesFiltered}/>
+                            <RelatedSelector />
                         </Space>
                     </Col>
                     <Col span={17}>

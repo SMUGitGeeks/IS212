@@ -1,5 +1,9 @@
 import { Cascader } from 'antd';
 import type { DefaultOptionType } from 'antd/es/cascader';
+import { connect } from 'react-redux';
+import { getRoles } from '../../actions/role';
+import { useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 interface Option {
     value: string;
@@ -54,8 +58,10 @@ const filter = (inputValue: string, path: DefaultOptionType[]) =>
         (option) => (option.label as string).toLowerCase().indexOf(inputValue.toLowerCase()) > -1,
     );
 
-function RelatedSelector(props: any) {
-    // const { listData, onFilter  } = props;
+const RelatedSelector = ({ getRoles, role: { roles, loading } }: any) => {
+    useEffect(() => {
+        getRoles();
+    }, [getRoles]);
 
     const onChange = (value: any) => {
         console.log(value)
@@ -67,7 +73,9 @@ function RelatedSelector(props: any) {
         // onFilter(newList);
     }
 
-    return (
+    return loading ? 
+        <div>Loading</div> :
+    (
         <Cascader
             options={data}
             placeholder="Please select"
@@ -77,5 +85,13 @@ function RelatedSelector(props: any) {
     );
 }
 
+RelatedSelector.propTypes = {
+    getRoles: PropTypes.func.isRequired,
+    role: PropTypes.object.isRequired
+}
 
-export default RelatedSelector;
+const mapStateToProps = (state: any) => ({
+    role: state.role
+});
+    
+export default connect(mapStateToProps, { getRoles })(RelatedSelector);
