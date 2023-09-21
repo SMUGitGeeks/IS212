@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 5000;
 app.get('/', (req, res) => { res.send('API Running'); });
 
 // Define routes
-app.use('/api/roles', require('./routes/api/roles'));
+app.use('/api/role_listing', require('./routes/api/role_listing'));
 
 // Start server
 app.listen(PORT, () => {
