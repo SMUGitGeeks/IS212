@@ -42,8 +42,6 @@ const sortOptions: filterOption[] = [
   },
 ]
 
-const RoleList = ({ getRoles, role: { roles, loading }, search, setSearch, handleChangeSearch }: any) => {
-
   const dispatch = useDispatch();
   const [sort, setSort] = useState('asc')
 
@@ -52,9 +50,6 @@ const RoleList = ({ getRoles, role: { roles, loading }, search, setSearch, handl
 }, [getRoleListings]);
       // dispatch(searchPosts(search));
   // if (sort === 'default') {
-  useEffect(() => {
-      getRoles();
-  }, [getRoles]);
   // 	dispatch(sortPostsDesc());
   // }
   // if (sort === 'skillMatch') {
