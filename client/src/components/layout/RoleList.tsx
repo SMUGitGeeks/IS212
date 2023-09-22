@@ -47,7 +47,7 @@ const sortOptions: filterOption[] = [
 
   useEffect(() => {
       getRoleListings();
-}, [getRoleListings]);
+  }, [getRoleListings]);
       // dispatch(searchPosts(search));
   // if (sort === 'default') {
   // 	dispatch(sortPostsDesc());

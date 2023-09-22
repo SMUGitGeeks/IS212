@@ -3,7 +3,7 @@ const controllers = require('../../controllers/rolesController');
 const router = express.Router();
 
 
-// @route   GET api/roles
+// @route   GET api/roles_listing
 // @desc    Test route
 // @access  Public
 router.route("/details").get(controllers.getRoleListings);

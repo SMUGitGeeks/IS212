@@ -1,4 +1,6 @@
 import { Space, Typography, Button, Select, Cascader, SelectProps } from "antd";
+import {sortRoleListingsByName} from "../../actions/roleListings";
+import {useDispatch} from "react-redux";
 
 const {Title} = Typography;
 
@@ -63,10 +65,17 @@ const locations: locationOption[] = [
     },
 ];
 
-const RoleSearchFilter = () => {
+const RoleSearchFilter = () =>  {
+
+    const dispatch = useDispatch();
 
     const filter = () => {
-        // code to confirm filter options and filter
+
+    }
+    const sort = (direction: String) => {
+        //sortRoleListingsByName
+        dispatch(sortRoleListingsByName({direction}) as any);
+        dispatch(sortRoleListingsByName({direction}) as any);
     }
 
     const onChange = (value: any) => {
@@ -95,6 +104,8 @@ const RoleSearchFilter = () => {
                 onChange={onChange}
             />
             <Button onClick={filter}>Filter Results</Button>
+            <Button onClick={() => sort("asc")}>Sort Ascending</Button>
+            <Button onClick={() => sort("desc")}>Sort Descending</Button>
         </Space>
     );
 }

@@ -1,13 +1,25 @@
 import axios from 'axios';
 import {
     GET_ROLE_LISTINGS,
-    ROLE_LISTINGS_ERROR
+    ROLE_LISTINGS_ERROR,
+    SORT_ROLE_LISTINGS_BY_NAME
 } from './types';
 
 // Get all roles
 export const getRoleListings = () => async (dispatch: any) => {
     try {
-        const res = await axios.get('/api/role_listing/details');
+        const res = await axios.get('/api/role_listing/details')
+        const res2 = await axios.get('/api/role/details');
+        for (let i = 0; i < res.data.length; i++) {
+            for (let j = 0; j < res2.data.length; j++) {
+                if (res.data[i]["role_id"] === res2.data[j]["role_id"]) {
+                    res.data[i].role_name = res2.data[j].role_name;
+                    res.data[i].role_description = res2.data[j].role_description;
+                    res.data[i].role_status = res2.data[j].role_status;
+                }
+            }
+        }
+
 
         dispatch({
             type: GET_ROLE_LISTINGS,
@@ -20,3 +32,14 @@ export const getRoleListings = () => async (dispatch: any) => {
         });
     }
 }
+
+export const sortRoleListingsByName = (payload: any) => async (dispatch: any) => {
+    dispatch({
+        type: SORT_ROLE_LISTINGS_BY_NAME,
+        payload
+    });
+}
+
+
+
+

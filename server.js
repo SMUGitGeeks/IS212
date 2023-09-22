@@ -11,7 +11,7 @@ app.get('/', (req, res) => { res.send('API Running'); });
 
 // Define routes
 app.use('/api/role_listing', require('./routes/api/role_listing'));
-
+app.use('/api/role', require('./routes/api/role'));
 // Start server
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}...`);
