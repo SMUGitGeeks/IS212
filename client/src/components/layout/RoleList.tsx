@@ -52,15 +52,14 @@ const RoleList = ({ getRoles, role: { roles, loading }, search, setSearch, handl
 }, [getRoleListings]);
       // dispatch(searchPosts(search));
   // if (sort === 'default') {
+  useEffect(() => {
+      getRoles();
+  }, [getRoles]);
   // 	dispatch(sortPostsDesc());
   // }
   // if (sort === 'skillMatch') {
   // 	dispatch(sortPostsAsc());
   // }
-  }, [search, sort, dispatch]);
-  useEffect(() => {
-      getRoles();
-  }, [getRoles]);
 
 
   const onSelect = (value: string) => {
