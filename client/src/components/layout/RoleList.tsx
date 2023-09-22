@@ -1,10 +1,10 @@
 import { StarFilled } from '@ant-design/icons';
-import React from 'react';
+import React, { useState } from 'react';
 import { useEffect } from 'react';
-import { connect } from 'react-redux';
 import { getRoleListings } from '../../actions/roleListings';
+import { connect, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Avatar, List, Space } from 'antd';
+import { Avatar, List, Space, Select } from 'antd';
 import { Link } from 'react-router-dom';
 
 // interface RoleSimpleDetail {
@@ -15,36 +15,73 @@ import { Link } from 'react-router-dom';
 //   imgSrc?: any;         // if image used include, if no image don't use
 // }
 
-// const data:RoleSimpleDetail[] = [
-//   {
-//     title: `Role Title`,
-//     description:
-//       'Department Name, time etc',
-//     content:
-//       'Short description',
-//     id: '1',
-//     imgSrc: 'test'
-//   },
-//   {
-//     title: `Role Title`,
-//     description:
-//       'Department Name, time etc',
-//     content:
-//       'Short description',
-//     id: '2',
-//     imgSrc: 'test'
-//   }
-// ]
+// interface RoleListProps {
+//   getRoles: () => void;
+//   role: {roles: [] , loading: boolean};
+//   search: string;
+//   setSearch: (search: string) => void;
+//   handleChangeSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
+// }
 
 const RoleList = ({ getRoleListings, roleListing: { roleListings, loading } }: any) => {
+interface filterOption {
+  value: string;
+  label: string;
+}
+
+
+// Sort Example:
+const sortOptions: filterOption[] = [
+  {
+      value: 'default',
+      label: 'Default'
+  },
+  {
+      value: 'skillMatch',
+      label: 'Highest Skill Match'
+  },
+]
+
+const RoleList = ({ getRoles, role: { roles, loading }, search, setSearch, handleChangeSearch }: any) => {
+
+  const dispatch = useDispatch();
+  const [sort, setSort] = useState('asc')
+
   useEffect(() => {
       getRoleListings();
 }, [getRoleListings]);
+      // dispatch(searchPosts(search));
+  // if (sort === 'default') {
+  // 	dispatch(sortPostsDesc());
+  // }
+  // if (sort === 'skillMatch') {
+  // 	dispatch(sortPostsAsc());
+  // }
+  }, [search, sort, dispatch]);
+  useEffect(() => {
+      getRoles();
+  }, [getRoles]);
+
+
+  const onSelect = (value: string) => {
+      console.log(value)
+      setSort(value)
+  }
 
   const date = new Date();
 
     return loading ?
       <div>Loading</div> :
+      <>
+        <Select
+            style={{ width: 200 }}
+            // placeholder="Search to Select"
+            defaultValue={'default'}
+            optionFilterProp="children"
+            filterOption={true}
+            options={sortOptions}
+            onSelect={onSelect}
+        />
         <List
           itemLayout="vertical"
           size="large"
@@ -93,7 +130,7 @@ const RoleList = ({ getRoleListings, roleListing: { roleListings, loading } }: a
             
           )}
         />
-      
+      </>
 } 
 
 RoleList.propTypes = {
