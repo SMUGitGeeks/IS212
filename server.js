@@ -4,7 +4,8 @@ const connection= require('./config/db');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-
+// Middleware Setup
+app.use(express.json()); // Add this line to parse JSON request bodies
 
 // Connect to database
 

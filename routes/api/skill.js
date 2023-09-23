@@ -3,10 +3,10 @@ const controllers = require('../../controllers/skillController');
 const router = express.Router();
 
 
-// @route   GET api/roles
+// @route   GET api/skill
 // @desc    Test route
 // @access  Public
-// GET methods
+
 router.route("/details/").get(controllers.getSkillDetails);
 
 

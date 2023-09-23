@@ -70,4 +70,31 @@ exports.getStaffApplications = async (req, res) => {
     }
 }
 
+exports.createApplication = async (req, res) => {
+    try {
+      // Extract data from the request body
+    
+     let { rl_id, staff_id, role_app_status} = req.body; // yet to add supporting doc
+      
+  
+      // Validate the data (if needed)
+      if (!rl_id || !staff_id || !role_app_status ) {
+        return res.status(400).json({ error: 'All fields are required' });
+      }
+
+      app_ts = 'now()';
+
+      
+      // Insert the new role listing into the database
+      const sql = 'INSERT INTO application (rl_id, staff_id, role_app_status, app_ts) VALUES (?, ?, ?, ?)';
+      await connection.promise().query(sql, [rl_id, staff_id, role_app_status, app_ts]);
+  
+      // Send a success response
+      res.status(201).json({ message: 'Role listing created successfully' });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Server error' });
+    }
+  };
+
 
