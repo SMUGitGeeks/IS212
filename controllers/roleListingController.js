@@ -1,0 +1,59 @@
+const connection = require('../config/db');
+
+exports.getRoleListings = async (req, res) => {
+    try {
+        const [rows, fields] = await connection.promise().query('SELECT * FROM role_listings');
+        res.json(rows);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send('Server error');
+    }
+}
+
+exports.getRoleListing = async (req, res) => {
+    try {
+        const [rows, fields] = await connection.promise().query('SELECT * FROM role_listings WHERE rl_id = ?', [req.params.id]);
+        if (rows.length > 0) {
+            res.json(rows);
+            
+        } else {
+            res.status(404).send('Role not found');
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).send('Server error');
+    }
+}
+
+exports.getRoleListingUpdater = async (req, res) => {
+    try {
+        const [rows, fields] = await connection.promise().query('SELECT * FROM role_listing_updater WHERE rl_id = ?', [req.params.id]);
+        if (rows.length > 0) {
+            res.json(rows);
+            
+        } else {
+            res.status(404).send('Role not found');
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).send('Server error');
+    }
+}
+
+exports.getRoleListingManager = async (req, res) => {
+    try {
+        const [rows, fields] = await connection.promise().query('SELECT * FROM role_listing_manager WHERE rl_id = ?', [req.params.id]);
+        if (rows.length > 0) {
+            res.json(rows);
+            
+        } else {
+            res.status(404).send('Role not found');
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).send('Server error');
+    }
+}
+
+
+
