@@ -20,6 +20,11 @@ router.route("/manager/:id").get(controllers.getRoleListingManager);
 router.route("/create").post(controllers.createRoleListing);
 
 
+// @route   PUT api/role_listing/update
+// @desc    Test route
+// @access  Public
+
+router.route("/update/:id").put(controllers.updateRoleListing);
 
 
 

@@ -85,3 +85,35 @@ exports.createRoleListing = async (req, res) => {
   }
 };
 
+exports.updateRoleListing = async (req, res) => {
+  try {
+      // Extract data from the request body and parameters
+      const { rl_desc, rl_open, rl_close, rl_updater } = req.body;
+      const rl_id = req.params.id;
+  
+      // Update the role_listing table
+      const updateSql = 'UPDATE role_listings SET rl_desc=?, rl_open=?, rl_close=? WHERE rl_id=?';
+      connection.query(updateSql, [rl_desc, rl_open, rl_close, rl_id], (err, result) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).json({ error: 'Failed to update role listing' });
+        }
+  
+        // Insert a new row into the role_listing_updater table
+        const logSql = 'INSERT INTO role_listing_updater (rl_id, rl_updater, rl_ts_update) VALUES (?, ?, NOW())';
+        connection.query(logSql, [rl_id, rl_updater], (logErr) => {
+          if (logErr) {
+            console.error(logErr);
+            return res.status(500).json({ error: 'Failed to log the update' });
+          }
+  
+          res.json({ message: 'Role listing updated successfully' });
+        });
+      });
+    } catch (catchErr) {
+      console.error(catchErr);
+      res.status(500).json({ error: 'Server error' });
+    }
+
+};
+
