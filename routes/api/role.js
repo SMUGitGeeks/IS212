@@ -8,7 +8,7 @@ const router = express.Router();
 // @access  Public
 
 router.route("/details").get(controllers.getRoleDetails);
-router.route("/detail/:id").get(controllers.getRoleDetail);
+router.route("/details/:id").get(controllers.getRoleDetail);
 router.route("/skills").get(controllers.getRoleSkills);
 router.route("/skill/:id").get(controllers.getRoleSkills);
 
