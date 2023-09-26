@@ -3,6 +3,8 @@ import type { TableProps } from 'antd';
 import { Button, Space, Table } from 'antd';
 import type { ColumnsType, FilterValue, SorterResult } from 'antd/es/table/interface';
 import { useState } from "react";
+import SkillsCollapsable from "./SkillsCollapsable";
+import { getSkills } from "../../actions/skills";
 
 interface DataType {
     key: string;
@@ -38,7 +40,7 @@ const data: DataType[] = [
     },
 ];
 
-function MyApplications() {
+const MyApplications = () => {
     const [filteredInfo, setFilteredInfo] = useState<Record<string, FilterValue | null>>({});
     const [sortedInfo, setSortedInfo] = useState<SorterResult<DataType>>({});
 
@@ -102,7 +104,26 @@ function MyApplications() {
         ellipsis: true,
         },
     ];
-
+    const skills = ({ getskills, skills: { skills, loading } }: any) => {
+        useEffect(() => {
+            getSkills();
+    
+        }, [getSkills]);
+    }
+    // const Skills = [
+    //     {
+    //         skill_id: 1,
+    //         staff_id: 2,
+    //         skill_name: "React",
+    //         ss_status: "Approved",
+    //     },
+    //     {
+    //         skill_id: 2,
+    //         staff_id: 3,
+    //         skill_name: "Python",
+    //         ss_status: "Approved",
+    //     }
+    // ]
     return (
         <Container>
             {/* <Space style={{ marginBottom: 16 }}>
@@ -110,9 +131,19 @@ function MyApplications() {
                 <Button onClick={clearFilters}>Clear filters</Button>
                 <Button onClick={clearAll}>Clear filters and sorters</Button>
             </Space> */}
+            {
+                skills.map((skill: any) => (
+                <div>
+                    {skill.skill_name}
+                </div> ))
+            }
             <Table columns={columns} dataSource={data} onChange={handleChange} />
         </Container>
     )
 }
 
 export default MyApplications;
+
+function useEffect(arg0: () => void, arg1: (() => (dispatch: any) => Promise<void>)[]) {
+    throw new Error("Function not implemented.");
+}
