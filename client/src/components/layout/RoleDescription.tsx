@@ -1,17 +1,54 @@
-import { Col, Space, Row, Button, Tooltip, Divider, Descriptions } from "antd";
+import { Col, Space, Row, Button, Tooltip, Divider, Descriptions, Collapse, Tag, Typography } from "antd";
 import { Container } from "react-bootstrap";
 import {StarOutlined } from '@ant-design/icons';
-import SkillsCollapsable from "./SkillsCollapsable";
+import type { CollapseProps, DescriptionsProps } from 'antd';
 import { rowGutterStyle } from '../../App';
+
+const { Title } = Typography;
 
 function RoleDescription(props: any) {
     const { roleListingId } = props;
     // Code to fetch info based on role id
 
-    // Compute skill list for below
-    const missingSkills: never[] = [];
-    const matchedSkills: never[] = [];
+    // Role Skills =======================
+    // Sample data:
+    const roleSkills: String[] = [
+        "Fishing",
+        "Lorry",
+        "cars"
+    ];
 
+    // Skills Matching ===================
+    const missingSkills: String[] = [
+        "Fishing",
+        "cars"
+    ];
+    const matchedSkills: String[] = [
+        "Lorry"
+    ]
+    const items: CollapseProps['items'] = [
+        {
+            key: '1',
+            label: 'Skills Matched',
+            children: (matchedSkills.map((skill: any) => (
+                <Tag>{skill}</Tag>
+            ))),
+        },
+        {
+            key: '2',
+            label: 'Skills Missing',
+            children: (missingSkills.map((skill: any) => (
+                <Tag>{skill}</Tag>
+            ))),
+        },
+    ];
+    const onChange = (key: string | string[]) => {
+        // console.log(key);
+    };
+    // ===================================
+
+
+    // Important Details =================
     const importantDetails: DescriptionsProps['items'] = [
         {
             key: '1',
@@ -24,8 +61,7 @@ function RoleDescription(props: any) {
             children: '1810000000',
         },
     ]
-
-    // const importantDetails: DescriptionsProps['items'] = 
+    // ===================================
 
     return (
         <Container>
@@ -56,7 +92,16 @@ function RoleDescription(props: any) {
                         <Space direction="vertical">
                             <Descriptions title="User Info" layout="vertical" items={importantDetails} />
                             <Divider />
-                            <SkillsCollapsable missingSkills={missingSkills} matchedSkills={matchedSkills} />
+                            {/* Display Role's skills */}
+                            <Title level={5}>All Skills</Title>
+                            <Space size={[0, 8]} wrap>
+                                {roleSkills.map((skill: any) => (
+                                    <Tag>{skill}</Tag>
+                                ))}
+                            </Space>
+                            
+                            {/* Separated into skills match vs missing */}
+                            {/* <Collapse items={items} defaultActiveKey={['1']} onChange={onChange} /> */}
                         </Space>
                     </Col>
                 </Row>
