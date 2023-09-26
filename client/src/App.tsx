@@ -28,6 +28,8 @@ const footerStyle: React.CSSProperties = {
   backgroundColor: '#7dbcea',
 };
 
+const rowGutterStyle = { xs: 8, sm: 16, md: 24, lg: 32 };
+
 function App() {
   return (
       <Provider store={store}>
@@ -63,3 +65,4 @@ function App() {
 }
 
 export default App;
+export {rowGutterStyle};
