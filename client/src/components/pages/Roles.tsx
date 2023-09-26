@@ -6,6 +6,7 @@ import SearchBar from '../layout/SearchBar';
 import RoleSearchFilter from '../layout/RoleSearchFilter';
 import { useDispatch } from 'react-redux';
 import { sortRoleListingsByName } from '../../actions/roleListings';
+import { rowGutterStyle } from '../../App';
 
 interface filterOption {
     value: string;
@@ -39,13 +40,13 @@ const Roles = () => {
         <Container>
             <Space direction="vertical" size={48} style={{ display: 'flex' }}>
                 <div></div>
-                <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify={'center'}>
+                <Row gutter={rowGutterStyle} justify={'center'}>
                     <Col span={22}>
                         <SearchBar />
                     </Col>
                 </Row>
                 
-                <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify={'center'}>
+                <Row gutter={rowGutterStyle} justify={'center'}>
                     <Col xs={22} sm={22} md={22} lg={6} xl={5}>
                         <RoleSearchFilter />
                     </Col>

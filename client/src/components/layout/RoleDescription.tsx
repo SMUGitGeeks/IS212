@@ -1,4 +1,4 @@
-import { Col, Space, Row, Button, Tooltip, Divider, Descriptions } from "antd";
+import { Col, Space, Row, Button, Tooltip, Divider, Descriptions, DescriptionsProps } from "antd";
 import { Container } from "react-bootstrap";
 import {StarOutlined } from '@ant-design/icons';
 import SkillsCollapsable from "./SkillsCollapsable";
