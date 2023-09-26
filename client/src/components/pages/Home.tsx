@@ -1,11 +1,12 @@
 import React from 'react';
-import type { MenuProps } from 'antd';
 import {Container} from "react-bootstrap";
+import MyApplications from '../layout/MyApplications';
 
-function Home() {
+const Home = () => {
     return (
         <Container>
-            Skill Based Role Portal - Home
+            {/* Skill Based Role Portal - Home */}
+            <MyApplications />
         </Container>
     )
 }
