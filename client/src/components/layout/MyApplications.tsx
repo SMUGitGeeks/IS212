@@ -4,7 +4,7 @@ import { Button, Space, Table } from 'antd';
 import type { ColumnsType, FilterValue, SorterResult } from 'antd/es/table/interface';
 import { useState } from "react";
 import SkillsCollapsable from "./SkillsCollapsable";
-import { getSkills } from "../../actions/skills";
+import { getStaffSkills } from "../../actions/staffSkills";
 
 interface DataType {
     key: string;
@@ -40,7 +40,11 @@ const data: DataType[] = [
     },
 ];
 
-const MyApplications = () => {
+const MyApplications = ({ getStaffSkills, skills: { skills, loading } }: any) => {
+    useEffect(() => {
+        getStaffSkills();
+
+    }, [getStaffSkills]);
     const [filteredInfo, setFilteredInfo] = useState<Record<string, FilterValue | null>>({});
     const [sortedInfo, setSortedInfo] = useState<SorterResult<DataType>>({});
 
@@ -104,13 +108,7 @@ const MyApplications = () => {
         ellipsis: true,
         },
     ];
-    const skills = ({ getskills, skills: { skills, loading } }: any) => {
-        useEffect(() => {
-            getSkills();
-    
-        }, [getSkills]);
-    }
-    // const Skills = [
+    // const skills = [
     //     {
     //         skill_id: 1,
     //         staff_id: 2,
