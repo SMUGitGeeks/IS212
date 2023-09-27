@@ -49,7 +49,7 @@ export const filterRoleListingsByRoleId = (payload: any) => async (dispatch: any
     });
 }
 
-export const sortRoleListingsbyDate = (payload: any) => async (dispatch: any) => {
+export const sortRoleListingsByDate = (payload: any) => async (dispatch: any) => {
     dispatch({
         type: SORT_ROLE_LISTINGS_BY_DATE,
         payload

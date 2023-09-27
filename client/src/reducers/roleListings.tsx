@@ -1,6 +1,7 @@
 import {
     GET_ROLE_LISTINGS,
-    ROLE_LISTINGS_ERROR, SORT_ROLE_LISTINGS_BY_NAME, FILTER_ROLE_LISTINGS_BY_ROLE_ID, SORT_ROLE_LISTINGS_BY_DATE
+    ROLE_LISTINGS_ERROR, SORT_ROLE_LISTINGS_BY_NAME, FILTER_ROLE_LISTINGS_BY_ROLE_ID,
+    SORT_ROLE_LISTINGS_BY_DATE
 } from '../actions/types';
 
 const initialState = {
@@ -51,15 +52,15 @@ export default function(state = initialState, action: any) {
                 ...state,
                 roleListings: filteredRoleListings,
             }}
-        case SORT_ROLE_LISTINGS_BY_DATE:
-        let sortedRoleListings = action.payload.direction === "asc" ?
-            state.roleListings.sort((a: any, b: any) => (a.role_name > b.role_name) ? 1 : -1) :
-            state.roleListings.sort((a: any, b: any) => (a.role_name < b.role_name) ? 1 : -1);
-        return {
-            ...state,
-            roleListings: sortedRoleListings,
-            rawRoleListings: sortedRoleListings,
-            }
+            case SORT_ROLE_LISTINGS_BY_DATE:
+                let sortedRoleListings = action.payload.direction === "asc" ?
+                    state.roleListings.sort((a: any, b: any) => (a.role_name > b.role_name) ? 1 : -1) :
+                    state.roleListings.sort((a: any, b: any) => (a.role_name < b.role_name) ? 1 : -1);
+                return {
+                    ...state,
+                    roleListings: sortedRoleListings,
+                    rawRoleListings: sortedRoleListings,
+                }
         default:
             return state;
     }
