@@ -1,3 +1,5 @@
+import {sortRoleListingsByName} from "./actions/roleListings";
+
 export interface RoleListingsType {
     rl_close: string;
     rl_creator: number;
@@ -15,3 +17,12 @@ export interface ActionType {
     type: any;
     payload: any;
 }
+
+export interface SortPayloadType {
+    direction: String;
+}
+
+export interface FilterRoleListingsByRoleIdPayloadType {
+    roleIds: number[];
+}
+
