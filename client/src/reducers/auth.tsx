@@ -5,13 +5,17 @@ import {
     LOGIN_ERROR
 } from '../actions/types';
 
+import {
+    ActionType
+} from "../types";
+
 const initialState = {
     user: null,
     loading: true,
     error: {}
 }
 
-export default function(state = initialState, action: any) {
+export default function(state = initialState, action: ActionType) {
     const { type, payload } = action;
 
     switch(type) {
