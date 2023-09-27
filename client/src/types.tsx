@@ -26,3 +26,7 @@ export interface FilterRoleListingsByRoleIdPayloadType {
     roleIds: number[];
 }
 
+export interface GetStaffSkillsByStaffIdPayloadType {
+    staffId: number;
+}
+

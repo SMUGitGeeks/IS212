@@ -3,9 +3,10 @@ import {
     GET_STAFF_SKILLS_BY_STAFF_ID,
     STAFF_SKILLS_ERROR
 } from './types';
+import {ActionType, GetStaffSkillsByStaffIdPayloadType} from "../types";
 
 // Get all skills
-export const getStaffSkillsByStaffId = (payload: any) => async (dispatch: any) => {
+export const getStaffSkillsByStaffId = (payload: GetStaffSkillsByStaffIdPayloadType) => async (dispatch: (action: ActionType) => void) => {
     try {
         const res = await axios.get('/api/staff/skills/' + payload)
         const res2 = await axios.get('/api/skill/details');
