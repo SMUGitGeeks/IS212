@@ -31,6 +31,8 @@ const footerStyle: React.CSSProperties = {
     backgroundColor: '#7dbcea',
 };
 
+const rowGutterStyle = { xs: 8, sm: 16, md: 24, lg: 32 };
+
 const App = ({auth: {user, loading}}:any ) => {
   return (
       user==null ?
@@ -79,3 +81,5 @@ const mapStateToProps = (state: any) => ({
     auth: state.auth
 });
 export default connect(mapStateToProps, { loginStaff, loginHR })(App);
+
+export {rowGutterStyle};
