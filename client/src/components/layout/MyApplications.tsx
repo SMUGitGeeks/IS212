@@ -4,11 +4,12 @@ import { Button, Space, Table } from 'antd';
 import type { ColumnsType, FilterValue, SorterResult } from 'antd/es/table/interface';
 import { useState } from "react";
 import SkillsCollapsable from "./SkillsCollapsable";
-import { getStaffSkills } from "../../actions/staffSkills";
-import { connect } from 'react-redux';
+import { getStaffSkillsByStaffId } from "../../actions/staffSkills";
+import {connect, useDispatch} from 'react-redux';
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-// import { useDispatch, useSelector } from 'react-redux';
+import {sortRoleListingsByName} from "../../actions/roleListings";
+
 
 interface DataType {
     key: string;
@@ -44,10 +45,8 @@ const data: DataType[] = [
     },
 ];
 
-const MyApplications = ({ getStaffSkills, staffSkills: { staffSkills, loading } }: any) => {
-    useEffect(() => {
-        getStaffSkills();
-    }, [getStaffSkills]);
+const MyApplications = ({ getStaffSkillsByStaffId, staffSkills: { staffSkills, loading }, auth: {user} }: any) => {
+
     const [filteredInfo, setFilteredInfo] = useState<Record<string, FilterValue | null>>({});
     const [sortedInfo, setSortedInfo] = useState<SorterResult<DataType>>({});
 
@@ -56,6 +55,12 @@ const MyApplications = ({ getStaffSkills, staffSkills: { staffSkills, loading } 
         setFilteredInfo(filters);
         setSortedInfo(sorter as SorterResult<DataType>);
     };
+    useEffect(() => {
+        if (user) {
+            getStaffSkillsByStaffId(user);
+        }
+    }, [getStaffSkillsByStaffId, user]);
+
 
     // const clearFilters = () => {
     //     setFilteredInfo({});
@@ -142,6 +147,7 @@ const MyApplications = ({ getStaffSkills, staffSkills: { staffSkills, loading } 
     //     </Container>
     // )
     return (
+
         <Container>
             {loading ? (
                 <div>Loading skills...</div>
@@ -160,12 +166,14 @@ const MyApplications = ({ getStaffSkills, staffSkills: { staffSkills, loading } 
     );
 }
 MyApplications.propTypes = {
-    getStaffSkills: PropTypes.func.isRequired,
-    staffSkills: PropTypes.object.isRequired
+    getStaffSkillsByStaffId: PropTypes.func.isRequired,
+    staffSkills: PropTypes.object.isRequired,
+    auth: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state: any) => ({
-    staffSkills: state.staffSkills
+    staffSkills: state.staffSkills,
+    auth: state.auth
 });
 
-export default connect(mapStateToProps, { getStaffSkills })(MyApplications);
+export default connect(mapStateToProps, { getStaffSkillsByStaffId })(MyApplications);

@@ -1,13 +1,13 @@
 import axios from 'axios';
 import {
-    GET_STAFF_SKILLS,
+    GET_STAFF_SKILLS_BY_STAFF_ID,
     STAFF_SKILLS_ERROR
 } from './types';
 
 // Get all skills
-export const getStaffSkills = () => async (dispatch: any) => {
+export const getStaffSkillsByStaffId = (payload: any) => async (dispatch: any) => {
     try {
-        const res = await axios.get('/api/staff/skills/1')
+        const res = await axios.get('/api/staff/skills/' + payload)
         const res2 = await axios.get('/api/skill/details');
         for (let i = 0; i < res.data.length; i++) {
             for (let j = 0; j < res2.data.length; j++) {
@@ -17,9 +17,8 @@ export const getStaffSkills = () => async (dispatch: any) => {
                 }
             }
         }
-
         dispatch({
-            type: GET_STAFF_SKILLS,
+            type: GET_STAFF_SKILLS_BY_STAFF_ID,
             payload: res.data
         });
     } catch (err: any) {

@@ -1,5 +1,5 @@
 import {
-    GET_STAFF_SKILLS,
+    GET_STAFF_SKILLS_BY_STAFF_ID,
     STAFF_SKILLS_ERROR
 } from '../actions/types';
 
@@ -14,7 +14,7 @@ export default function(state = initialState, action: any) {
     const { type, payload } = action;
 
     switch(type) {
-        case GET_STAFF_SKILLS:
+        case GET_STAFF_SKILLS_BY_STAFF_ID:
             return {
                 ...state,
                 staffSkills: payload,
