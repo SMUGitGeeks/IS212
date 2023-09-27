@@ -1,11 +1,12 @@
 import axios from 'axios';
 import {
+    FILTER_ROLE_LISTINGS_BY_ROLE_ID,
     GET_ROLE_LISTINGS,
     ROLE_LISTINGS_ERROR,
     SORT_ROLE_LISTINGS_BY_NAME
 } from './types';
 
-// Get all roles
+// Get all roles listings
 export const getRoleListings = () => async (dispatch: any) => {
     try {
         const res = await axios.get('/api/role_listing/details')
@@ -40,6 +41,12 @@ export const sortRoleListingsByName = (payload: any) => async (dispatch: any) =>
     });
 }
 
+export const filterRoleListingsByRoleId = (payload: any) => async (dispatch: any) => {
+    dispatch({
+        type: FILTER_ROLE_LISTINGS_BY_ROLE_ID,
+        payload
+    });
+}
 
 
 
