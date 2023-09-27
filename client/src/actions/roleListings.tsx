@@ -3,8 +3,8 @@ import {
     FILTER_ROLE_LISTINGS_BY_ROLE_ID,
     GET_ROLE_LISTINGS,
     ROLE_LISTINGS_ERROR,
-    SORT_ROLE_LISTINGS_BY_NAME,
-    SORT_ROLE_LISTINGS_BY_DATE
+    SORT_ROLE_LISTINGS_BY_DATE,
+    SORT_ROLE_LISTINGS_BY_NAME
 } from './types';
 import {ActionType, FilterRoleListingsByRoleIdPayloadType, SortPayloadType} from "../types";
 
@@ -31,7 +31,7 @@ export const getRoleListings = () => async (dispatch: (action: ActionType) => vo
     } catch (err: any) {
         dispatch({
             type: ROLE_LISTINGS_ERROR,
-            payload: { msg: err.response.statusText, status: err.response.status }
+            payload: {msg: err.response.statusText, status: err.response.status}
         });
     }
 }

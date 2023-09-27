@@ -1,8 +1,5 @@
 import axios from 'axios';
-import {
-    GET_STAFF_SKILLS_BY_STAFF_ID,
-    STAFF_SKILLS_ERROR
-} from './types';
+import {GET_STAFF_SKILLS_BY_STAFF_ID, STAFF_SKILLS_ERROR} from './types';
 import {ActionType, GetStaffSkillsByStaffIdPayloadType} from "../types";
 
 // Get all skills
@@ -25,7 +22,7 @@ export const getStaffSkillsByStaffId = (payload: GetStaffSkillsByStaffIdPayloadT
     } catch (err: any) {
         dispatch({
             type: STAFF_SKILLS_ERROR,
-            payload: { msg: err.response.statusText, status: err.response.status }
+            payload: {msg: err.response.statusText, status: err.response.status}
         });
     }
 }

@@ -1,14 +1,8 @@
-import axios from 'axios';
-import {
-    LOGIN_STAFF,
-    LOGIN_HR,
-    LOGIN_ERROR,
-    LOGOUT
-} from './types';
+import {LOGIN_ERROR, LOGIN_HR, LOGIN_STAFF, LOGOUT} from './types';
 import {ActionType} from "../types";
 
 // Get all roles
-export const loginStaff = () => async (dispatch: (action: ActionType) => void)  => {
+export const loginStaff = () => async (dispatch: (action: ActionType) => void) => {
     try {
         dispatch({
             type: LOGIN_STAFF,
@@ -17,12 +11,12 @@ export const loginStaff = () => async (dispatch: (action: ActionType) => void)  
     } catch (err: any) {
         dispatch({
             type: LOGIN_ERROR,
-            payload: { msg: err.response.statusText, status: err.response.status }
+            payload: {msg: err.response.statusText, status: err.response.status}
         });
     }
 }
 
-export const loginHR = () => async (dispatch: (action: ActionType) => void)  => {
+export const loginHR = () => async (dispatch: (action: ActionType) => void) => {
     try {
         dispatch({
             type: LOGIN_HR,
@@ -31,12 +25,12 @@ export const loginHR = () => async (dispatch: (action: ActionType) => void)  => 
     } catch (err: any) {
         dispatch({
             type: LOGIN_ERROR,
-            payload: { msg: err.response.statusText, status: err.response.status }
+            payload: {msg: err.response.statusText, status: err.response.status}
         });
     }
 }
 
-export const logout = () => async (dispatch: (action: ActionType) => void)  => {
+export const logout = () => async (dispatch: (action: ActionType) => void) => {
     try {
         dispatch({
             type: LOGOUT,
@@ -45,7 +39,7 @@ export const logout = () => async (dispatch: (action: ActionType) => void)  => {
     } catch (err: any) {
         dispatch({
             type: LOGIN_ERROR,
-            payload: { msg: err.response.statusText, status: err.response.status }
+            payload: {msg: err.response.statusText, status: err.response.status}
         });
     }
 }
