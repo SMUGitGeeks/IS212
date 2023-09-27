@@ -24,7 +24,7 @@ router.route("/").post(controllers.createRoleListing);
 // @desc    Test route
 // @access  Public
 
-router.route("/update/:id").put(controllers.updateRoleListing);
+router.route("/:id").put(controllers.updateRoleListing);
 
 
 
