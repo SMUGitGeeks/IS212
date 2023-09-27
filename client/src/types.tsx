@@ -1,5 +1,3 @@
-import {sortRoleListingsByName} from "./actions/roleListings";
-
 export interface RoleListingsType {
     rl_close: string;
     rl_creator: number;
