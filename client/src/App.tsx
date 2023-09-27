@@ -81,3 +81,5 @@ const mapStateToProps = (state: any) => ({
     auth: state.auth
 });
 export default connect(mapStateToProps, { loginStaff, loginHR })(App);
+
+export {rowGutterStyle};
