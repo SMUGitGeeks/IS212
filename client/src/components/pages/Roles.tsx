@@ -33,7 +33,6 @@ const Roles = () => {
         console.log(value)
         let direction = value;
         dispatch(sortRoleListingsByName({direction}) as any);
-        dispatch(sortRoleListingsByName({direction}) as any);
     }
 
     return (
