@@ -9,3 +9,5 @@ export const LOGIN_STAFF = 'LOGIN_STAFF';
 export const LOGIN_HR = 'LOGIN_HR';
 export const LOGIN_ERROR = 'LOGIN_ERROR';
 export const LOGOUT = 'LOGOUT';
+export const GET_STAFF_SKILLS_BY_STAFF_ID = 'GET_STAFF_SKILLS_BY_STAFF_ID';
+export const STAFF_SKILLS_ERROR = 'STAFF_SKILLS_ERROR';

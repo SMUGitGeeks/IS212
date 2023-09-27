@@ -41,7 +41,6 @@ const Roles = () => {
         }
         else {
             dispatch(sortRoleListingsByName({direction}) as any);
-            dispatch(sortRoleListingsByName({direction}) as any);
         }
     }
 
