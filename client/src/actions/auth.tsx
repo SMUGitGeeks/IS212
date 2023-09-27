@@ -5,9 +5,10 @@ import {
     LOGIN_ERROR,
     LOGOUT
 } from './types';
+import {ActionType} from "../types";
 
 // Get all roles
-export const loginStaff = () => async (dispatch: any)  => {
+export const loginStaff = () => async (dispatch: (action: ActionType) => void)  => {
     try {
         dispatch({
             type: LOGIN_STAFF,
@@ -21,7 +22,7 @@ export const loginStaff = () => async (dispatch: any)  => {
     }
 }
 
-export const loginHR = () => async (dispatch: any)  => {
+export const loginHR = () => async (dispatch: (action: ActionType) => void)  => {
     try {
         dispatch({
             type: LOGIN_HR,
@@ -35,7 +36,7 @@ export const loginHR = () => async (dispatch: any)  => {
     }
 }
 
-export const logout = () => async (dispatch: any)  => {
+export const logout = () => async (dispatch: (action: ActionType) => void)  => {
     try {
         dispatch({
             type: LOGOUT,
