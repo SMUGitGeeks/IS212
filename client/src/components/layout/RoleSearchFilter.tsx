@@ -1,6 +1,9 @@
 import { Space, Typography, Button, Select, Cascader, SelectProps } from "antd";
-import {sortRoleListingsByName} from "../../actions/roleListings";
-import {useDispatch} from "react-redux";
+import { getRoles } from '../../actions/roles';
+import { sortRoleListingsByName, filterRoleListingsByRoleId } from "../../actions/roleListings";
+import {connect, useDispatch} from "react-redux";
+import PropTypes from "prop-types";
+import {useEffect} from "react";
 
 const {Title} = Typography;
 
@@ -9,13 +12,7 @@ const handleChange = (value: string[]) => {
 };
 
 // Role Type Format:
-const roleTypes: SelectProps['options'] = [
-    {
-        label: "hi",        // text that is shown to user
-        value: "test",      // value of the thing selected
-        disabled: false,    // can have a bool line to determine t/f also
-    }
-];
+
 
 interface locationOption {
     value: string;
@@ -65,8 +62,11 @@ const locations: locationOption[] = [
     },
 ];
 
-const RoleSearchFilter = () =>  {
+const RoleSearchFilter = ({ getRoles, role: {roles, loading}} : any) =>  {
 
+    useEffect(() => {
+        getRoles();
+    }, [getRoles]);
     const dispatch = useDispatch();
 
     const filter = () => {
@@ -81,6 +81,29 @@ const RoleSearchFilter = () =>  {
     const onChange = (value: any) => {
         console.log(value)
     }
+    let roleTypes : SelectProps['options'] = [
+        {
+            label: "Loading...",        // text that is shown to user
+            value: "",      // value of the thing selected
+            disabled: true,    // can have a bool line to determine t/f also
+        }
+    ];
+    if (!loading) {
+        // update roleTypes to be the list of roles
+        roleTypes = roles.map((role: any) => {
+            return {
+                label: role.role_name,
+                value: role.role_id,
+            }
+        });
+    }
+
+    // roleTypes is of type array of integer
+    const handleChange = (roleIds: number[]) => {
+        console.log(roleIds);
+        dispatch(filterRoleListingsByRoleId({roleIds}) as any);
+    }
+
 
     return (
         <Space direction='vertical' size="small">
@@ -94,6 +117,7 @@ const RoleSearchFilter = () =>  {
                 defaultValue={[]}
                 onChange={handleChange}
                 options={roleTypes}
+                optionFilterProp={"label"}
             />
             
             <Title level={5}>Location</Title>
@@ -110,4 +134,13 @@ const RoleSearchFilter = () =>  {
     );
 }
 
-export default RoleSearchFilter
+RoleSearchFilter.propTypes = {
+    getRoles: PropTypes.func.isRequired,
+    role: PropTypes.object.isRequired
+}
+
+const mapStateToProps = (state: any) => ({
+    role: state.role,
+});
+
+export default connect(mapStateToProps, { getRoles })(RoleSearchFilter);
