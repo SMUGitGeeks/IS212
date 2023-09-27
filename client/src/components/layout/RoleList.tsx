@@ -94,7 +94,7 @@ const sortOptions: filterOption[] = [
           renderItem={(item: any) => (
             <Link to={`/roles/${item.rl_id}`}>
               <List.Item
-              key={item.rl_desc}
+              key={item.role_name}
               // actions={[
               //   <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
               //   <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
@@ -114,7 +114,7 @@ const sortOptions: filterOption[] = [
               }
             >
               <List.Item.Meta
-                title={item.rl_desc}
+                title={item.role_name}
                 // description={item.description}
                 description={date.getDate() - new Date(item.rl_open).getDate() + " days ago"}
               />
