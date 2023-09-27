@@ -52,15 +52,13 @@ export default function(state = initialState, action: any) {
                 ...state,
                 roleListings: filteredRoleListings,
             }}
-            case SORT_ROLE_LISTINGS_BY_DATE:
-                let sortedRoleListings = action.payload.direction === "asc" ?
-                    state.roleListings.sort((a: any, b: any) => (a.role_name > b.role_name) ? 1 : -1) :
-                    state.roleListings.sort((a: any, b: any) => (a.role_name < b.role_name) ? 1 : -1);
-                return {
-                    ...state,
-                    roleListings: sortedRoleListings,
-                    rawRoleListings: sortedRoleListings,
-                }
+        case SORT_ROLE_LISTINGS_BY_DATE:
+            let sortedRoleListingsByDate = state.roleListings.sort((a: any, b: any) => (a.rl_open < b.rl_open) ? 1 : -1);
+            return {
+                ...state,
+                roleListings: sortedRoleListingsByDate,
+                rawRoleListings: sortedRoleListingsByDate,
+            }
         default:
             return state;
     }
