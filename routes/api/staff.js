@@ -17,7 +17,7 @@ router.route("/application/:id").get(controllers.getStaffApplications);
 // @desc    Test route
 // @access  Public
 
-router.route("/application/create").post(controllers.createApplication);
+router.route("/application/").post(controllers.createApplication);
 
 
 
