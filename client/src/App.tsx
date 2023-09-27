@@ -13,7 +13,7 @@ import Login from "./components/pages/Login";
 
 const App = ({auth: {user, loading}}:any ) => {
   return (
-      user=="" ?
+      user==null ?
           <Fragment>
             <Login />
           </Fragment> :
@@ -21,7 +21,7 @@ const App = ({auth: {user, loading}}:any ) => {
         <Router>
             <Fragment>
                 <Navbar />
-                <div>Currently logged in as {user}</div>
+                <div>Currently logged in as staff id = {user}</div>
                 {/*Create route for Home*/}
                 <Routes>
                     <Route path="/" element={<Home />} />

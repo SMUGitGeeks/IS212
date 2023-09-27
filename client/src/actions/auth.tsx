@@ -11,7 +11,7 @@ export const loginStaff = () => async (dispatch: any)  => {
     try {
         dispatch({
             type: LOGIN_STAFF,
-            payload: "staff"
+            payload: 3
         });
     } catch (err: any) {
         dispatch({
@@ -25,7 +25,7 @@ export const loginHR = () => async (dispatch: any)  => {
     try {
         dispatch({
             type: LOGIN_HR,
-            payload: "hr"
+            payload: 1
         });
     } catch (err: any) {
         dispatch({

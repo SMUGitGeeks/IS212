@@ -6,7 +6,7 @@ import {
 } from '../actions/types';
 
 const initialState = {
-    user: "",
+    user: null,
     loading: true,
     error: {}
 }
@@ -30,7 +30,7 @@ export default function(state = initialState, action: any) {
         case LOGOUT:
             return {
                 ...state,
-                user: "",
+                user: null,
                 loading: false
             };
         case LOGIN_ERROR:
