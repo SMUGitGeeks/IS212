@@ -4,13 +4,32 @@ import './App.css';
 import Navbar from './components/layout/Navbar';
 import Home from './components/pages/Home';
 import Roles from './components/pages/Roles';
+import RolePage from "./components/pages/RolePage";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {loginHR, loginStaff} from "./actions/auth";
 import Login from "./components/pages/Login";
 
+import { Layout} from 'antd';
+
 const { Header, Footer, Sider, Content } = Layout;
 
+const headerStyle: React.CSSProperties = {
+    padding: '0px 0px',
+};
+
+const siderStyle: React.CSSProperties = {
+    textAlign: 'center',
+    lineHeight: '120px',
+    color: '#fff',
+    backgroundColor: '#3ba0e9',
+};
+
+const footerStyle: React.CSSProperties = {
+    textAlign: 'center',
+    color: '#fff',
+    backgroundColor: '#7dbcea',
+};
 
 const App = ({auth: {user, loading}}:any ) => {
   return (
@@ -21,7 +40,6 @@ const App = ({auth: {user, loading}}:any ) => {
 
         <Router>
             <Fragment>
-                <Navbar />
                 <div>Currently logged in as staff id = {user}</div>
                 {/*Create route for Home*/}
                 {/* <Routes>
