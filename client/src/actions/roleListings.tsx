@@ -3,7 +3,8 @@ import {
     FILTER_ROLE_LISTINGS_BY_ROLE_ID,
     GET_ROLE_LISTINGS,
     ROLE_LISTINGS_ERROR,
-    SORT_ROLE_LISTINGS_BY_NAME
+    SORT_ROLE_LISTINGS_BY_NAME,
+    SORT_ROLE_LISTINGS_BY_DATE
 } from './types';
 
 // Get all roles listings
@@ -44,6 +45,13 @@ export const sortRoleListingsByName = (payload: any) => async (dispatch: any) =>
 export const filterRoleListingsByRoleId = (payload: any) => async (dispatch: any) => {
     dispatch({
         type: FILTER_ROLE_LISTINGS_BY_ROLE_ID,
+        payload
+    });
+}
+
+export const sortRoleListingsByDate = (payload: any) => async (dispatch: any) => {
+    dispatch({
+        type: SORT_ROLE_LISTINGS_BY_DATE,
         payload
     });
 }

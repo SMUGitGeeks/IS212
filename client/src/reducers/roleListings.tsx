@@ -1,6 +1,7 @@
 import {
     GET_ROLE_LISTINGS,
-    ROLE_LISTINGS_ERROR, SORT_ROLE_LISTINGS_BY_NAME, FILTER_ROLE_LISTINGS_BY_ROLE_ID
+    ROLE_LISTINGS_ERROR, SORT_ROLE_LISTINGS_BY_NAME, FILTER_ROLE_LISTINGS_BY_ROLE_ID,
+    SORT_ROLE_LISTINGS_BY_DATE
 } from '../actions/types';
 
 const initialState = {
@@ -51,6 +52,13 @@ export default function(state = initialState, action: any) {
                 ...state,
                 roleListings: filteredRoleListings,
             }}
+        case SORT_ROLE_LISTINGS_BY_DATE:
+            let sortedRoleListingsByDate = state.roleListings.sort((a: any, b: any) => (a.rl_open < b.rl_open) ? 1 : -1);
+            return {
+                ...state,
+                roleListings: sortedRoleListingsByDate,
+                rawRoleListings: sortedRoleListingsByDate,
+            }
         default:
             return state;
     }
