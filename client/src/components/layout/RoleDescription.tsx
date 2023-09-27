@@ -3,14 +3,24 @@ import { Container } from "react-bootstrap";
 import {StarOutlined } from '@ant-design/icons';
 import type { CollapseProps, DescriptionsProps } from 'antd';
 import { rowGutterStyle } from '../../App';
+import { useEffect } from "react";
+import { getRoleSkillsByRoleId } from "../../actions/roleSkills";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { get } from "http";
+import roleListings from "../../reducers/roleListings";
+import { useParams } from 'react-router-dom';
+
 
 const { Title } = Typography;
 
-function RoleDescription(props: any) {
-    const { roleListingId } = props;
-    // Code to fetch info based on role id
-
+export const RoleDescription = ({getRoleSkillsByRoleId}: any) => {
+    
+    const { roleListingId } = useParams();
     // Role Skills =======================
+    console.log(roleListingId);
+    getRoleSkillsByRoleId(roleListingId);
+
     // Sample data:
     const roleSkills: String[] = [
         "Fishing",
@@ -112,5 +122,14 @@ function RoleDescription(props: any) {
         </Container>
     )
 }
+RoleDescription.propTypes = {
+    getRoleSkillsByRoleId: PropTypes.func.isRequired,
+    roleSkills: PropTypes.object.isRequired,
+    // roleListingId: PropTypes.number.isRequired
+}
 
-export default RoleDescription;
+const mapStateToProps = (state: any) => ({
+    roleSkills: state.roleSkills
+})
+
+export default connect(mapStateToProps, { getRoleSkillsByRoleId })(RoleDescription);
