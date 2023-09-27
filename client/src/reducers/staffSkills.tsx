@@ -3,6 +3,8 @@ import {
     STAFF_SKILLS_ERROR
 } from '../actions/types';
 
+import { ActionType } from "../types";
+
 const initialState = {
     staffSkills: [],
     staffSkill: null,
@@ -10,7 +12,7 @@ const initialState = {
     error: {}
 }
 
-export default function(state = initialState, action: any) {
+export default function(state = initialState, action: ActionType) {
     const { type, payload } = action;
 
     switch(type) {
