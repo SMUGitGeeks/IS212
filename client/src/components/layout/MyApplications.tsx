@@ -5,6 +5,10 @@ import type { ColumnsType, FilterValue, SorterResult } from 'antd/es/table/inter
 import { useState } from "react";
 import SkillsCollapsable from "./SkillsCollapsable";
 import { getStaffSkills } from "../../actions/staffSkills";
+import { connect } from 'react-redux';
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
+// import { useDispatch, useSelector } from 'react-redux';
 
 interface DataType {
     key: string;
@@ -40,10 +44,9 @@ const data: DataType[] = [
     },
 ];
 
-const MyApplications = ({ getStaffSkills, skills: { skills, loading } }: any) => {
+const MyApplications = ({ getStaffSkills, staffSkills: { staffSkills, loading } }: any) => {
     useEffect(() => {
         getStaffSkills();
-
     }, [getStaffSkills]);
     const [filteredInfo, setFilteredInfo] = useState<Record<string, FilterValue | null>>({});
     const [sortedInfo, setSortedInfo] = useState<SorterResult<DataType>>({});
@@ -122,26 +125,47 @@ const MyApplications = ({ getStaffSkills, skills: { skills, loading } }: any) =>
     //         ss_status: "Approved",
     //     }
     // ]
+    // return (
+    //     <Container>
+    //         {/* <Space style={{ marginBottom: 16 }}>
+    //             <Button onClick={setAgeSort}>Sort age</Button>
+    //             <Button onClick={clearFilters}>Clear filters</Button>
+    //             <Button onClick={clearAll}>Clear filters and sorters</Button>
+    //         </Space> */}
+    //         {
+    //             staffSkills.map((skill: any) => (
+    //             <div>
+    //                 {skill.skill_name}
+    //             </div> ))
+    //         }
+    //         <Table columns={columns} dataSource={data} onChange={handleChange} />
+    //     </Container>
+    // )
     return (
         <Container>
-            {/* <Space style={{ marginBottom: 16 }}>
-                <Button onClick={setAgeSort}>Sort age</Button>
-                <Button onClick={clearFilters}>Clear filters</Button>
-                <Button onClick={clearAll}>Clear filters and sorters</Button>
-            </Space> */}
-            {
-                skills.map((skill: any) => (
+            {loading ? (
+                <div>Loading skills...</div>
+            ) : (
                 <div>
-                    {skill.skill_name}
-                </div> ))
-            }
+                    {staffSkills.map((skill: any) => (
+                        <div key={skill.skill_id}>
+                            {skill.skill_name}
+                        </div>
+                    ))}
+                </div>
+            )}
+    
             <Table columns={columns} dataSource={data} onChange={handleChange} />
         </Container>
-    )
+    );
+}
+MyApplications.propTypes = {
+    getStaffSkills: PropTypes.func.isRequired,
+    staffSkills: PropTypes.object.isRequired
 }
 
-export default MyApplications;
+const mapStateToProps = (state: any) => ({
+    staffSkills: state.staffSkills
+});
 
-function useEffect(arg0: () => void, arg1: (() => (dispatch: any) => Promise<void>)[]) {
-    throw new Error("Function not implemented.");
-}
+export default connect(mapStateToProps, { getStaffSkills })(MyApplications);

@@ -7,7 +7,7 @@ import {
 // Get all skills
 export const getStaffSkills = () => async (dispatch: any) => {
     try {
-        const res = await axios.get('/api/staff_skill/details')
+        const res = await axios.get('/api/staff/skills/1')
         const res2 = await axios.get('/api/skill/details');
         for (let i = 0; i < res.data.length; i++) {
             for (let j = 0; j < res2.data.length; j++) {
@@ -17,7 +17,6 @@ export const getStaffSkills = () => async (dispatch: any) => {
                 }
             }
         }
-
 
         dispatch({
             type: GET_STAFF_SKILLS,
