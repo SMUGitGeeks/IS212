@@ -1,13 +1,31 @@
-import React from 'react';
-import type { MenuProps } from 'antd';
+import React, { Fragment, useEffect } from 'react';
 import {Container} from "react-bootstrap";
+import { connect } from 'react-redux';
+import { getRoles } from '../../actions/role';
+import PropTypes from 'prop-types';
 
-function Roles() {
-    return (
+
+const Roles = ({ getRoles, role: { roles, loading } }: any) => {
+    useEffect(() => {
+        getRoles();
+    }, [getRoles]);
+
+    return loading ?
+        <Container> Loading </Container> :
         <Container>
-            Skill Based Role Portal - Roles
+            {roles.map((role: any)=> (
+                <div> {role.rl_desc} </div>
+                ))}
         </Container>
-    )
+
 }
 
-export default Roles;
+Roles.propTypes = {
+    getRoles: PropTypes.func.isRequired,
+    role: PropTypes.object.isRequired
+}
+
+const mapStateToProps = (state: any) => ({
+    role: state.role
+});
+export default connect(mapStateToProps, { getRoles })(Roles);
