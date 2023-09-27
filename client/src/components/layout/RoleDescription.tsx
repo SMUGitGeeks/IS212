@@ -1,8 +1,8 @@
-import { Col, Space, Row, Button, Tooltip, Divider, Descriptions } from "antd";
+import { Col, Space, Row, Button, Tooltip, Divider, Descriptions, DescriptionsProps } from "antd";
 import { Container } from "react-bootstrap";
 import {StarOutlined } from '@ant-design/icons';
 import SkillsCollapsable from "./SkillsCollapsable";
-import type { DescriptionsProps } from 'antd';
+import { rowGutterStyle } from '../../App';
 
 function RoleDescription(props: any) {
     const { roleListingId } = props;
@@ -30,7 +30,7 @@ function RoleDescription(props: any) {
     return (
         <Container>
             <Space direction="vertical" style={{ display: 'flex' }} size='large'>
-                <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} align="middle">
+                <Row gutter={rowGutterStyle} align="middle">
                     <Col span={20}>
                         <div className="">
                             <h1>Role Title</h1>
@@ -48,7 +48,7 @@ function RoleDescription(props: any) {
                     </Col>
                 </Row>
 
-                <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify='center'>
+                <Row gutter={rowGutterStyle} justify='center'>
                     <Col span={18}>
                         Role description
                     </Col>
@@ -59,6 +59,9 @@ function RoleDescription(props: any) {
                             <SkillsCollapsable missingSkills={missingSkills} matchedSkills={matchedSkills} />
                         </Space>
                     </Col>
+                </Row>
+                <Row gutter={rowGutterStyle} justify='center'>
+                    hi
                 </Row>
             </Space>
         </Container>

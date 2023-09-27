@@ -128,8 +128,6 @@ const RoleSearchFilter = ({ getRoles, role: {roles, loading}} : any) =>  {
                 onChange={onChange}
             />
             <Button onClick={filter}>Filter Results</Button>
-            <Button onClick={() => sort("asc")}>Sort Ascending</Button>
-            <Button onClick={() => sort("desc")}>Sort Descending</Button>
         </Space>
     );
 }

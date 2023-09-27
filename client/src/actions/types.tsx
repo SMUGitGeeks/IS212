@@ -5,3 +5,7 @@ export const GET_ROLES = 'GET_ROLES';
 export const ROLES_ERROR = 'ROLES_ERROR';
 export const FILTER_ROLE_LISTINGS_BY_ROLE_ID = 'FILTER_ROLE_LISTINGS_BY_ROLE_ID';
 export const SORT_ROLE_LISTINGS_BY_DATE = 'SORT_ROLE_LISTINGS_BY_DATE';
+export const LOGIN_STAFF = 'LOGIN_STAFF';
+export const LOGIN_HR = 'LOGIN_HR';
+export const LOGIN_ERROR = 'LOGIN_ERROR';
+export const LOGOUT = 'LOGOUT';
