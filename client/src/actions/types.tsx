@@ -1,5 +1,6 @@
-export const GET_ROLES = 'GET_ROLES';
-export const ROLE_ERROR = 'ROLE_ERROR';
+export const GET_ROLE_LISTINGS = 'GET_ROLE_LISTINGS';
+export const ROLE_LISTINGS_ERROR = 'ROLE_LISTINGS_ERROR';
+export const SORT_ROLE_LISTINGS_BY_NAME = 'SORT_ROLE_LISTINGS_BY_NAME';
 export const LOGIN_STAFF = 'LOGIN_STAFF';
 export const LOGIN_HR = 'LOGIN_HR';
 export const LOGIN_ERROR = 'LOGIN_ERROR';

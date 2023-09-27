@@ -9,6 +9,7 @@ import {connect} from "react-redux";
 import {loginHR, loginStaff} from "./actions/auth";
 import Login from "./components/pages/Login";
 
+const { Header, Footer, Sider, Content } = Layout;
 
 
 const App = ({auth: {user, loading}}:any ) => {
@@ -23,10 +24,27 @@ const App = ({auth: {user, loading}}:any ) => {
                 <Navbar />
                 <div>Currently logged in as staff id = {user}</div>
                 {/*Create route for Home*/}
-                <Routes>
+                {/* <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/roles" element={<Roles />} />
-                </Routes>
+                    <Route path="/roles/:roleListingId" element={<RolePage />} />
+                </Routes> */}
+                <Layout>
+                  <Sider style={siderStyle}>Sider</Sider>
+                  <Layout>
+                    <Header style={{padding: '0px 0px'}}>
+                      <Navbar />
+                    </Header>
+                    <Content >
+                      <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/roles" element={<Roles />} />
+                        <Route path="/roles/:roleListingId" element={<RolePage />} />
+                      </Routes>
+                    </Content>
+                    <Footer style={footerStyle}>Footer</Footer>
+                  </Layout>
+                </Layout>
             </Fragment>
           </Router>
   );
