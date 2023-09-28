@@ -2,7 +2,6 @@ import React from 'react';
 import {Container} from "react-bootstrap";
 import RoleList from '../layout/RoleList';
 import {Row, Col, Space, Select} from 'antd';
-import SearchBar from '../layout/SearchBar';
 import RoleSearchFilter from '../layout/RoleSearchFilter';
 import { useDispatch } from 'react-redux';
 import { sortRoleListingsByName, sortRoleListingsByDate } from '../../actions/roleListings';
@@ -48,11 +47,6 @@ const Roles = () => {
         <Container>
             <Space direction="vertical" size={48} style={{ display: 'flex' }}>
                 <div></div>
-                <Row gutter={rowGutterStyle} justify={'center'}>
-                    <Col span={22}>
-                        <SearchBar />
-                    </Col>
-                </Row>
                 
                 <Row gutter={rowGutterStyle} justify={'center'}>
                     <Col xs={22} sm={22} md={22} lg={6} xl={5}>

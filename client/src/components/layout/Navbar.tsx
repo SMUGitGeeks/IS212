@@ -1,48 +1,33 @@
 import React from 'react';
-import type { MenuProps } from 'antd';
-import {Button, Menu} from 'antd';
-import { Link } from 'react-router-dom';
+import {Row, Col, Avatar, Tooltip} from 'antd';
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import { logout } from '../../actions/auth';
+import { UserOutlined } from '@ant-design/icons';
+import { rowGutterStyle } from '../../App';
 
 
 
 
-const Navbar = ({ logout }: any) => {
-    const items: MenuProps['items'] = [
-        {
-            label: (<Link to={"/"}>{"Home"}</Link>),
-            key: '/',
-            icon: '',
-        },
-        {
-            label: (<Link to={"/roles"}>{"Roles"}</Link>),
-            key: '/roles',
-            icon: '',
-        },
-        // run logout action
-        {
-            label: (<Button onClick={logout}>Logout</Button>),
-            key: 'logout',
-            icon: '',
-        }
-    ];
-    const onClick: MenuProps['onClick'] = ({ key }) => {
-        // go to the react route
-        // code here
-    }
+const Navbar = ({auth: {user, loading}}: any) => {
     return (
-        <Menu items={items} mode="horizontal" />
+        <Row gutter={rowGutterStyle} align='middle' justify={'end'} style={{width: "100%"}}>
+            <Col>
+                <Tooltip title={"User id: " + user}>
+                    <Avatar size="large" icon={<UserOutlined />} />
+                </Tooltip>
+            </Col>
+            <Col>
+            </Col>
+        </Row>
     )
 }
 
 
 Navbar.propTypes = {
-    logout: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired
 }
 const mapStateToProps = (state: any) => ({
     auth: state.auth
 });
 
-export default connect(mapStateToProps, { logout })(Navbar);
+export default connect(mapStateToProps)(Navbar);

@@ -1,8 +1,14 @@
-import { Col, Space, Row, Button, Tooltip, Divider, Descriptions, DescriptionsProps } from "antd";
+import { Col, Space, Row, Button, Tooltip, Divider, Descriptions } from "antd";
 import { Container } from "react-bootstrap";
-import {StarOutlined } from '@ant-design/icons';
+import {StarOutlined, AuditOutlined } from '@ant-design/icons';
+import type { CollapseProps, DescriptionsProps } from 'antd';
 import SkillsCollapsable from "./SkillsCollapsable";
 import { rowGutterStyle } from '../../App';
+import { useEffect } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import roleListings from "../../reducers/roleListings";
+import { useParams } from 'react-router-dom';
 
 function RoleDescription(props: any) {
     const { roleListingId } = props;
@@ -39,11 +45,11 @@ function RoleDescription(props: any) {
                     </Col>
                     <Col span={4}>
                         <Space direction="vertical" align="center" size='large'>
-                            <Tooltip title="Add to Favourites">
+                            {/* <Tooltip title="Add to Favourites">
                                 <StarOutlined style={{fontSize: 24}}/>
-                            </Tooltip>
+                            </Tooltip> */}
                             
-                            <Button type="primary">Apply Now</Button>
+                            <Button type="primary" size="large" icon={<AuditOutlined />}>Apply Now</Button>
                         </Space>
                     </Col>
                 </Row>
