@@ -5,7 +5,7 @@ import {Row, Col, Space, Select} from 'antd';
 import SearchBar from '../layout/SearchBar';
 import RoleSearchFilter from '../layout/RoleSearchFilter';
 import { useDispatch } from 'react-redux';
-import { sortRoleListingsByName } from '../../actions/roleListings';
+import { sortRoleListingsByName, sortRoleListingsByDate } from '../../actions/roleListings';
 import { rowGutterStyle } from '../../App';
 
 interface filterOption {
@@ -23,6 +23,10 @@ const sortOptions: filterOption[] = [
         value: 'desc',
         label: 'Z-A'
     },
+    {
+        value: 'recent',
+        label: 'Most Recent'
+    },
 ]
 
 const Roles = () => {
@@ -32,8 +36,12 @@ const Roles = () => {
     const onChange = (value: string) => {
         console.log(value)
         let direction = value;
-        dispatch(sortRoleListingsByName({direction}) as any);
-        dispatch(sortRoleListingsByName({direction}) as any);
+        if (direction === 'recent') {
+            dispatch(sortRoleListingsByDate({direction}) as any);
+        }
+        else {
+            dispatch(sortRoleListingsByName({direction}) as any);
+        }
     }
 
     return (

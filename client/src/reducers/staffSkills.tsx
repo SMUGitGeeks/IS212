@@ -1,10 +1,10 @@
-import {GET_ROLES, ROLES_ERROR} from '../actions/types';
+import {GET_STAFF_SKILLS_BY_STAFF_ID, STAFF_SKILLS_ERROR} from '../actions/types';
 
 import {ActionType} from "../types";
 
 const initialState = {
-    roles: [],
-    role: null,
+    staffSkills: [],
+    staffSkill: null,
     loading: true,
     error: {}
 }
@@ -13,18 +13,18 @@ export default function (state = initialState, action: ActionType) {
     const {type, payload} = action;
 
     switch (type) {
-        case GET_ROLES:
+        case GET_STAFF_SKILLS_BY_STAFF_ID:
             return {
                 ...state,
-                roles: payload,
+                staffSkills: payload,
                 loading: false
             };
-        case ROLES_ERROR:
+        case STAFF_SKILLS_ERROR:
             return {
                 ...state,
                 error: payload,
                 loading: false
-            };
+            }
         default:
             return state;
     }
