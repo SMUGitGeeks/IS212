@@ -1,32 +1,29 @@
-import { Col, Space, Row, Button, Tooltip, Divider, Descriptions, Collapse, Tag, Typography } from "antd";
-import { Container } from "react-bootstrap";
-import {StarOutlined } from '@ant-design/icons';
-import type { CollapseProps, DescriptionsProps } from 'antd';
-import { rowGutterStyle } from '../../App';
-import { useEffect } from "react";
-import { getRoleSkillsByRoleId } from "../../actions/roleSkills";
-import { connect } from "react-redux";
+import type {CollapseProps, DescriptionsProps} from 'antd';
+import {Button, Col, Descriptions, Divider, Row, Space, Tag, Tooltip, Typography} from "antd";
+import {Container} from "react-bootstrap";
+import {StarOutlined} from '@ant-design/icons';
+import {rowGutterStyle} from '../../App';
+import {useEffect} from "react";
+import {getRoleSkillsByRoleId} from "../../actions/roleSkills";
+import {getRoleListing} from "../../actions/roleListings";
+import {connect} from "react-redux";
 import PropTypes from "prop-types";
-import { get } from "http";
-import roleListings from "../../reducers/roleListings";
-import { useParams } from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 
 
-const { Title } = Typography;
+const {Title} = Typography;
 
-export const RoleDescription = ({getRoleSkillsByRoleId}: any) => {
-    
-    const { roleListingId } = useParams();
-    // Role Skills =======================
-    console.log(roleListingId);
-    getRoleSkillsByRoleId(roleListingId);
-
-    // Sample data:
-    const roleSkills: String[] = [
-        "Fishing",
-        "Lorry",
-        "cars"
-    ];
+export const RoleDescription = ({
+                                    getRoleListing,
+                                    roleListing: {roleListing, loading},
+                                    roleSkill: {roleSkills},
+                                    getRoleSkillsByRoleId
+                                }: any) => {
+    const {roleListingId} = useParams()
+    useEffect(() => {
+        getRoleListing(roleListingId)
+        getRoleSkillsByRoleId(roleListingId)
+    }, [getRoleListing]);
 
     // Skills Matching ===================
     const missingSkills: String[] = [
@@ -74,62 +71,68 @@ export const RoleDescription = ({getRoleSkillsByRoleId}: any) => {
     // ===================================
 
     return (
-        <Container>
-            <Space direction="vertical" style={{ display: 'flex' }} size='large'>
-                <Row gutter={rowGutterStyle} align="middle">
-                    <Col span={20}>
-                        <div className="">
-                            <h1>Role Title</h1>
-                            <h3>Department</h3>
-                        </div>
-                    </Col>
-                    <Col span={4}>
-                        <Space direction="vertical" align="center" size='large'>
-                            <Tooltip title="Add to Favourites">
-                                <StarOutlined style={{fontSize: 24}}/>
-                            </Tooltip>
-                            
-                            <Button type="primary">Apply Now</Button>
-                        </Space>
-                    </Col>
-                </Row>
+        loading ? <h1>Loading...</h1> :
+            <Container>
+                <Space direction="vertical" style={{display: 'flex'}} size='large'>
+                    <Row gutter={rowGutterStyle} align="middle">
+                        <Col span={20}>
+                            <div className="">
+                                <h1>{roleListing.role_name}</h1>
+                                <h3>Department</h3>
+                            </div>
+                        </Col>
+                        <Col span={4}>
+                            <Space direction="vertical" align="center" size='large'>
+                                <Tooltip title="Add to Favourites">
+                                    <StarOutlined style={{fontSize: 24}}/>
+                                </Tooltip>
 
-                <Row gutter={rowGutterStyle} justify='center'>
-                    <Col span={18}>
-                        Role description
-                    </Col>
-                    <Col span={6}>
-                        <Space direction="vertical">
-                            <Descriptions title="User Info" layout="vertical" items={importantDetails} />
-                            <Divider />
-                            {/* Display Role's skills */}
-                            <Title level={5}>All Skills</Title>
-                            <Space size={[0, 8]} wrap>
-                                {roleSkills.map((skill: any) => (
-                                    <Tag>{skill}</Tag>
-                                ))}
+                                <Button type="primary">Apply Now</Button>
                             </Space>
-                            
-                            {/* Separated into skills match vs missing */}
-                            {/* <Collapse items={items} defaultActiveKey={['1']} onChange={onChange} /> */}
-                        </Space>
-                    </Col>
-                </Row>
-                <Row gutter={rowGutterStyle} justify='center'>
-                    hi
-                </Row>
-            </Space>
-        </Container>
+                        </Col>
+                    </Row>
+
+                    <Row gutter={rowGutterStyle} justify='center'>
+                        <Col span={18}>
+                            {roleListing.role_description}
+                        </Col>
+                        <Col span={6}>
+                            <Space direction="vertical">
+                                <Descriptions title="User Info" layout="vertical" items={importantDetails}/>
+                                <Divider/>
+                                {/* Display Role's skills */}
+                                <Title level={5}>All Skills</Title>
+                                <Space size={[0, 8]} wrap>
+                                    {roleSkills.map((skill: any) => (
+                                        <Tag>{skill.skill_name}</Tag>
+                                    ))}
+                                </Space>
+
+                                {/* Separated into skills match vs missing */}
+                                {/* <Collapse items={items} defaultActiveKey={['1']} onChange={onChange} /> */}
+                            </Space>
+                        </Col>
+                    </Row>
+                    <Row gutter={rowGutterStyle} justify='center'>
+                        hi
+                    </Row>
+                </Space>
+            </Container>
     )
 }
 RoleDescription.propTypes = {
     getRoleSkillsByRoleId: PropTypes.func.isRequired,
-    roleSkills: PropTypes.object.isRequired,
+    getRoleListing: PropTypes.func.isRequired,
+    roleSkill: PropTypes.object.isRequired,
+    roleListing: PropTypes.object.isRequired,
+
+
     // roleListingId: PropTypes.number.isRequired
 }
 
 const mapStateToProps = (state: any) => ({
-    roleSkills: state.roleSkills
+    roleSkill: state.roleSkill,
+    roleListing: state.roleListing
 })
 
-export default connect(mapStateToProps, { getRoleSkillsByRoleId })(RoleDescription);
+export default connect(mapStateToProps, {getRoleSkillsByRoleId, getRoleListing})(RoleDescription);

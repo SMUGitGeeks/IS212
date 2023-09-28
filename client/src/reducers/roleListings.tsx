@@ -1,5 +1,6 @@
 import {
     FILTER_ROLE_LISTINGS_BY_ROLE_ID,
+    GET_ROLE_LISTING,
     GET_ROLE_LISTINGS,
     ROLE_LISTINGS_ERROR,
     SORT_ROLE_LISTINGS_BY_DATE,
@@ -25,6 +26,12 @@ export default function (state = initialState, action: ActionType) {
                 ...state,
                 roleListings: payload,
                 rawRoleListings: payload,
+                loading: false
+            };
+        case GET_ROLE_LISTING:
+            return {
+                ...state,
+                roleListing: payload,
                 loading: false
             };
         case ROLE_LISTINGS_ERROR:
