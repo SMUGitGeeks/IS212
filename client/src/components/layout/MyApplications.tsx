@@ -1,14 +1,12 @@
-import { Container } from "react-bootstrap";
-import type { TableProps } from 'antd';
-import { Button, Space, Table } from 'antd';
-import type { ColumnsType, FilterValue, SorterResult } from 'antd/es/table/interface';
-import { useState } from "react";
+import {Container} from "react-bootstrap";
+import type {TableProps} from 'antd';
+import {Table} from 'antd';
+import type {ColumnsType, FilterValue, SorterResult} from 'antd/es/table/interface';
 import SkillsCollapsable from "./SkillsCollapsable";
-import { getStaffSkillsByStaffId } from "../../actions/staffSkills";
-import {connect, useDispatch} from 'react-redux';
-import React, { useEffect } from 'react';
+import { getApplicationsByStaffId } from "../../actions/applications";
+import React, {useEffect, useState} from "react";
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {sortRoleListingsByName} from "../../actions/roleListings";
 
 
 interface DataType {
@@ -45,7 +43,7 @@ const data: DataType[] = [
     },
 ];
 
-const MyApplications = ({ getStaffSkillsByStaffId, staffSkills: { staffSkills, loading }, auth: {user} }: any) => {
+const MyApplications = ({ getApplicationsByStaffId, applications: { applications, loading }, auth: {user} }: any) => {
 
     const [filteredInfo, setFilteredInfo] = useState<Record<string, FilterValue | null>>({});
     const [sortedInfo, setSortedInfo] = useState<SorterResult<DataType>>({});
@@ -57,9 +55,9 @@ const MyApplications = ({ getStaffSkillsByStaffId, staffSkills: { staffSkills, l
     };
     useEffect(() => {
         if (user) {
-            getStaffSkillsByStaffId(user);
+            getApplicationsByStaffId(user);
         }
-    }, [getStaffSkillsByStaffId, user]);
+    }, [getApplicationsByStaffId, user]);
 
 
     // const clearFilters = () => {
@@ -80,40 +78,40 @@ const MyApplications = ({ getStaffSkillsByStaffId, staffSkills: { staffSkills, l
 
     const columns: ColumnsType<DataType> = [
         {
-        title: 'Name',
-        dataIndex: 'name',
-        key: 'name',
-        filters: [
-            { text: 'Joe', value: 'Joe' },
-            { text: 'Jim', value: 'Jim' },
-        ],
-        filteredValue: filteredInfo.name || null,
-        onFilter: (value: any, record) => record.name.includes(value),
-        sorter: (a, b) => a.name.length - b.name.length,
-        sortOrder: sortedInfo.columnKey === 'name' ? sortedInfo.order : null,
-        ellipsis: true,
+            title: 'Name',
+            dataIndex: 'name',
+            key: 'name',
+            filters: [
+                {text: 'Joe', value: 'Joe'},
+                {text: 'Jim', value: 'Jim'},
+            ],
+            filteredValue: filteredInfo.name || null,
+            onFilter: (value: any, record) => record.name.includes(value),
+            sorter: (a, b) => a.name.length - b.name.length,
+            sortOrder: sortedInfo.columnKey === 'name' ? sortedInfo.order : null,
+            ellipsis: true,
         },
         {
-        title: 'Age',
-        dataIndex: 'age',
-        key: 'age',
-        sorter: (a, b) => a.age - b.age,
-        sortOrder: sortedInfo.columnKey === 'age' ? sortedInfo.order : null,
-        ellipsis: true,
+            title: 'Age',
+            dataIndex: 'age',
+            key: 'age',
+            sorter: (a, b) => a.age - b.age,
+            sortOrder: sortedInfo.columnKey === 'age' ? sortedInfo.order : null,
+            ellipsis: true,
         },
         {
-        title: 'Address',
-        dataIndex: 'address',
-        key: 'address',
-        filters: [
-            { text: 'London', value: 'London' },
-            { text: 'New York', value: 'New York' },
-        ],
-        filteredValue: filteredInfo.address || null,
-        onFilter: (value: any, record) => record.address.includes(value),
-        sorter: (a, b) => a.address.length - b.address.length,
-        sortOrder: sortedInfo.columnKey === 'address' ? sortedInfo.order : null,
-        ellipsis: true,
+            title: 'Address',
+            dataIndex: 'address',
+            key: 'address',
+            filters: [
+                {text: 'London', value: 'London'},
+                {text: 'New York', value: 'New York'},
+            ],
+            filteredValue: filteredInfo.address || null,
+            onFilter: (value: any, record) => record.address.includes(value),
+            sorter: (a, b) => a.address.length - b.address.length,
+            sortOrder: sortedInfo.columnKey === 'address' ? sortedInfo.order : null,
+            ellipsis: true,
         },
     ];
     // const skills = [
@@ -150,30 +148,30 @@ const MyApplications = ({ getStaffSkillsByStaffId, staffSkills: { staffSkills, l
 
         <Container>
             {loading ? (
-                <div>Loading skills...</div>
+                <div>Loading applications...</div>
             ) : (
                 <div>
-                    {staffSkills.map((skill: any) => (
-                        <div key={skill.skill_id}>
-                            {skill.skill_name}
+                    {applications.map((application: any) => (
+                        <div key={application.staff_id}>
+                            {application.role_name} : {application.role_app_status}
                         </div>
                     ))}
                 </div>
             )}
-    
-            <Table columns={columns} dataSource={data} onChange={handleChange} />
+
+            <Table columns={columns} dataSource={data} onChange={handleChange}/>
         </Container>
     );
 }
 MyApplications.propTypes = {
-    getStaffSkillsByStaffId: PropTypes.func.isRequired,
-    staffSkills: PropTypes.object.isRequired,
+    getApplicationsByStaffId: PropTypes.func.isRequired,
+    applications: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state: any) => ({
-    staffSkills: state.staffSkills,
+    applications: state.applications,
     auth: state.auth
 });
 
-export default connect(mapStateToProps, { getStaffSkillsByStaffId })(MyApplications);
+export default connect(mapStateToProps, { getApplicationsByStaffId })(MyApplications);
