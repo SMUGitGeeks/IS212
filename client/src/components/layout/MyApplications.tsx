@@ -5,7 +5,7 @@ import type {ColumnsType, FilterValue, SorterResult} from 'antd/es/table/interfa
 import SkillsCollapsable from "./SkillsCollapsable";
 import { getApplicationsByStaffId } from "../../actions/applications";
 import React, {useEffect, useState} from "react";
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 
 
