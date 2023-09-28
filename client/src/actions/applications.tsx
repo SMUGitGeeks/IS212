@@ -6,7 +6,10 @@ import {ActionType, GetApplicationsByStaffIdPayloadType} from "../types";
 // Get all skills
 export const getApplicationsByStaffId = (payload: GetApplicationsByStaffIdPayloadType) => async (dispatch: (action: ActionType) => void) => {
     try {
-        const res = await axios.get('/api/staff/application/' + payload) 
+        const res = await axios.get('/api/staff/application/' + payload)
+        // if no application
+        if (res.data.length === 0) {
+        }
         for (let i = 0; i < res.data.length; i++) {
             const res2 = await axios.get('/api/role_listing/details')
             const res3 = await axios.get('/api/role/details');
