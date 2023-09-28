@@ -1,7 +1,6 @@
-import {
-    GET_STAFF_SKILLS_BY_STAFF_ID,
-    STAFF_SKILLS_ERROR
-} from '../actions/types';
+import {GET_STAFF_SKILLS_BY_STAFF_ID, STAFF_SKILLS_ERROR} from '../actions/types';
+
+import {ActionType} from "../types";
 
 const initialState = {
     staffSkills: [],
@@ -10,10 +9,10 @@ const initialState = {
     error: {}
 }
 
-export default function(state = initialState, action: any) {
-    const { type, payload } = action;
+export default function (state = initialState, action: ActionType) {
+    const {type, payload} = action;
 
-    switch(type) {
+    switch (type) {
         case GET_STAFF_SKILLS_BY_STAFF_ID:
             return {
                 ...state,
