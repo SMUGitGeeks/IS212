@@ -39,7 +39,7 @@ export const RoleDescription = ({
         let matchedSkills = 0;
         let missingSkills = 0;
         // missingSkillNames is an array of strings
-        let missingSkillNames: any[] = [];
+        let missingSkillNames = [] as any;
         let match = 0;
         staffSkill.forEach((staffSkill: any) => {
             roleSkills.forEach((roleSkill: any) => {
@@ -58,8 +58,6 @@ export const RoleDescription = ({
         match = (matchedSkills / (matchedSkills + missingSkills)) * 100;
         return [match.toFixed(2), missingSkillNames];
     };
-    calculateSkillsMatch();
-    console.log(calculateSkillsMatch());
 
     // Skills Matching ===================
     // const missingSkills: String[] = [
@@ -153,7 +151,9 @@ export const RoleDescription = ({
 
                             <Title level={5}>Skills Missing</Title>
                             <Space size={[0, 8]} wrap>
-                                {calculateSkillsMatch()[1]}
+                                {calculateSkillsMatch()[1].map((skill: any) => (
+                                    <Tag>{skill}</Tag>
+                                ))}
                             </Space>
 
                             {/* Separated into skills match vs missing */}
@@ -162,7 +162,10 @@ export const RoleDescription = ({
                     </Col>
                 </Row>
                 <Row gutter={rowGutterStyle} justify="center">
-                    hi
+                    <img 
+                     style={{ width: '100%', height: '240px' }}
+                    src="https://media.licdn.com/dms/image/C4E03AQEC1MBLS705zA/profile-displayphoto-shrink_400_400/0/1650103443401?e=1701302400&v=beta&t=01qUXlg6azTUgYa_q9-NxGc8nzvLmxeAVvO3XIK4TMY"/>
+                    hi Glen here, I am a row GAHAHAHAHA
                 </Row>
             </Space>
         </Container>
