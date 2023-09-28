@@ -1,11 +1,9 @@
 import axios from 'axios';
-import {
-    GET_ROLES,
-    ROLES_ERROR,
-} from './types';
+import {GET_ROLES, ROLES_ERROR,} from './types';
+import {ActionType} from "../types";
 
 // Get all roles
-export const getRoles = () => async (dispatch: any) => {
+export const getRoles = () => async (dispatch: (action: ActionType) => void) => {
     try {
         const res = await axios.get('/api/role/details')
 
@@ -17,7 +15,7 @@ export const getRoles = () => async (dispatch: any) => {
     } catch (err: any) {
         dispatch({
             type: ROLES_ERROR,
-            payload: { msg: err.response.statusText, status: err.response.status }
+            payload: {msg: err.response.statusText, status: err.response.status}
         });
     }
 }

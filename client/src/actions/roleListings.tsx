@@ -3,11 +3,13 @@ import {
     FILTER_ROLE_LISTINGS_BY_ROLE_ID,
     GET_ROLE_LISTINGS,
     ROLE_LISTINGS_ERROR,
+    SORT_ROLE_LISTINGS_BY_DATE,
     SORT_ROLE_LISTINGS_BY_NAME
 } from './types';
+import {ActionType, FilterRoleListingsByRoleIdPayloadType, SortPayloadType} from "../types";
 
 // Get all roles listings
-export const getRoleListings = () => async (dispatch: any) => {
+export const getRoleListings = () => async (dispatch: (action: ActionType) => void) => {
     try {
         const res = await axios.get('/api/role_listing/details')
         const res2 = await axios.get('/api/role/details');
@@ -29,21 +31,28 @@ export const getRoleListings = () => async (dispatch: any) => {
     } catch (err: any) {
         dispatch({
             type: ROLE_LISTINGS_ERROR,
-            payload: { msg: err.response.statusText, status: err.response.status }
+            payload: {msg: err.response.statusText, status: err.response.status}
         });
     }
 }
 
-export const sortRoleListingsByName = (payload: any) => async (dispatch: any) => {
+export const sortRoleListingsByName = (payload: SortPayloadType) => async (dispatch: (action: ActionType) => void) => {
     dispatch({
         type: SORT_ROLE_LISTINGS_BY_NAME,
         payload
     });
 }
 
-export const filterRoleListingsByRoleId = (payload: any) => async (dispatch: any) => {
+export const filterRoleListingsByRoleId = (payload: FilterRoleListingsByRoleIdPayloadType) => async (dispatch: (action: ActionType) => void) => {
     dispatch({
         type: FILTER_ROLE_LISTINGS_BY_ROLE_ID,
+        payload
+    });
+}
+
+export const sortRoleListingsByDate = (payload: SortPayloadType) => async (dispatch: (action: ActionType) => void) => {
+    dispatch({
+        type: SORT_ROLE_LISTINGS_BY_DATE,
         payload
     });
 }
