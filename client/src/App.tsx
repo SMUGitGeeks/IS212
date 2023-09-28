@@ -11,7 +11,7 @@ import {loginHR, loginStaff} from "./actions/auth";
 import Login from "./components/pages/Login";
 
 import {Layout} from 'antd';
-import Profile from './components/pages/Profile';
+import Profile from './components/layout/ProfileSkills';
 
 const {Header, Footer, Sider, Content} = Layout;
 
