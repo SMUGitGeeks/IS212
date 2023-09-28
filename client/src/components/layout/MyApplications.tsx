@@ -4,7 +4,7 @@ import { Button, Space, Table } from 'antd';
 import type { ColumnsType, FilterValue, SorterResult } from 'antd/es/table/interface';
 import { useState } from "react";
 import SkillsCollapsable from "./SkillsCollapsable";
-import { getStaffSkillsByStaffId } from "../../actions/staffSkills";
+import { getApplicationsByStaffId } from "../../actions/applications";
 import {connect, useDispatch} from 'react-redux';
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
@@ -45,7 +45,7 @@ const data: DataType[] = [
     },
 ];
 
-const MyApplications = ({ getStaffSkillsByStaffId, staffSkills: { staffSkills, loading }, auth: {user} }: any) => {
+const MyApplications = ({ getApplicationsByStaffId, applications: { applications, loading }, auth: {user} }: any) => {
 
     const [filteredInfo, setFilteredInfo] = useState<Record<string, FilterValue | null>>({});
     const [sortedInfo, setSortedInfo] = useState<SorterResult<DataType>>({});
@@ -57,9 +57,9 @@ const MyApplications = ({ getStaffSkillsByStaffId, staffSkills: { staffSkills, l
     };
     useEffect(() => {
         if (user) {
-            getStaffSkillsByStaffId(user);
+            getApplicationsByStaffId(user);
         }
-    }, [getStaffSkillsByStaffId, user]);
+    }, [getApplicationsByStaffId, user]);
 
 
     // const clearFilters = () => {
@@ -150,12 +150,12 @@ const MyApplications = ({ getStaffSkillsByStaffId, staffSkills: { staffSkills, l
 
         <Container>
             {loading ? (
-                <div>Loading skills...</div>
+                <div>Loading applications...</div>
             ) : (
                 <div>
-                    {staffSkills.map((skill: any) => (
-                        <div key={skill.skill_id}>
-                            {skill.skill_name}
+                    {applications.map((application: any) => (
+                        <div key={application.staff_id}>
+                            {application.role_name} : {application.role_app_status}
                         </div>
                     ))}
                 </div>
@@ -166,14 +166,14 @@ const MyApplications = ({ getStaffSkillsByStaffId, staffSkills: { staffSkills, l
     );
 }
 MyApplications.propTypes = {
-    getStaffSkillsByStaffId: PropTypes.func.isRequired,
-    staffSkills: PropTypes.object.isRequired,
+    getApplicationsByStaffId: PropTypes.func.isRequired,
+    applications: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state: any) => ({
-    staffSkills: state.staffSkills,
+    applications: state.applications,
     auth: state.auth
 });
 
-export default connect(mapStateToProps, { getStaffSkillsByStaffId })(MyApplications);
+export default connect(mapStateToProps, { getApplicationsByStaffId })(MyApplications);
