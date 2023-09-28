@@ -53,7 +53,7 @@ const App = ({auth: {user}}: any) => {
                                 <Routes>
                                     <Route path="/" element={<Home/>}/>
                                     <Route path="/roles" element={<Roles/>}/>
-                                    <Route path="/roles/:roleListingId" element={<RolePage/>}/>
+                                    <Route path="/role/:roleListingId" element={<RolePage/>}/>
                                 </Routes>
                             </Content>
                             <Footer style={footerStyle}>Footer</Footer>

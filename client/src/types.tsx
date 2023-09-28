@@ -28,3 +28,7 @@ export interface GetStaffSkillsByStaffIdPayloadType {
     staffId: number;
 }
 
+export interface GetRoleSkillsByRoleIdPayloadType {
+    roleId: number;
+}
+
