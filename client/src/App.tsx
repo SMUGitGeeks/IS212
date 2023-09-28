@@ -11,6 +11,7 @@ import {loginHR, loginStaff} from "./actions/auth";
 import Login from "./components/pages/Login";
 
 import {Layout} from 'antd';
+import Profile from './components/pages/Profile';
 
 const {Header, Footer, Sider, Content} = Layout;
 
@@ -54,6 +55,7 @@ const App = ({auth: {user}}: any) => {
                                     <Route path="/" element={<Home/>}/>
                                     <Route path="/roles" element={<Roles/>}/>
                                     <Route path="/roles/:roleListingId" element={<RolePage/>}/>
+                                    <Route path="/profile" element={<Profile/>}/>
                                 </Routes>
                             </Content>
                             <Footer style={footerStyle}>Footer</Footer>

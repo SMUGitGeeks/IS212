@@ -26,6 +26,11 @@ const Navbar = ({ logout }: any) => {
             label: (<Button onClick={logout}>Logout</Button>),
             key: 'logout',
             icon: '',
+        },
+        {
+            label: (<Link to={"/profile"}>{"Profile"}</Link>),
+            key: '/profile',
+            icon: '',
         }
     ];
     const onClick: MenuProps['onClick'] = ({ key }) => {
