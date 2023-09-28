@@ -14,7 +14,7 @@ const RolePage  = () => {
             </div> */}
             <Row gutter={rowGutterStyle} justify='center' >
                 <Col span={20}>
-                    <RoleDescription roleListingId={roleListingId}/>
+                    <RoleDescription  />
                 </Col>
             </Row>
         </Container>
