@@ -1,57 +1,23 @@
 import {Container} from "react-bootstrap";
 import type {TableProps} from 'antd';
-import {Table} from 'antd';
+import {Table, Popover,Button, Row ,Col, Tag} from 'antd';
 import type {ColumnsType, FilterValue, SorterResult} from 'antd/es/table/interface';
-import SkillsCollapsable from "./SkillsCollapsable";
 import { getApplicationsByStaffId } from "../../actions/applications";
 import React, {useEffect, useState} from "react";
 import {connect, useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
-
-
-interface DataType {
-    key: string;
-    name: string;
-    age: number;
-    address: string;
-}
-
-const data: DataType[] = [
-    {
-        key: '1',
-        name: 'John Brown',
-        age: 32,
-        address: 'New York No. 1 Lake Park',
-    },
-    {
-        key: '2',
-        name: 'Jim Green',
-        age: 42,
-        address: 'London No. 1 Lake Park',
-    },
-    {
-        key: '3',
-        name: 'Joe Black',
-        age: 32,
-        address: 'Sydney No. 1 Lake Park',
-    },
-    {
-        key: '4',
-        name: 'Jim Red',
-        age: 32,
-        address: 'London No. 2 Lake Park',
-    },
-];
+import { GetApplicationsByStaffIdPayloadType } from "../../types";
+import { MoreOutlined } from "@ant-design/icons";
 
 const MyApplications = ({ getApplicationsByStaffId, applications: { applications, loading }, auth: {user} }: any) => {
 
     const [filteredInfo, setFilteredInfo] = useState<Record<string, FilterValue | null>>({});
-    const [sortedInfo, setSortedInfo] = useState<SorterResult<DataType>>({});
+    const [sortedInfo, setSortedInfo] = useState<SorterResult<GetApplicationsByStaffIdPayloadType>>({});
 
-    const handleChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter) => {
+    const handleChange: TableProps<GetApplicationsByStaffIdPayloadType>['onChange'] = (pagination, filters, sorter) => {
         console.log('Various parameters', pagination, filters, sorter);
         setFilteredInfo(filters);
-        setSortedInfo(sorter as SorterResult<DataType>);
+        setSortedInfo(sorter as SorterResult<GetApplicationsByStaffIdPayloadType>);
     };
     useEffect(() => {
         if (user) {
@@ -76,90 +42,74 @@ const MyApplications = ({ getApplicationsByStaffId, applications: { applications
     //     });
     // };
 
-    const columns: ColumnsType<DataType> = [
+    const columns: ColumnsType<GetApplicationsByStaffIdPayloadType> = [
         {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
-            filters: [
-                {text: 'Joe', value: 'Joe'},
-                {text: 'Jim', value: 'Jim'},
-            ],
-            filteredValue: filteredInfo.name || null,
-            onFilter: (value: any, record) => record.name.includes(value),
-            sorter: (a, b) => a.name.length - b.name.length,
-            sortOrder: sortedInfo.columnKey === 'name' ? sortedInfo.order : null,
+            title: 'Role Name',
+            dataIndex: 'role_name',
+            key: 'roleName',
+            // filters: [
+            //     {text: 'Joe', value: 'Joe'},
+            //     {text: 'Jim', value: 'Jim'},
+            // ],
+            // filteredValue: filteredInfo.role_name || null,
+            // onFilter: (value: any, record) => record.role_name.includes(value),
+            sorter: (a, b) => a.role_name.length - b.role_name.length,
+            sortOrder: sortedInfo.columnKey === 'roleName' ? sortedInfo.order : null,
             ellipsis: true,
         },
         {
-            title: 'Age',
-            dataIndex: 'age',
-            key: 'age',
-            sorter: (a, b) => a.age - b.age,
-            sortOrder: sortedInfo.columnKey === 'age' ? sortedInfo.order : null,
+            title: 'Date Applied',
+            dataIndex: 'app_ts',
+            key: 'dateApplied',
+            render: (date: any) => <>{new Date(date).toLocaleDateString(undefined,{ year: 'numeric', month: 'long', day: 'numeric' })}</>,
+            sorter: (a, b) => new Date(a.app_ts).getTime() - new Date(b.app_ts).getTime(),
+            sortOrder: sortedInfo.columnKey === 'dateApplied' ? sortedInfo.order : null,
             ellipsis: true,
         },
         {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
-            filters: [
-                {text: 'London', value: 'London'},
-                {text: 'New York', value: 'New York'},
-            ],
-            filteredValue: filteredInfo.address || null,
-            onFilter: (value: any, record) => record.address.includes(value),
-            sorter: (a, b) => a.address.length - b.address.length,
-            sortOrder: sortedInfo.columnKey === 'address' ? sortedInfo.order : null,
+            title: 'Status',
+            dataIndex: 'role_app_status',
+            key: 'status',
+            // filters: [
+            //     {text: 'Applied', value: 'applied'},
+            //     {text: 'Withdrawn', value: 'withdrawn'},
+            // ],
+            render: (record: any) => 
+            <Row justify='space-between'>
+                <Col span={1}>
+                    <Tag color={record === "applied" ? 'green' : "red"}>{record}</Tag>
+                </Col>
+                <Col span={1}>
+                    {
+                        record === 'applied' ? 
+                        <Popover
+                        content={
+                            <div>
+                                <Button type="text" danger>Withdraw</Button>
+                            </div>
+                        }
+                        trigger="click"
+                        >
+                            <MoreOutlined />
+                        </Popover>
+                            : <></>
+                    }
+                </Col>
+            </ Row>,
+            // filteredValue: filteredInfo.role_app_status || null,
+            // onFilter: (value: any, record) => record.role_app_status.includes(value),
+            // sorter: (a, b) => a.role_app_status.length - b.role_app_status.length,
+            // sortOrder: sortedInfo.columnKey === 'status' ? sortedInfo.order : null,
             ellipsis: true,
         },
     ];
-    // const skills = [
-    //     {
-    //         skill_id: 1,
-    //         staff_id: 2,
-    //         skill_name: "React",
-    //         ss_status: "Approved",
-    //     },
-    //     {
-    //         skill_id: 2,
-    //         staff_id: 3,
-    //         skill_name: "Python",
-    //         ss_status: "Approved",
-    //     }
-    // ]
-    // return (
-    //     <Container>
-    //         {/* <Space style={{ marginBottom: 16 }}>
-    //             <Button onClick={setAgeSort}>Sort age</Button>
-    //             <Button onClick={clearFilters}>Clear filters</Button>
-    //             <Button onClick={clearAll}>Clear filters and sorters</Button>
-    //         </Space> */}
-    //         {
-    //             staffSkills.map((skill: any) => (
-    //             <div>
-    //                 {skill.skill_name}
-    //             </div> ))
-    //         }
-    //         <Table columns={columns} dataSource={data} onChange={handleChange} />
-    //     </Container>
-    // )
+    // console.log(applications);
+
     return (
 
         <Container>
-            {loading ? (
-                <div>Loading applications...</div>
-            ) : (
-                <div>
-                    {applications.map((application: any) => (
-                        <div key={application.staff_id}>
-                            {application.role_name} : {application.role_app_status}
-                        </div>
-                    ))}
-                </div>
-            )}
-
-            <Table columns={columns} dataSource={data} onChange={handleChange}/>
+            <h1>My Applications</h1>
+            <Table columns={columns} dataSource={applications} onChange={handleChange}/>
         </Container>
     );
 }
