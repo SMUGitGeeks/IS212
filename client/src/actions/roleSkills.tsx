@@ -5,6 +5,7 @@ import {
 } from './types';
 import { ActionType, GetRoleSkillsByRoleIdPayloadType } from '../types';
 
+
 // Get all role skills for a role listing
 export const getRoleSkillsByRoleId = (payload: GetRoleSkillsByRoleIdPayloadType) => async (dispatch: (action: ActionType) => void) => {
     try{

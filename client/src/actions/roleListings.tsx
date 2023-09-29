@@ -14,6 +14,8 @@ export const getRoleListings = () => async (dispatch: (action: ActionType) => vo
     try {
         const res = await axios.get('/api/role_listing/details')
         const res2 = await axios.get('/api/role/details');
+        // role/skills have [{"role_id":2,"skill_id":1},{"role_id":5,"skill_id":2}...]
+        const res3 = await axios.get('/api/role/skills');
         for (let i = 0; i < res.data.length; i++) {
             for (let j = 0; j < res2.data.length; j++) {
                 if (res.data[i]["role_id"] === res2.data[j]["role_id"]) {
@@ -23,6 +25,23 @@ export const getRoleListings = () => async (dispatch: (action: ActionType) => vo
                 }
             }
         }
+        for (let i = 0; i < res.data.length; i++) {
+            res.data[i].skills = [];
+            for (let j = 0; j < res3.data.length; j++) {
+                if (res.data[i]["role_id"] === res3.data[j]["role_id"]) {
+                    res.data[i].skills.push(res3.data[j]["skill_id"]);
+                }
+            }
+        }
+        // for (let i = 0; i < res.data.length; i++) {
+        //     for (let j = 0; j < res2.data.length; j++) {
+        //         if (res.data[i]["role_id"] === res2.data[j]["role_id"]) {
+        //             res.data[i].role_name = res2.data[j].role_name;
+        //             res.data[i].role_description = res2.data[j].role_description;
+        //             res.data[i].role_status = res2.data[j].role_status;
+        //         }
+        //     }
+        // }
 
 
         dispatch({

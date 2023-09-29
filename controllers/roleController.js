@@ -27,6 +27,16 @@ exports.getRoleDetail = async (req, res) => {
 
 exports.getRoleSkills = async (req, res) => {
     try {
+        const [rows, fields] = await connection.promise().query('SELECT * FROM role_skills');
+        res.json(rows);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send('Server error');
+    }
+}
+
+exports.getRoleSkill = async (req, res) => {
+    try {
         const [rows, fields] = await connection.promise().query('SELECT * FROM role_skills WHERE role_id = ?', [req.params.id]);
         if (rows.length > 0) {
             res.json(rows);
@@ -39,5 +49,7 @@ exports.getRoleSkills = async (req, res) => {
         res.status(500).send('Server error');
     }
 }
+
+
 
 
