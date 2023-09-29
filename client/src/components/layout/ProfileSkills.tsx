@@ -1,4 +1,4 @@
-import { Radio, Space, Card, RadioChangeEvent, Tag, Empty } from "antd";
+import { Radio, Space, Card, RadioChangeEvent, Tag, Empty, Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { getStaffSkillsByStaffId } from "../../actions/staffSkills";
 import PropTypes from 'prop-types';
@@ -50,9 +50,8 @@ const ProfileSkills = ({getStaffSkillsByStaffId, staffSkill: { staffSkill, loadi
                 <div></div>
 
                 {loading ?
-                    <div>
-                        <LoadingOutlined /> 
-                        Loading...
+                    <div style={{textAlign: "center", paddingTop: "10vh", paddingBottom: "10vh"}}>
+                        <Spin />
                     </div>
                     :
                     staffSkill.map((skill: any) => (
