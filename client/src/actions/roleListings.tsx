@@ -1,22 +1,40 @@
 import axios from 'axios';
 import {
     FILTER_ROLE_LISTINGS_BY_ROLE_ID,
-    GET_ROLE_LISTINGS,
     GET_ROLE_LISTING,
+    GET_ROLE_LISTINGS,
     ROLE_LISTINGS_ERROR,
     SORT_ROLE_LISTINGS_BY_DATE,
-    SORT_ROLE_LISTINGS_BY_NAME
+    SORT_ROLE_LISTINGS_BY_NAME,
+    SORT_ROLE_LISTINGS_BY_SKILL_MATCH
 } from './types';
 import {ActionType, FilterRoleListingsByRoleIdPayloadType, SortPayloadType} from "../types";
 
 // Get all roles listings
-export const getRoleListings = () => async (dispatch: (action: ActionType) => void) => {
+export const getRoleListings = (id: number) => async (dispatch: (action: ActionType) => void) => {
     try {
         const res = await axios.get('/api/role_listing/details')
         const res2 = await axios.get('/api/role/details');
         // role/skills have [{"role_id":2,"skill_id":1},{"role_id":5,"skill_id":2}...]
         const res3 = await axios.get('/api/role/skills');
+        // staff/skills have [{"staff_id":1,"skill_id":1},{"staff_id":1,"skill_id":2}...]
+        const res4 = await axios.get('/api/staff/skills/' + id);
+        // include skill % match in role listings
         for (let i = 0; i < res.data.length; i++) {
+            let skillMatch = 0;
+            let skillCount = 0;
+            for (let j = 0; j < res3.data.length; j++) {
+                if (res.data[i]["role_id"] === res3.data[j]["role_id"]) {
+                    skillCount++;
+                    for (let k = 0; k < res4.data.length; k++) {
+                        if (res3.data[j]["skill_id"] === res4.data[k]["skill_id"]) {
+                            skillMatch++;
+                        }
+                    }
+                }
+            }
+            res.data[i].skill_match = Math.round(skillMatch / skillCount * 100);
+
             for (let j = 0; j < res2.data.length; j++) {
                 if (res.data[i]["role_id"] === res2.data[j]["role_id"]) {
                     res.data[i].role_name = res2.data[j].role_name;
@@ -25,24 +43,6 @@ export const getRoleListings = () => async (dispatch: (action: ActionType) => vo
                 }
             }
         }
-        for (let i = 0; i < res.data.length; i++) {
-            res.data[i].skills = [];
-            for (let j = 0; j < res3.data.length; j++) {
-                if (res.data[i]["role_id"] === res3.data[j]["role_id"]) {
-                    res.data[i].skills.push(res3.data[j]["skill_id"]);
-                }
-            }
-        }
-        // for (let i = 0; i < res.data.length; i++) {
-        //     for (let j = 0; j < res2.data.length; j++) {
-        //         if (res.data[i]["role_id"] === res2.data[j]["role_id"]) {
-        //             res.data[i].role_name = res2.data[j].role_name;
-        //             res.data[i].role_description = res2.data[j].role_description;
-        //             res.data[i].role_status = res2.data[j].role_status;
-        //         }
-        //     }
-        // }
-
 
         dispatch({
             type: GET_ROLE_LISTINGS,
@@ -103,6 +103,12 @@ export const sortRoleListingsByDate = (payload: SortPayloadType) => async (dispa
     });
 }
 
+export const sortRoleListingsBySkillMatch = (payload: SortPayloadType) => async (dispatch: (action: ActionType) => void) => {
+    dispatch({
+        type: SORT_ROLE_LISTINGS_BY_SKILL_MATCH,
+        payload
+    });
+}
 
 
 

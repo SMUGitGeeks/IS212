@@ -2,10 +2,9 @@ import {Container} from "react-bootstrap";
 import type {TableProps} from 'antd';
 import {Table} from 'antd';
 import type {ColumnsType, FilterValue, SorterResult} from 'antd/es/table/interface';
-import SkillsCollapsable from "./SkillsCollapsable";
-import { getApplicationsByStaffId } from "../../actions/applications";
+import {getApplicationsByStaffId} from "../../actions/applications";
 import React, {useEffect, useState} from "react";
-import {connect, useDispatch} from 'react-redux';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
 
@@ -43,7 +42,7 @@ const data: DataType[] = [
     },
 ];
 
-const MyApplications = ({ getApplicationsByStaffId, applications: { applications, loading }, auth: {user} }: any) => {
+const MyApplications = ({getApplicationsByStaffId, application: {applications, loading}, auth: {user}}: any) => {
 
     const [filteredInfo, setFilteredInfo] = useState<Record<string, FilterValue | null>>({});
     const [sortedInfo, setSortedInfo] = useState<SorterResult<DataType>>({});
@@ -165,13 +164,13 @@ const MyApplications = ({ getApplicationsByStaffId, applications: { applications
 }
 MyApplications.propTypes = {
     getApplicationsByStaffId: PropTypes.func.isRequired,
-    applications: PropTypes.object.isRequired,
+    application: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state: any) => ({
-    applications: state.applications,
+    application: state.application,
     auth: state.auth
 });
 
-export default connect(mapStateToProps, { getApplicationsByStaffId })(MyApplications);
+export default connect(mapStateToProps, {getApplicationsByStaffId})(MyApplications);
