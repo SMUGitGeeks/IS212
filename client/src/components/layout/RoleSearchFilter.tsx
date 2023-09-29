@@ -11,57 +11,6 @@ const handleChange = (value: string[]) => {
     console.log(`selected ${value}`);
 };
 
-// Role Type Format:
-
-
-interface locationOption {
-    value: string;
-    label: string;
-    children?: locationOption[];
-    disabled?: boolean;
-}
-
-// Location Example:
-const locations: locationOption[] = [
-    {
-        value: 'zhejiang',
-        label: 'Zhejiang',
-        children: [
-        {
-            value: 'hangzhou',
-            label: 'Hangzhou',
-            children: [
-            {
-                value: 'xihu',
-                label: 'West Lake',
-            },
-            {
-                value: 'xiasha',
-                label: 'Xia Sha',
-                disabled: true,
-            },
-            ],
-        },
-        ],
-    },
-    {
-        value: 'jiangsu',
-        label: 'Jiangsu',
-        children: [
-        {
-            value: 'nanjing',
-            label: 'Nanjing',
-            children: [
-            {
-                value: 'zhonghuamen',
-                label: 'Zhong Hua men',
-            },
-            ],
-        },
-        ],
-    },
-];
-
 const RoleSearchFilter = ({ getRoles, role: {roles, loading}} : any) =>  {
 
     useEffect(() => {
@@ -71,11 +20,6 @@ const RoleSearchFilter = ({ getRoles, role: {roles, loading}} : any) =>  {
 
     const filter = () => {
 
-    }
-    const sort = (direction: String) => {
-        //sortRoleListingsByName
-        dispatch(sortRoleListingsByName({direction}) as any);
-        dispatch(sortRoleListingsByName({direction}) as any);
     }
 
     const onChange = (value: any) => {
@@ -106,28 +50,19 @@ const RoleSearchFilter = ({ getRoles, role: {roles, loading}} : any) =>  {
 
 
     return (
-        <Space direction='vertical' size="small">
+        <Space direction='vertical' size="small" style={{width: "100%"}}>
             <Title level={4}>Filters</Title>
             <Title level={5}>Role Type</Title>
             {/* Tag Search */}
             <Select
                 mode="multiple"
-                style={{ width: '100%' }}
+                style={{ width: '80%' }}
                 placeholder="Please select"
                 defaultValue={[]}
                 onChange={handleChange}
                 options={roleTypes}
                 optionFilterProp={"label"}
             />
-            
-            <Title level={5}>Location</Title>
-            {/* Related Selector */}
-            <Cascader
-                options={locations}
-                placeholder="Please select"
-                onChange={onChange}
-            />
-            <Button onClick={filter}>Filter Results</Button>
         </Space>
     );
 }
