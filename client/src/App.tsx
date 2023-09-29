@@ -52,7 +52,7 @@ const App = ({getStaffSkillsByStaffId, getApplicationsByStaffId, auth: {user, lo
                       <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/roles" element={<Roles />} />
-                        <Route path="/role/:roleListingId" element={<RolePage />} />
+                        <Route path="/roleListing/:roleListingId" element={<RolePage />} />
                         <Route path="/profile" element={<Profile />} />
                       </Routes>
                     </Content>
