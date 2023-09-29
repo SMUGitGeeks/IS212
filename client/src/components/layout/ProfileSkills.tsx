@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import { CheckCircleOutlined, ClockCircleOutlined, LoadingOutlined } from "@ant-design/icons";
 
-const ProfileSkills = ({getStaffSkillsByStaffId, staffSkills: { staffSkills, loading }, auth: {user}}: any) => {
+const ProfileSkills = ({getStaffSkillsByStaffId, staffSkill: { staffSkill, loading }, auth: {user}}: any) => {
     useEffect(() => {
         if (user) {
             getStaffSkillsByStaffId(user);
@@ -55,7 +55,7 @@ const ProfileSkills = ({getStaffSkillsByStaffId, staffSkills: { staffSkills, loa
                         Loading...
                     </div>
                     :
-                    staffSkills.map((skill: any) => (
+                    staffSkill.map((skill: any) => (
                         skill.skill_status === skillState || skillState === "all" ?
                         <Tag style={{padding:10}} color={color(skill.skill_status)} icon={tagIcon(skill.skill_status)} key={skill.skill_id}>
                             {skill.skill_name}
@@ -75,12 +75,12 @@ const ProfileSkills = ({getStaffSkillsByStaffId, staffSkills: { staffSkills, loa
 
 ProfileSkills.propTypes = {
     getStaffSkillsByStaffId: PropTypes.func.isRequired,
-    staffSkills: PropTypes.object.isRequired,
+    staffSkill: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state: any) => ({
-    staffSkills: state.staffSkills,
+    staffSkill: state.staffSkill,
     auth: state.auth
 });
 
