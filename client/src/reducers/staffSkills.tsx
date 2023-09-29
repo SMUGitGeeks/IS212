@@ -4,7 +4,7 @@ import {ActionType} from "../types";
 
 const initialState = {
     staffSkills: [],
-    staffSkill: null,
+    staffSkill: [],
     loading: true,
     error: {}
 }
@@ -16,7 +16,7 @@ export default function (state = initialState, action: ActionType) {
         case GET_STAFF_SKILLS_BY_STAFF_ID:
             return {
                 ...state,
-                staffSkills: payload,
+                staffSkill: payload,
                 loading: false
             };
         case STAFF_SKILLS_ERROR:

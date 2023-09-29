@@ -10,6 +10,6 @@ const router = express.Router();
 router.route("/details").get(controllers.getRoleDetails);
 router.route("/details/:id").get(controllers.getRoleDetail);
 router.route("/skills").get(controllers.getRoleSkills);
-router.route("/skill/:id").get(controllers.getRoleSkills);
+router.route("/skill/:id").get(controllers.getRoleSkill);
 
 module.exports = router;
