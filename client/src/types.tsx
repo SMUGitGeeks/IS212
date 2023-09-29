@@ -28,7 +28,14 @@ export interface GetStaffSkillsByStaffIdPayloadType {
     staffId: number;
 }
 
+export interface GetApplicationsByStaffIdPayloadType {
+    rl_id: number;
+    staffId: number;
+    role_app_status: string;
+    app_ts: string;
+    role_name: string;
+}
+
 export interface GetRoleSkillsByRoleIdPayloadType {
     roleId: number;
 }
-

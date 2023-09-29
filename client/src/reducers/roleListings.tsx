@@ -25,6 +25,7 @@ export default function (state = initialState, action: ActionType) {
             return {
                 ...state,
                 roleListings: payload,
+                roleListing: payload[0],
                 rawRoleListings: payload,
                 loading: false
             };
