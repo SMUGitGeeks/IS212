@@ -1,32 +1,23 @@
 import { render, screen } from '@testing-library/react';
-import RolePage from './RolePage';
+import Roles from './Roles';
 import { store } from '../../mockStore';
 import { Provider } from 'react-redux';
 import {mockMatchMedia} from "../../setupTests";
+import {BrowserRouter} from "react-router-dom";
 
 
-describe('RolePage component tests', () => {
+describe('Roles component tests', () => {
     beforeAll(() => {
         mockMatchMedia();
     });
-    it('Should see the Apply Now button', () => {
-        render(<Provider store={store}><RolePage /></Provider>);
-        const applyNowElement = screen.getByText("Apply Now");
-        expect(applyNowElement).toBeInTheDocument();
-    })
-    it('Should see All Skills', () => {
-        render(<Provider store={store}><RolePage /></Provider>);
-        const allSkillsElement = screen.getByText("All Skills");
-        const communicationSkillElement = screen.getByText("Communication");
-        const teamworkSkillElement = screen.getByText("Teamwork");
-        expect(allSkillsElement).toBeInTheDocument();
-        expect(communicationSkillElement).toBeInTheDocument();
-        expect(teamworkSkillElement).toBeInTheDocument();
-    })
-    it('Should show HR Manager', () => {
-        render(<Provider store={store}><RolePage /></Provider>);
-        const hrManagerElement = screen.getByText("HR Manager");
-        expect(hrManagerElement).toBeInTheDocument();
+    it('Should see Filters', () => {
+        render(<BrowserRouter><Provider store={store}><Roles/></Provider></BrowserRouter>);
+        const filtersElement = screen.getByText("Filters");
+        expect(filtersElement).toBeInTheDocument();
+        const sortByElement = screen.getByText("Sort by");
+        expect(sortByElement).toBeInTheDocument();
+        const pleaseSelectElement = screen.getByText("Please select");
+        expect(pleaseSelectElement).toBeInTheDocument();
     })
 
 })

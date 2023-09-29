@@ -7,13 +7,19 @@ import {List, Skeleton, Space} from 'antd';
 import {Link} from 'react-router-dom';
 
 
-const RoleList = ({getRoleListings, roleListing: {roleListings, loading}}: any) => {
+const RoleList = ({
+                      getRoleListings,
+                      roleListing: {roleListings, loading},
+                      staffSkill: {staffSkill},
+                      auth: {user}
+                  }: any) => {
     useEffect(() => {
-        getRoleListings();
+        getRoleListings(user);
 
-    }, [getRoleListings]);
+    }, [getRoleListings, user]);
 
     const date = new Date();
+
 
     return loading ?
         <List
@@ -75,7 +81,7 @@ const RoleList = ({getRoleListings, roleListing: {roleListings, loading}}: any) 
                             // description={item.description}
                             description={date.getDate() - new Date(item.rl_open).getDate() + " days ago"}
                         />
-                        {/* {item.content} */}
+                        {item.skill_match}
                     </List.Item>
                 </Link>
 
@@ -85,11 +91,15 @@ const RoleList = ({getRoleListings, roleListing: {roleListings, loading}}: any) 
 
 RoleList.propTypes = {
     getRoleListings: PropTypes.func.isRequired,
-    roleListing: PropTypes.object.isRequired
+    roleListing: PropTypes.object.isRequired,
+    staffSkill: PropTypes.object.isRequired,
+    auth: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state: any) => ({
-    roleListing: state.roleListing
+    roleListing: state.roleListing,
+    staffSkill: state.staffSkill,
+    auth: state.auth
 });
 
 export default connect(mapStateToProps, {getRoleListings})(RoleList);

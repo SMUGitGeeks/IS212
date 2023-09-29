@@ -1,18 +1,20 @@
 import { render, screen } from '@testing-library/react';
-import Login from './Login';
+import Home from './Home';
 import { store } from '../../mockStore';
 import { Provider } from 'react-redux';
 import {mockMatchMedia} from "../../setupTests";
+import { waitFor } from "@testing-library/react";
 
 
-describe('Login component tests', () => {
+describe('Home component tests', () => {
     beforeAll(() => {
         mockMatchMedia();
     });
-    it('should see a button that says login', () => {
-        render(<Provider store={store}><Login /></Provider>);
-        const buttonElement = screen.getByText("Login");
-        expect(buttonElement).toBeInTheDocument();
+    it('should have an element with class ant-table', () => {
+        render(<Provider store={store}><Home /></Provider>);
+        // find an element with class ant-table
+        waitFor(() => expect(screen).toHaveClass("ant-table"));
+
     })
 })
 

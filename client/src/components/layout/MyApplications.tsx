@@ -2,14 +2,49 @@ import {Container} from "react-bootstrap";
 import type {TableProps} from 'antd';
 import {Table, Popover,Button, Row ,Col, Tag} from 'antd';
 import type {ColumnsType, FilterValue, SorterResult} from 'antd/es/table/interface';
-import { getApplicationsByStaffId } from "../../actions/applications";
+import {getApplicationsByStaffId} from "../../actions/applications";
 import React, {useEffect, useState} from "react";
-import {connect, useDispatch} from 'react-redux';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import { GetApplicationsByStaffIdPayloadType } from "../../types";
 import { MoreOutlined } from "@ant-design/icons";
 
-const MyApplications = ({ getApplicationsByStaffId, applications: { applications, loading }, auth: {user} }: any) => {
+
+interface DataType {
+    key: string;
+    name: string;
+    age: number;
+    address: string;
+}
+
+const data: DataType[] = [
+    {
+        key: '1',
+        name: 'John Brown',
+        age: 32,
+        address: 'New York No. 1 Lake Park',
+    },
+    {
+        key: '2',
+        name: 'Jim Green',
+        age: 42,
+        address: 'London No. 1 Lake Park',
+    },
+    {
+        key: '3',
+        name: 'Joe Black',
+        age: 32,
+        address: 'Sydney No. 1 Lake Park',
+    },
+    {
+        key: '4',
+        name: 'Jim Red',
+        age: 32,
+        address: 'London No. 2 Lake Park',
+    },
+];
+
+const MyApplications = ({getApplicationsByStaffId, application: {applications, loading}, auth: {user}}: any) => {
 
     const [filteredInfo, setFilteredInfo] = useState<Record<string, FilterValue | null>>({});
     const [sortedInfo, setSortedInfo] = useState<SorterResult<GetApplicationsByStaffIdPayloadType>>({});
@@ -115,13 +150,13 @@ const MyApplications = ({ getApplicationsByStaffId, applications: { applications
 }
 MyApplications.propTypes = {
     getApplicationsByStaffId: PropTypes.func.isRequired,
-    applications: PropTypes.object.isRequired,
+    application: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state: any) => ({
-    applications: state.applications,
+    application: state.application,
     auth: state.auth
 });
 
-export default connect(mapStateToProps, { getApplicationsByStaffId })(MyApplications);
+export default connect(mapStateToProps, {getApplicationsByStaffId})(MyApplications);

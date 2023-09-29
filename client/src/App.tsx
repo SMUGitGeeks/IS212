@@ -11,6 +11,9 @@ import Login from "./components/pages/Login";
 import { Layout, MenuProps} from 'antd';
 import Sidebar from './components/layout/Sidebar';
 import Navbar from './components/layout/Navbar';
+import { getStaffSkillsByStaffId } from "./actions/staffSkills";
+import { getApplicationsByStaffId } from "./actions/applications";
+import Profile from './components/pages/Profile';
 
 const {Header, Footer, Sider, Content} = Layout;
 
@@ -22,8 +25,15 @@ const footerStyle: React.CSSProperties = {
 
 const rowGutterStyle = {xs: 8, sm: 16, md: 24, lg: 32};
 
-const App = ({auth: {user, loading}}:any ) => {
-
+const App = ({getStaffSkillsByStaffId, getApplicationsByStaffId, auth: {user, loading}}:any ) => {
+    // getStaffSkillsByStaffId and getApplicationsByStaffId should be called once user is no longer null
+    useEffect(() => {
+        if (!loading && user) {
+            // Assuming user.id contains the staff member's ID
+            getStaffSkillsByStaffId(user);
+            getApplicationsByStaffId(user);
+        }
+    }, [getStaffSkillsByStaffId, getApplicationsByStaffId, user, loading]);
   return (
       user==null ?
           <Fragment>
@@ -43,6 +53,7 @@ const App = ({auth: {user, loading}}:any ) => {
                         <Route path="/" element={<Home />} />
                         <Route path="/roles" element={<Roles />} />
                         <Route path="/role/:roleListingId" element={<RolePage />} />
+                        <Route path="/profile" element={<Profile />} />
                       </Routes>
                     </Content>
                     <Footer style={footerStyle}>Footer</Footer>
@@ -57,12 +68,14 @@ const App = ({auth: {user, loading}}:any ) => {
 App.propTypes = {
     loginStaff: PropTypes.func.isRequired,
     loginHR: PropTypes.func.isRequired,
-    auth: PropTypes.object.isRequired
+    auth: PropTypes.object.isRequired,
+    getStaffSkillsByStaffId: PropTypes.func.isRequired,
+    getApplicationsByStaffId: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state: any) => ({
     auth: state.auth
 });
-export default connect(mapStateToProps, {loginStaff, loginHR})(App);
+export default connect(mapStateToProps, {loginHR, loginStaff, getStaffSkillsByStaffId, getApplicationsByStaffId})(App);
 
 export {rowGutterStyle};

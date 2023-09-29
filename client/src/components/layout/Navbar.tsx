@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import { UserOutlined } from '@ant-design/icons';
 import { rowGutterStyle } from '../../App';
+import { Link } from 'react-router-dom';
 
 
 
@@ -13,7 +14,9 @@ const Navbar = ({auth: {user, loading}}: any) => {
         <Row gutter={rowGutterStyle} align='middle' justify={'end'} style={{width: "100%"}}>
             <Col>
                 <Tooltip title={"User id: " + user}>
-                    <Avatar size="large" icon={<UserOutlined />} />
+                    <Link to={"/profile"}>
+                        <Avatar size="large" icon={<UserOutlined />} />
+                    </Link>
                 </Tooltip>
             </Col>
             <Col>
