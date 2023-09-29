@@ -13,6 +13,7 @@ import Sidebar from './components/layout/Sidebar';
 import Navbar from './components/layout/Navbar';
 import { getStaffSkillsByStaffId } from "./actions/staffSkills";
 import { getApplicationsByStaffId } from "./actions/applications";
+import Profile from './components/pages/Profile';
 
 const {Header, Footer, Sider, Content} = Layout;
 
@@ -52,6 +53,7 @@ const App = ({getStaffSkillsByStaffId, getApplicationsByStaffId, auth: {user, lo
                         <Route path="/" element={<Home />} />
                         <Route path="/roles" element={<Roles />} />
                         <Route path="/role/:roleListingId" element={<RolePage />} />
+                        <Route path="/profile" element={<Profile />} />
                       </Routes>
                     </Content>
                     <Footer style={footerStyle}>Footer</Footer>
