@@ -23,6 +23,7 @@ export default function (state = initialState, action: ActionType) {
             return {
                 ...state,
                 error: payload,
+                applications: [],
                 loading: false
             }
         default:
