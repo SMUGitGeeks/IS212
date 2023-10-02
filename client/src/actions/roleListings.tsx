@@ -6,9 +6,11 @@ import {
     ROLE_LISTINGS_ERROR,
     SORT_ROLE_LISTINGS_BY_DATE,
     SORT_ROLE_LISTINGS_BY_NAME,
-    SORT_ROLE_LISTINGS_BY_SKILL_MATCH
+    SORT_ROLE_LISTINGS_BY_SKILL_MATCH,
+    GET_ROLE_LISTINGS_CREATED_BY_HR,
+    GET_ROLE_LISTINGS_CREATED_BY_HR_ERROR
 } from './types';
-import {ActionType, FilterRoleListingsByRoleIdPayloadType, SortPayloadType} from "../types";
+import {ActionType, FilterRoleListingsByRoleIdPayloadType, SortPayloadType, GetRoleListingsByHRPayLoadType} from "../types";
 
 // Get all roles listings
 export const getRoleListings = (id: number) => async (dispatch: (action: ActionType) => void) => {
@@ -109,6 +111,37 @@ export const sortRoleListingsBySkillMatch = (payload: SortPayloadType) => async 
         payload
     });
 }
+
+// HR
+
+// get all role listings created by HR
+export const getRoleListingsCreatedByHR = (payload: GetRoleListingsByHRPayLoadType) => async (dispatch: (action: ActionType) => void) => {
+    try{
+        const res = await axios.get('/api/role_listing/details')
+        const res2 = await axios.get('/api/role/details');
+        for (let i = 0; i < res.data.length; i++) {
+            for (let j = 0; j < res2.data.length; j++) {
+                // payload is HR's staff id
+                if (res.data[i]["rl_creator"] === payload) {
+                    res.data[i].role_name = res2.data[j].role_name;
+                    res.data[i].role_description = res2.data[j].role_description;
+                    res.data[i].role_status = res2.data[j].role_status;
+                }
+            }
+        }
+        dispatch({
+            type: GET_ROLE_LISTINGS_CREATED_BY_HR,
+            payload: res.data
+        });
+    }
+    catch (err: any) {
+        dispatch({
+            type: GET_ROLE_LISTINGS_CREATED_BY_HR_ERROR,
+            payload: {msg: err.response.statusText, status: err.response.status}
+        });
+    }
+}
+
 
 
 
