@@ -1,4 +1,5 @@
 import {
+    FILTER_STAFF_LISTINGS_BY_SKILL_ID,
     FILTER_STAFF_LISTINGS_BY_STAFF_ID,
     GET_STAFF_LISTING,
     GET_STAFF_LISTINGS,
@@ -68,6 +69,29 @@ export default function (state = initialState, action: ActionType) {
                 }
             } else {
                 let filteredStaffListings = state.rawStaffListings.filter((rawStaffListing: any) => payload["staffIds"].includes(rawStaffListing.staff_id));
+                return {
+                    ...state,
+                    staffListings: filteredStaffListings,
+                }
+            }
+        case FILTER_STAFF_LISTINGS_BY_SKILL_ID:
+            // payload is an Array of skill ids
+            if (payload["skillIds"].length === 0) {
+                return {
+                    ...state,
+                    staffListings: state.rawStaffListings
+                }
+            } else {
+                let filteredStaffListings = state.rawStaffListings.filter((rawStaffListing: any) => {
+                        let skillIds = rawStaffListing.skills.map((skill: any) => skill.skill_id);
+                        for (let i = 0; i < payload["skillIds"].length; i++) {
+                            if (skillIds.includes(payload["skillIds"][i])) {
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+                );
                 return {
                     ...state,
                     staffListings: filteredStaffListings,
