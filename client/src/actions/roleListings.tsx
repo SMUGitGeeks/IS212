@@ -19,6 +19,7 @@ export const getRoleListings = (id: number) => async (dispatch: (action: ActionT
         const res3 = await axios.get('/api/role/skills');
         // staff/skills have [{"staff_id":1,"skill_id":1},{"staff_id":1,"skill_id":2}...]
         const res4 = await axios.get('/api/staff/skills/' + id);
+        const res5 = await axios.get('/api/role_listing/applications');
         // include skill % match in role listings
         for (let i = 0; i < res.data.length; i++) {
             let skillMatch = 0;
@@ -42,6 +43,17 @@ export const getRoleListings = (id: number) => async (dispatch: (action: ActionT
                     res.data[i].role_status = res2.data[j].role_status;
                 }
             }
+        }
+
+        // include number of applications in role listings
+        for (let i = 0; i < res.data.length; i++) {
+            let applicationCount = 0;
+            for (let j = 0; j < res5.data.length; j++) {
+                if (res.data[i]["rl_id"] === res5.data[j]["rl_id"]) {
+                    applicationCount++;
+                }
+            }
+            res.data[i].application_count = applicationCount;
         }
 
         dispatch({
