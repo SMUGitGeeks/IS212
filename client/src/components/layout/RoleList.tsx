@@ -11,12 +11,13 @@ const RoleList = ({
                       getRoleListings,
                       roleListing: {roleListings, loading},
                       staffSkill: {staffSkill},
-                      auth: {user}
+                      auth: {user, isHR}
                   }: any) => {
     useEffect(() => {
         getRoleListings(user);
 
     }, [getRoleListings, user]);
+
 
     const date = new Date();
 
@@ -82,6 +83,10 @@ const RoleList = ({
                             description={date.getDate() - new Date(item.rl_open).getDate() + " days ago"}
                         />
                         {item.skill_match}
+                        <br/>
+                        {(isHR) &&
+                            item.application_count + " applications submitted"}
+
                     </List.Item>
                 </Link>
 
