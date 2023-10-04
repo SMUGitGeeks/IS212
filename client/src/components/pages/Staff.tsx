@@ -4,6 +4,7 @@ import StaffList from '../layout/StaffList';
 import {Col, Row, Select, Space, Typography} from 'antd';
 import {useDispatch} from 'react-redux';
 import {rowGutterStyle} from '../../App';
+import {sortStaffListingsByFName, sortStaffListingsByLName} from "../../actions/staffListings";
 
 const {Title} = Typography;
 
@@ -15,20 +16,20 @@ interface filterOption {
 // Sort Example:
 const sortOptions: filterOption[] = [
     {
-        value: 'asc',
-        label: 'A-Z'
+        value: 'ascF',
+        label: 'A-Z (First Name)'
     },
     {
-        value: 'desc',
-        label: 'Z-A'
+        value: 'descF',
+        label: 'Z-A (First Name)'
     },
     {
-        value: 'recent',
-        label: 'Most Recent'
+        value: 'ascL',
+        label: 'A-Z (Last Name)'
     },
     {
-        value: 'skillmatch',
-        label: 'Skill Match'
+        value: 'descL',
+        label: 'Z-A (Last Name)'
     }
 ]
 
@@ -36,6 +37,21 @@ const Staff = () => {
 
     const dispatch = useDispatch();
     const onChange = (value: string) => {
+        let direction = value;
+        switch (direction) {
+            case 'ascF':
+                dispatch(sortStaffListingsByFName({direction}) as any);
+                break;
+            case 'descF':
+                dispatch(sortStaffListingsByFName({direction}) as any);
+                break;
+            case 'ascL':
+                dispatch(sortStaffListingsByLName({direction}) as any);
+                break;
+            case 'descL':
+                dispatch(sortStaffListingsByLName({direction}) as any);
+                break;
+        }
 
     }
 

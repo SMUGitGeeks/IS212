@@ -1,6 +1,12 @@
 import axios from 'axios';
-import {GET_STAFF_LISTING, GET_STAFF_LISTINGS, STAFF_LISTINGS_ERROR,} from './types';
-import {ActionType} from "../types";
+import {
+    GET_STAFF_LISTING,
+    GET_STAFF_LISTINGS,
+    SORT_STAFF_LISTINGS_BY_FNAME,
+    SORT_STAFF_LISTINGS_BY_LNAME,
+    STAFF_LISTINGS_ERROR
+} from './types';
+import {ActionType, SortPayloadType} from "../types";
 
 // Get all roles listings
 export const getStaffListings = () => async (dispatch: (action: ActionType) => void) => {
@@ -34,6 +40,19 @@ export const getStaffListing = (id: number) => async (dispatch: (action: ActionT
     }
 }
 
+export const sortStaffListingsByFName = (payload: SortPayloadType) => async (dispatch: (action: ActionType) => void) => {
+    dispatch({
+        type: SORT_STAFF_LISTINGS_BY_FNAME,
+        payload
+    });
+}
+
+export const sortStaffListingsByLName = (payload: SortPayloadType) => async (dispatch: (action: ActionType) => void) => {
+    dispatch({
+        type: SORT_STAFF_LISTINGS_BY_LNAME,
+        payload
+    });
+}
 
 
 
