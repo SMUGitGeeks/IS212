@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {
+    FILTER_STAFF_LISTINGS_BY_STAFF_ID,
     GET_STAFF_LISTING,
     GET_STAFF_LISTINGS,
     SORT_STAFF_LISTINGS_BY_FNAME,
@@ -50,6 +51,13 @@ export const sortStaffListingsByFName = (payload: SortPayloadType) => async (dis
 export const sortStaffListingsByLName = (payload: SortPayloadType) => async (dispatch: (action: ActionType) => void) => {
     dispatch({
         type: SORT_STAFF_LISTINGS_BY_LNAME,
+        payload
+    });
+}
+
+export const filterStaffListingsByStaffId = (payload: any) => async (dispatch: (action: ActionType) => void) => {
+    dispatch({
+        type: FILTER_STAFF_LISTINGS_BY_STAFF_ID,
         payload
     });
 }

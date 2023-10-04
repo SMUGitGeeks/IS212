@@ -5,6 +5,7 @@ import {Col, Row, Select, Space, Typography} from 'antd';
 import {useDispatch} from 'react-redux';
 import {rowGutterStyle} from '../../App';
 import {sortStaffListingsByFName, sortStaffListingsByLName} from "../../actions/staffListings";
+import StaffSearchFilter from "../layout/StaffSearchFilter";
 
 const {Title} = Typography;
 
@@ -77,7 +78,7 @@ const Staff = () => {
                 </Row>
                 <Row gutter={rowGutterStyle} justify={'center'}>
                     <Col xs={22} sm={22} md={22} lg={6} xl={5}>
-                        <div>Staff Search Filter Here</div>
+                        <StaffSearchFilter/>
                     </Col>
                     <Col xs={4} sm={4} md={4} lg={0} xl={0} style={{padding: '20px'}}></Col>
                     <Col xs={22} sm={22} md={22} lg={15} xl={17}>

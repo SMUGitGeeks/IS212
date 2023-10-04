@@ -1,9 +1,10 @@
 import {
+    FILTER_STAFF_LISTINGS_BY_STAFF_ID,
     GET_STAFF_LISTING,
     GET_STAFF_LISTINGS,
     SORT_STAFF_LISTINGS_BY_FNAME,
     SORT_STAFF_LISTINGS_BY_LNAME,
-    STAFF_LISTINGS_ERROR,
+    STAFF_LISTINGS_ERROR
 } from '../actions/types';
 import {ActionType} from "../types";
 
@@ -57,6 +58,20 @@ export default function (state = initialState, action: ActionType) {
                 ...state,
                 staffListings: sortedStaffListings2,
                 rawStaffListings: sortedStaffListings2,
+            }
+        case FILTER_STAFF_LISTINGS_BY_STAFF_ID:
+            // payload is an Array of role ids
+            if (payload["staffIds"].length === 0) {
+                return {
+                    ...state,
+                    staffListings: state.rawStaffListings
+                }
+            } else {
+                let filteredStaffListings = state.rawStaffListings.filter((rawStaffListing: any) => payload["staffIds"].includes(rawStaffListing.staff_id));
+                return {
+                    ...state,
+                    staffListings: filteredStaffListings,
+                }
             }
         default:
             return state;
