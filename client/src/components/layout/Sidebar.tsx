@@ -35,6 +35,11 @@ const Sidebar = ({logout, auth: {isHR}}: any) => {
             key: '/hr',
             icon: <SearchOutlined/>,
         });
+        items.push({
+            label: (<Link to={"/staff"}>{"Staff"}</Link>),
+            key: '/staff',
+            icon: <SearchOutlined/>,
+        })
     }
 
     // const onClick: MenuProps['onClick'] = ({ key }) => {

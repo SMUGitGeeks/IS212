@@ -16,6 +16,7 @@ import {getApplicationsByStaffId} from "./actions/applications";
 import Profile from './components/pages/Profile';
 import Restricted from "./components/pages/Restricted";
 import HR from "./components/pages/HR";
+import Staff from "./components/pages/Staff";
 
 const {Header, Footer, Sider, Content} = Layout;
 
@@ -50,21 +51,26 @@ const App = ({getStaffSkillsByStaffId, getApplicationsByStaffId, auth: {user, is
                             <Header style={{padding: '0px 0px', backgroundColor: "white", width: "100%"}}>
                                 <Navbar/>
                             </Header>
-                            <Content>
-                                <Routes>
-                                    <Route path="/" element={<Home/>}/>
-                                    <Route path="/roles" element={<Roles/>}/>
-                                    <Route path="/role/:roleListingId" element={<RolePage/>}/>
-                                    <Route path="/profile" element={<Profile/>}/>
-                                    {
-                                        isHR ? (
-                                            <Route path="/hr" element={<HR/>}/>
-
-                                        ) : (
-                                            <Route path="/hr" element={<Restricted/>}/>
-                                        )
-                                    }
-                                </Routes>
+                            <Content>{
+                                isHR ? (
+                                    <Routes>
+                                        <Route path="/" element={<Home/>}/>
+                                        <Route path="/roles" element={<Roles/>}/>
+                                        <Route path="/role/:roleListingId" element={<RolePage/>}/>
+                                        <Route path="/profile" element={<Profile/>}/>
+                                        <Route path="/hr" element={<HR/>}/>
+                                        <Route path="/staff" element={<Staff/>}/>
+                                    </Routes>
+                                ) : (
+                                    <Routes>
+                                        <Route path="/" element={<Home/>}/>
+                                        <Route path="/roles" element={<Roles/>}/>
+                                        <Route path="/role/:roleListingId" element={<RolePage/>}/>
+                                        <Route path="/profile" element={<Profile/>}/>
+                                        <Route path="/hr" element={<Restricted/>}/>
+                                        <Route path="/staff" element={<Restricted/>}/>
+                                    </Routes>
+                                )}
                             </Content>
                             <Footer style={footerStyle}>Footer</Footer>
                         </Layout>
