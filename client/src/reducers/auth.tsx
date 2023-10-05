@@ -5,7 +5,8 @@ import {ActionType} from "../types";
 const initialState = {
     user: null,
     loading: true,
-    error: {}
+    error: {},
+    isHR: false,
 }
 
 export default function (state = initialState, action: ActionType) {
@@ -16,19 +17,22 @@ export default function (state = initialState, action: ActionType) {
             return {
                 ...state,
                 user: payload,
-                loading: false
+                loading: false,
+                isHR: false
             };
         case LOGIN_HR:
             return {
                 ...state,
                 user: payload,
-                loading: false
+                loading: false,
+                isHR: true
             };
         case LOGOUT:
             return {
                 ...state,
                 user: null,
-                loading: false
+                loading: false,
+                isHR: false
             };
         case LOGIN_ERROR:
             return {
