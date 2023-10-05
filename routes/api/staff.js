@@ -9,7 +9,8 @@ const router = express.Router();
 
 router.route("/details/").get(controllers.getStaffDetails);
 router.route("/details/:id").get(controllers.getStaffDetail);
-router.route("/skills/:id").get(controllers.getStaffSkills);
+router.route("/skills").get(controllers.getStaffSkills);
+router.route("/skills/:id").get(controllers.getStaffSkill);
 router.route("/role/:id").get(controllers.getStaffRoles);
 router.route("/application/:id").get(controllers.getStaffApplications);
 
@@ -18,13 +19,6 @@ router.route("/application/:id").get(controllers.getStaffApplications);
 // @access  Public
 
 router.route("/application/").post(controllers.createApplication);
-
-
-
-
-
-
-
 
 
 module.exports = router;
