@@ -40,3 +40,19 @@ export interface GetApplicationsByStaffIdPayloadType {
 export interface GetRoleSkillsByRoleIdPayloadType {
     roleId: number;
 }
+
+export interface GetApplicantsByRoleListingIdPayloadType {
+    rl_id: number;
+    staffId: number;
+    role_app_status: string;
+    app_ts: string;
+    role_name: string;
+    supporting_doc: Blob;
+    fname: string;
+    lname: string;
+    dept: string;
+    email: string;
+    phone: string;
+    biz_address: string;
+    sys_role: string;
+}

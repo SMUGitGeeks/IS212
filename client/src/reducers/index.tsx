@@ -7,6 +7,7 @@ import application from "./applications";
 import roleSkill from "./roleSkills";
 import staffListing from "./staffListings";
 import skill from "./skills";
+import applicants from "./applicants";
 
 export default combineReducers({
     role,
@@ -16,5 +17,6 @@ export default combineReducers({
     application,
     roleSkill,
     staffListing,
-    skill
+    skill,
+    applicants
 })
