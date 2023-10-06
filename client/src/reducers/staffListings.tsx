@@ -96,12 +96,14 @@ export default function (state = initialState, action: ActionType) {
             } else {
                 let filteredStaffListings = state.rawStaffListings.filter((rawStaffListing: any) => {
                         let skillIds = rawStaffListing.skills.map((skill: any) => skill.skill_id);
+                        // check that all payload skill ids are in the skillIds array
                         for (let i = 0; i < payload["skillIds"].length; i++) {
-                            if (skillIds.includes(payload["skillIds"][i])) {
-                                return true;
+                            if (!skillIds.includes(payload["skillIds"][i])) {
+                                return false;
                             }
                         }
-                        return false;
+                        
+                        return true;
                     }
                 );
                 return {
@@ -109,6 +111,8 @@ export default function (state = initialState, action: ActionType) {
                     staffListings: filteredStaffListings,
                 }
             }
+        
+        
         case FILTER_STAFF_LISTINGS_BY_DEPARTMENT:
             // payload is an Array of department names
             if (payload["dept"].length === 0) {
