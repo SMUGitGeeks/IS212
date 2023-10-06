@@ -26,7 +26,11 @@ export const getStaffListings = () => async (dispatch: (action: ActionType) => v
                 if (res.data[i]["staff_id"] === res2.data[j]["staff_id"]) {
                     for (let k = 0; k < res3.data.length; k++) {
                         if (res2.data[j]["skill_id"] === res3.data[k]["skill_id"]) {
-                            res.data[i].skills.push(res3.data[k]);
+                            let res3Clone = Object.assign({}, res3.data[k]);
+
+                            // add ss_status to res.data.skills
+                            res3Clone.ss_status = res2.data[j]["ss_status"];
+                            res.data[i].skills.push(res3Clone);
                         }
                     }
                 }

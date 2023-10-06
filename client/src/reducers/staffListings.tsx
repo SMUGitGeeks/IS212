@@ -86,32 +86,60 @@ export default function (state = initialState, action: ActionType) {
                     staffListings: filteredStaffListings,
                 }
             }
+        // case FILTER_STAFF_LISTINGS_BY_SKILL_ID:
+        //     // payload is an Array of skill ids
+        //     if (payload["skillIds"].length === 0) {
+        //         return {
+        //             ...state,
+        //             staffListings: state.rawStaffListings
+        //         }
+        //     } else {
+        //         let filteredStaffListings = state.rawStaffListings.filter((rawStaffListing: any) => {
+        //                 let skillIds = rawStaffListing.skills.map((skill: any) => skill.skill_id);
+        //                 // check that all payload skill ids are in the skillIds array
+        //                 for (let i = 0; i < payload["skillIds"].length; i++) {
+        //                     if (!skillIds.includes(payload["skillIds"][i])) {
+        //                         return false;
+        //                     }
+        //                 }
+                        
+        //                 return true;
+        //             }
+        //         );
+        //         return {
+        //             ...state,
+        //             staffListings: filteredStaffListings,
+        //         }
+        //     }
         case FILTER_STAFF_LISTINGS_BY_SKILL_ID:
             // payload is an Array of skill ids
             if (payload["skillIds"].length === 0) {
                 return {
-                    ...state,
-                    staffListings: state.rawStaffListings
-                }
+                ...state,
+                staffListings: state.rawStaffListings
+                };
             } else {
                 let filteredStaffListings = state.rawStaffListings.filter((rawStaffListing: any) => {
-                        let skillIds = rawStaffListing.skills.map((skill: any) => skill.skill_id);
-                        // check that all payload skill ids are in the skillIds array
-                        for (let i = 0; i < payload["skillIds"].length; i++) {
-                            if (!skillIds.includes(payload["skillIds"][i])) {
-                                return false;
-                            }
-                        }
-                        
-                        return true;
-                    }
+                let skillIds = rawStaffListing.skills.map((skill: any) => skill.skill_id);
+                
+                // Check that all payload skill ids are in the skillIds array
+                const allSkillIdsIncluded = payload["skillIds"].every((selectedSkillId: any) =>
+                    skillIds.includes(selectedSkillId)
                 );
+                
+                // Check that all skills have 'skill_status' set to 'active'
+                const allSkillsActive = rawStaffListing.skills.every(
+                    (skill: any) => skill.ss_status === 'active'
+                );
+                
+                return allSkillIdsIncluded && allSkillsActive;
+                });
+                
                 return {
-                    ...state,
-                    staffListings: filteredStaffListings,
-                }
+                ...state,
+                staffListings: filteredStaffListings,
+                };
             }
-        
         
         case FILTER_STAFF_LISTINGS_BY_DEPARTMENT:
             // payload is an Array of department names

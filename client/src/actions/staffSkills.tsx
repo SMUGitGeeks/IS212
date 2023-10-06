@@ -10,7 +10,7 @@ export const getStaffSkillsByStaffId = (payload: GetStaffSkillsByStaffIdPayloadT
         const res2 = await axios.get('/api/skill/details');
         for (let i = 0; i < res.data.length; i++) {
             for (let j = 0; j < res2.data.length; j++) {
-                if (res.data[i]["skill_id"] === res2.data[j]["skill_id"]) {
+                if (res.data[i]["skill_id"] === res2.data[j]["skill_id"] && (res.data[i]["ss_status"] === "active")) {
                     res.data[i].skill_name = res2.data[j].skill_name;
                     res.data[i].skill_status = res2.data[j].skill_status;
                 }
