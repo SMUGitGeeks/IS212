@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import React, {useEffect} from 'react';
+import {Link, useParams} from 'react-router-dom';
 import PropTypes from "prop-types";
-import { connect, useDispatch } from 'react-redux';
-import { getApplicantByStaffId, getApplicantsByRoleListingId } from '../../actions/applicants';
-import { Container } from 'react-bootstrap';
-import { List, Select, Skeleton, Space } from 'antd';
-import { getRoleListing } from '../../actions/roleListings';
-import { getRoleSkillsByRoleId } from '../../actions/roleSkills';
+import {connect, useDispatch} from 'react-redux';
+import {getStaffListingsByRLId} from '../../actions/staffListings';
+import {Container} from 'react-bootstrap';
+import {List, Select, Skeleton, Space} from 'antd';
+import {getRoleListing} from '../../actions/roleListings';
+import {getRoleSkillsByRoleId} from '../../actions/roleSkills';
 
 interface filterOption {
     value: string;
@@ -33,20 +33,19 @@ const sortOptions: filterOption[] = [
     }
 ]
 
-const RoleApplicants = ({getRoleListing,
-                        roleListing: {roleListing},
-                        roleSkill: {roleSkills},
-                        getRoleSkillsByRoleId,
-                        getApplicantsByRoleListingId,
-                        applicants: {applicants, loading},
-                        staffSkill: {staffSkill},
-                        getApplicantByStaffId
-                    }: any) => {
+const RoleApplicants = ({
+                            getRoleListing,
+                            roleListing: {roleListing},
+                            roleSkill: {roleSkills},
+                            getRoleSkillsByRoleId, getStaffListingsByRLId,
+                            staffListing: {staffListingsByRLId, loading},
+                            staffSkill: {staffSkill},
+                        }: any) => {
     const {roleListingId} = useParams();
     useEffect(() => {
-        getApplicantsByRoleListingId(roleListingId);
-    }, [getApplicantsByRoleListingId]);
-    
+        getStaffListingsByRLId(roleListingId);
+    }, [getStaffListingsByRLId]);
+
     useEffect(() => {
         getRoleListing(roleListingId);
         getRoleSkillsByRoleId(roleListingId);
@@ -99,7 +98,7 @@ const RoleApplicants = ({getRoleListing,
 
     return (
         <Container>
-            <Space direction='vertical'>
+            <Space direction='vertical' style={{width: '100%'}}>
                 <Select
                     style={{width: 200}}
                     placeholder="Sort by"
@@ -109,7 +108,7 @@ const RoleApplicants = ({getRoleListing,
                     options={sortOptions}
                     onChange={onChange}
                 />
-                { loading ?
+                {loading ?
                     <List
                         itemLayout="vertical"
                         size="large"
@@ -136,7 +135,7 @@ const RoleApplicants = ({getRoleListing,
                             },
                             pageSize: 10,
                         }}
-                        dataSource={applicants}
+                        dataSource={staffListingsByRLId}
                         footer={
                             <div>
                                 <b>ant design</b> footer part
@@ -152,7 +151,7 @@ const RoleApplicants = ({getRoleListing,
                                     //   <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
                                     // ]}
                                     // extra={
-                                        
+
                                     // }
                                 >
                                     <List.Item.Meta
@@ -171,25 +170,24 @@ const RoleApplicants = ({getRoleListing,
     )
 }
 RoleApplicants.propTypes = {
-    getApplicantsByRoleListingId: PropTypes.func.isRequired,
-    applicants: PropTypes.object.isRequired,
+    getStaffListingsByRLId: PropTypes.func.isRequired,
     getRoleListing: PropTypes.func.isRequired,
     roleListing: PropTypes.object.isRequired,
     roleSkill: PropTypes.object.isRequired,
     getRoleSkillsByRoleId: PropTypes.func.isRequired,
     staffSkill: PropTypes.object.isRequired,
-    getApplicantByStaffId: PropTypes.func.isRequired,
+    staffListing: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state: any) => ({
-    applicants: state.applicants,
+    staffListing: state.staffListing,
     roleListing: state.roleListing,
     roleSkill: state.roleSkill,
     staffSkill: state.staffSkill,
 });
 
 export default connect(mapStateToProps, {
-    getApplicantsByRoleListingId,
+    getStaffListingsByRLId,
     getRoleListing,
     getRoleSkillsByRoleId,
     getApplicantByStaffId

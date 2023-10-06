@@ -3,14 +3,16 @@ import {
     FILTER_STAFF_LISTINGS_BY_STAFF_ID,
     GET_STAFF_LISTING,
     GET_STAFF_LISTINGS,
+    GET_STAFF_LISTINGS_BY_RL_ID,
     SORT_STAFF_LISTINGS_BY_FNAME,
     SORT_STAFF_LISTINGS_BY_LNAME,
-    STAFF_LISTINGS_ERROR
+    STAFF_LISTINGS_ERROR,
 } from '../actions/types';
 import {ActionType} from "../types";
 
 const initialState = {
     staffListings: [],
+    staffListingsByRLId: [],
     rawStaffListings: [],
     staffListing: null,
     loading: true,
@@ -32,8 +34,7 @@ export default function (state = initialState, action: ActionType) {
                     rawStaffListings: payload,
                     loading: false
                 };
-            }
-            else {
+            } else {
                 return {
                     ...state,
                     staffListings: payload,
@@ -108,6 +109,12 @@ export default function (state = initialState, action: ActionType) {
                     staffListings: filteredStaffListings,
                 }
             }
+        case GET_STAFF_LISTINGS_BY_RL_ID:
+            return {
+                ...state,
+                staffListingsByRLId: payload,
+                loading: false
+            };
         default:
             return state;
     }
