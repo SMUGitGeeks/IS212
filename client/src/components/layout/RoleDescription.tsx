@@ -8,7 +8,7 @@ import {getRoleSkillsByRoleId} from "../../actions/roleSkills";
 import {getRoleListing} from "../../actions/roleListings";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 
 const {Title, Text} = Typography;
 
@@ -38,6 +38,7 @@ export const RoleDescription = ({
                                     roleSkill: {roleSkills},
                                     getRoleSkillsByRoleId,
                                     staffSkill: {staffSkill},
+                                    auth: {isHR},
                                 }: any) => {
 
     const {roleListingId} = useParams();
@@ -113,9 +114,10 @@ export const RoleDescription = ({
                         </div>
                     </Col>
                     <Col xs={24} sm={24} md={9} lg={7} xl={5}>
-                        <Space direction="vertical" align="center" size="large">
+                        {/* <Space direction="vertical" align="center" size="large"> */}
                             <Button type="primary" size="large" icon={<SolutionOutlined/>}>Apply Now</Button>
-                        </Space>
+                            
+                        {/* </Space> */}
                     </Col>
                 </Row>
 
@@ -127,7 +129,7 @@ export const RoleDescription = ({
                                 roleListing.rl_desc ?
                                     <>
                                         <Divider orientation="left" orientationMargin="0"
-                                                 style={{fontSize: 23}}>Details</Divider>
+                                                style={{fontSize: 23}}>Details</Divider>
                                         {roleListing.rl_desc}
                                     </> : <></>
                             }
@@ -148,6 +150,10 @@ export const RoleDescription = ({
                     {/* Skills Column */}
                     <Col xs={24} sm={24} md={24} lg={8} xl={6} xxl={5}>
                         <Space direction="vertical" style={{width: "100%"}}>
+                            {isHR ?
+                                <><Link to={"/role/" + roleListing.rl_id + "/applicants"}>View Applicants</Link>
+                                </> : <></>
+                            }
                             <Space direction="horizontal" align="center">
                                 <AimOutlined style={{fontSize: 25}}/>
                                 <p style={{fontSize: 26, margin: "0"}}>{matchPercentage}%</p>
@@ -186,6 +192,7 @@ RoleDescription.propTypes = {
     roleSkill: PropTypes.object.isRequired,
     roleListing: PropTypes.object.isRequired,
     staffSkill: PropTypes.object.isRequired,
+    auth: PropTypes.object.isRequired
 
     // roleListingId: PropTypes.number.isRequired
 };
@@ -194,6 +201,7 @@ const mapStateToProps = (state: any) => ({
     roleSkill: state.roleSkill,
     roleListing: state.roleListing,
     staffSkill: state.staffSkill,
+    auth: state.auth
 });
 
 export default connect(mapStateToProps, {

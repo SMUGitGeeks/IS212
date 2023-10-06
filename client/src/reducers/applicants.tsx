@@ -16,14 +16,14 @@ export default function (state = initialState, action: ActionType) {
         case GET_APPLICANTS_BY_ROLE_LISTING_ID:
             return {
                 ...state,
-                applications: payload,
+                applicants: payload,
                 loading: false
             };
         case APPLICANTS_ERROR:
             return {
                 ...state,
                 error: payload,
-                applications: [],
+                applicants: [],
                 loading: false
             };
         case GET_APPLICANT_BY_STAFF_ID:
