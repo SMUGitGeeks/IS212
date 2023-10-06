@@ -34,7 +34,7 @@ const sortOptions: filterOption[] = [
     }
 ]
 
-const Roles = () => {
+const RoleListing = () => {
 
     const dispatch = useDispatch();
 
@@ -84,4 +84,4 @@ const Roles = () => {
     );
 }
 
-export default Roles;
+export default RoleListing;

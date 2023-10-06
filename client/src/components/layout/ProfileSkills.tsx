@@ -41,6 +41,7 @@ const ProfileSkills = ({getStaffSkillsByStaffId, staffSkill: { staffSkill, loadi
     return (
         <Card>
             <Space size={20} direction="vertical" style={{width: "100%"}}>
+                <h2 style={{marginTop:0}}>My Skills</h2>
                 <Radio.Group value={skillState} buttonStyle="solid" onChange={selectChange}>
                     <Radio.Button value="all">All</Radio.Button>
                     <Radio.Button value="active">Active</Radio.Button>

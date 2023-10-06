@@ -2,7 +2,7 @@ import React, {Fragment, useEffect} from 'react';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import './App.css';
 import Home from './components/pages/Home';
-import Roles from './components/pages/Roles';
+import RoleListing from './components/pages/RoleListing';
 import RolePage from "./components/pages/RolePage";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
@@ -55,8 +55,8 @@ const App = ({getStaffSkillsByStaffId, getApplicationsByStaffId, auth: {user, is
                                 isHR ? (
                                     <Routes>
                                         <Route path="/" element={<Home/>}/>
-                                        <Route path="/roles" element={<Roles/>}/>
-                        <Route path="/roleListing/:roleListingId" element={<RolePage />} />
+                                        <Route path="/roleListing" element={<RoleListing/>}/>
+                                        <Route path="/roleListing/:roleListingId" element={<RolePage />} />
                                         <Route path="/profile" element={<Profile/>}/>
                                         <Route path="/hr" element={<HR/>}/>
                                         <Route path="/staff" element={<Staff/>}/>
@@ -64,8 +64,8 @@ const App = ({getStaffSkillsByStaffId, getApplicationsByStaffId, auth: {user, is
                                 ) : (
                                     <Routes>
                                         <Route path="/" element={<Home/>}/>
-                                        <Route path="/roles" element={<Roles/>}/>
-                                        <Route path="/role/:roleListingId" element={<RolePage/>}/>
+                                        <Route path="/roleListing" element={<RoleListing/>}/>
+                                        <Route path="/roleListing/:roleListingId" element={<RolePage/>}/>
                                         <Route path="/profile" element={<Profile/>}/>
                                         <Route path="/hr" element={<Restricted/>}/>
                                         <Route path="/staff" element={<Restricted/>}/>

@@ -12,7 +12,7 @@ const RoleList = ({
                     getRoleListings,
                     roleListing: {roleListings, loading},
                     staffSkill: {staffSkill},
-                    auth: {user}
+                    auth: {user, isHR}
                 }: any) => {
     useEffect(() => {
         getRoleListings(user);
