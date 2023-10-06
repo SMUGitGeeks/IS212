@@ -23,13 +23,24 @@ export default function (state = initialState, action: ActionType) {
 
     switch (type) {
         case GET_STAFF_LISTINGS:
-            return {
-                ...state,
-                staffListings: payload,
-                staffListing: payload[0],
-                rawStaffListings: payload,
-                loading: false
-            };
+            // check if staffListing is null
+            if (state.staffListing === null) {
+                return {
+                    ...state,
+                    staffListings: payload,
+                    staffListing: payload[0],
+                    rawStaffListings: payload,
+                    loading: false
+                };
+            }
+            else {
+                return {
+                    ...state,
+                    staffListings: payload,
+                    rawStaffListings: payload,
+                    loading: false
+                };
+            }
         case GET_STAFF_LISTING:
             return {
                 ...state,
