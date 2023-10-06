@@ -1,6 +1,6 @@
 import {Container} from "react-bootstrap";
 import type {TableProps} from 'antd';
-import {Table, Popover,Button, Row ,Col, Tag, Skeleton} from 'antd';
+import {Table, Popover,Button, Row ,Col, Tag, Skeleton, Space, List} from 'antd';
 import type {ColumnsType, FilterValue, SorterResult} from 'antd/es/table/interface';
 import {getApplicationsByStaffId} from "../../actions/applications";
 import React, {useEffect, useState} from "react";
@@ -8,41 +8,7 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import { GetApplicationsByStaffIdPayloadType } from "../../types";
 import { MoreOutlined } from "@ant-design/icons";
-
-
-interface DataType {
-    key: string;
-    name: string;
-    age: number;
-    address: string;
-}
-
-const data: DataType[] = [
-    {
-        key: '1',
-        name: 'John Brown',
-        age: 32,
-        address: 'New York No. 1 Lake Park',
-    },
-    {
-        key: '2',
-        name: 'Jim Green',
-        age: 42,
-        address: 'London No. 1 Lake Park',
-    },
-    {
-        key: '3',
-        name: 'Joe Black',
-        age: 32,
-        address: 'Sydney No. 1 Lake Park',
-    },
-    {
-        key: '4',
-        name: 'Jim Red',
-        age: 32,
-        address: 'London No. 2 Lake Park',
-    },
-];
+import { Link } from "react-router-dom";
 
 const MyApplications = ({getApplicationsByStaffId, application: {applications, loading}, auth: {user}}: any) => {
 
@@ -81,7 +47,7 @@ const MyApplications = ({getApplicationsByStaffId, application: {applications, l
         {
             title: 'Role Name',
             dataIndex: 'role_name',
-            key: 'roleName',
+            // key: 'roleName',
             // filters: [
             //     {text: 'Joe', value: 'Joe'},
             //     {text: 'Jim', value: 'Jim'},
@@ -96,60 +62,58 @@ const MyApplications = ({getApplicationsByStaffId, application: {applications, l
             sorter: (a, b) => a.role_name.length - b.role_name.length,
             sortOrder: sortedInfo.columnKey === 'roleName' ? sortedInfo.order : null,
             ellipsis: true,
+            // width: '30%',
         },
         {
             title: 'Date Applied',
             dataIndex: 'app_ts',
-            key: 'dateApplied',
+            // key: 'dateApplied',
             render: (date: any) =>
             <Skeleton loading={loading} active>
-                {new Date(date).toLocaleDateString(undefined,{ year: 'numeric', month: 'long', day: 'numeric' })}
+                {new Date(date).toLocaleDateString()}
             </Skeleton>
             ,
             sorter: (a, b) => new Date(a.app_ts).getTime() - new Date(b.app_ts).getTime(),
             sortOrder: sortedInfo.columnKey === 'dateApplied' ? sortedInfo.order : null,
             ellipsis: true,
+            // width: '20%',
         },
         {
             title: 'Status',
-            dataIndex: 'role_app_status',
-            key: 'status',
-            // filters: [
-            //     {text: 'Applied', value: 'applied'},
-            //     {text: 'Withdrawn', value: 'withdrawn'},
-            // ],
+            // dataIndex: 'rl_id',
+            // key: '',
+            filters: [
+                {text: 'Applied', value: 'applied'},
+                {text: 'Withdrawn', value: 'withdrawn'},
+            ],
             render: (record: any) => 
-            <Skeleton loading={loading} active>
-                <Row justify='space-between'>
-                    <Col span={1}>
-                        <Tag color={record === "applied" ? 'green' : "red"}>{record}</Tag>
-                    </Col>
-                    <Col span={1}>
-                        {
-                            record === 'applied' ? 
-                            <Popover
-                            placement="bottom"
-                            content={
-                                // <div>
-                                    <Button type="text" danger>Withdraw</Button>
-                                // </div>
-                            }
-                            trigger="click"
-                            >
-                                <MoreOutlined />
-                            </Popover>
-                                : <></>
+            <>
+                <Skeleton loading={loading} active>
+                    <Tag color={record.role_app_status === "applied" ? 'green' : "red"}>{record.role_app_status}</Tag>
+                </Skeleton>
+                <Popover
+                placement="bottom"
+                content={
+                    <Space direction="vertical" align="center">
+                        <Link to={"/roleListing/" + record.rl_id}>View Details</Link>
+
+                        {record.role_app_status === 'applied' ?
+                            <Button type="text" danger>Withdraw</Button>
+                            : <></>
                         }
-                    </Col>
-                </ Row>
-            </Skeleton>
+                        
+                    </Space>
+                }
+                trigger="click"
+                style={{float: 'right'}}
+                >
+                    <MoreOutlined />
+                </Popover>
+            </>
             ,
-            // filteredValue: filteredInfo.role_app_status || null,
-            // onFilter: (value: any, record) => record.role_app_status.includes(value),
-            // sorter: (a, b) => a.role_app_status.length - b.role_app_status.length,
-            // sortOrder: sortedInfo.columnKey === 'status' ? sortedInfo.order : null,
-            ellipsis: true,
-        },
+            width: '9rem',
+            // elipses: true,
+        }
     ];
     // console.log(applications);
 
