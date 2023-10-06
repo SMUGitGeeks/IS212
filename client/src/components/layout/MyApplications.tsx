@@ -1,6 +1,6 @@
 import {Container} from "react-bootstrap";
 import type {TableProps} from 'antd';
-import {Table, Popover,Button, Row ,Col, Tag} from 'antd';
+import {Table, Popover,Button, Row ,Col, Tag, Skeleton} from 'antd';
 import type {ColumnsType, FilterValue, SorterResult} from 'antd/es/table/interface';
 import {getApplicationsByStaffId} from "../../actions/applications";
 import React, {useEffect, useState} from "react";
@@ -88,6 +88,11 @@ const MyApplications = ({getApplicationsByStaffId, application: {applications, l
             // ],
             // filteredValue: filteredInfo.role_name || null,
             // onFilter: (value: any, record) => record.role_name.includes(value),
+            render: (role_name: any) => 
+                <Skeleton loading={loading} active>
+                    {role_name}
+                </Skeleton>
+            ,
             sorter: (a, b) => a.role_name.length - b.role_name.length,
             sortOrder: sortedInfo.columnKey === 'roleName' ? sortedInfo.order : null,
             ellipsis: true,
@@ -96,7 +101,11 @@ const MyApplications = ({getApplicationsByStaffId, application: {applications, l
             title: 'Date Applied',
             dataIndex: 'app_ts',
             key: 'dateApplied',
-            render: (date: any) => <>{new Date(date).toLocaleDateString(undefined,{ year: 'numeric', month: 'long', day: 'numeric' })}</>,
+            render: (date: any) =>
+            <Skeleton loading={loading} active>
+                {new Date(date).toLocaleDateString(undefined,{ year: 'numeric', month: 'long', day: 'numeric' })}
+            </Skeleton>
+            ,
             sorter: (a, b) => new Date(a.app_ts).getTime() - new Date(b.app_ts).getTime(),
             sortOrder: sortedInfo.columnKey === 'dateApplied' ? sortedInfo.order : null,
             ellipsis: true,
@@ -110,27 +119,31 @@ const MyApplications = ({getApplicationsByStaffId, application: {applications, l
             //     {text: 'Withdrawn', value: 'withdrawn'},
             // ],
             render: (record: any) => 
-            <Row justify='space-between'>
-                <Col span={1}>
-                    <Tag color={record === "applied" ? 'green' : "red"}>{record}</Tag>
-                </Col>
-                <Col span={1}>
-                    {
-                        record === 'applied' ? 
-                        <Popover
-                        content={
-                            <div>
-                                <Button type="text" danger>Withdraw</Button>
-                            </div>
+            <Skeleton loading={loading} active>
+                <Row justify='space-between'>
+                    <Col span={1}>
+                        <Tag color={record === "applied" ? 'green' : "red"}>{record}</Tag>
+                    </Col>
+                    <Col span={1}>
+                        {
+                            record === 'applied' ? 
+                            <Popover
+                            placement="bottom"
+                            content={
+                                // <div>
+                                    <Button type="text" danger>Withdraw</Button>
+                                // </div>
+                            }
+                            trigger="click"
+                            >
+                                <MoreOutlined />
+                            </Popover>
+                                : <></>
                         }
-                        trigger="click"
-                        >
-                            <MoreOutlined />
-                        </Popover>
-                            : <></>
-                    }
-                </Col>
-            </ Row>,
+                    </Col>
+                </ Row>
+            </Skeleton>
+            ,
             // filteredValue: filteredInfo.role_app_status || null,
             // onFilter: (value: any, record) => record.role_app_status.includes(value),
             // sorter: (a, b) => a.role_app_status.length - b.role_app_status.length,
@@ -144,7 +157,17 @@ const MyApplications = ({getApplicationsByStaffId, application: {applications, l
 
         <Container>
             <h1>My Applications</h1>
-            <Table columns={columns} dataSource={applications} onChange={handleChange}/>
+            <Table columns={columns} dataSource={
+                loading ? 
+                Array.from({length: 3}).map((_, i) => {
+                    return {
+                        key: i,
+                        role_name: "",
+                        app_ts: "",
+                        role_app_status: ""
+                    }
+                }) :  applications
+            } onChange={handleChange}/>
         </Container>
     );
 }
