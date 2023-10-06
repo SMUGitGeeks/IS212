@@ -94,7 +94,7 @@ const RoleApplicants = ({getRoleListing,
 
     return (
         <Container>
-            <Space direction='vertical'>
+            <Space direction='vertical' style={{width: '100%'}}>
                 <Select
                     style={{width: 200}}
                     placeholder="Sort by"
