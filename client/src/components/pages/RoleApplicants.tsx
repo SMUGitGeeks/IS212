@@ -5,6 +5,8 @@ import { connect, useDispatch } from 'react-redux';
 import { getApplicantsByRoleListingId } from '../../actions/applicants';
 import { Container } from 'react-bootstrap';
 import { List, Select, Skeleton, Space } from 'antd';
+import { getRoleListing } from '../../actions/roleListings';
+import { getRoleSkillsByRoleId } from '../../actions/roleSkills';
 
 interface filterOption {
     value: string;
@@ -31,11 +33,23 @@ const sortOptions: filterOption[] = [
     }
 ]
 
-const RoleApplicants = ({getApplicantsByRoleListingId, applicants: {applicants, loading}}: any) => {
+const RoleApplicants = ({getRoleListing,
+                        roleListing: {roleListing},
+                        roleSkill: {roleSkills},
+                        getRoleSkillsByRoleId,
+                        getApplicantsByRoleListingId,
+                        applicants: {applicants, loading},
+                        staffSkill: {staffSkill},
+                    }: any) => {
     const {roleListingId} = useParams();
     useEffect(() => {
         getApplicantsByRoleListingId(roleListingId);
     }, [getApplicantsByRoleListingId]);
+    
+    useEffect(() => {
+        getRoleListing(roleListingId);
+        getRoleSkillsByRoleId(roleListingId);
+    }, [getRoleListing]);
 
     const dispatch = useDispatch();
 
@@ -50,6 +64,33 @@ const RoleApplicants = ({getApplicantsByRoleListingId, applicants: {applicants, 
         //     dispatch(sortRoleListingsByName({direction}) as any);
         // }
     }
+
+    const calculateSkillsMatch = () => {
+        let matchedSkills = 0;
+        // let missingSkills = 0;
+        let numRoleSkills = roleSkills.length;
+
+        let missingSkillNames = [] as any;
+        staffSkill.forEach((staffSkill: any) => {
+            roleSkills.forEach((roleSkill: any) => {
+                if (
+                    staffSkill.skill_id === roleSkill.skill_id &&
+                    (staffSkill.skill_status === "in-progress" || staffSkill.skill_status === "unverified")
+                ) {
+                    missingSkillNames.push([roleSkill.skill_name, roleSkill.skill_status]);
+                } else if (
+                    staffSkill.skill_id !== roleSkill.skill_id
+                ) {
+                    missingSkillNames.push([roleSkill.skill_name, "missing"]);
+                } else {
+                    matchedSkills++;
+                }
+            });
+        });
+
+        let match = (matchedSkills / numRoleSkills) * 100;
+        return [match.toFixed(2), missingSkillNames];
+    };
 
     return (
         <Container>
@@ -105,13 +146,15 @@ const RoleApplicants = ({getApplicantsByRoleListingId, applicants: {applicants, 
                                     //   <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
                                     //   <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
                                     // ]}
-                                    
+                                    // extra={
+                                        
+                                    // }
                                 >
                                     <List.Item.Meta
                                         title={item.fname + " " + item.lname}
                                         description={item.dept}
                                     />
-                                    {item.skill_match}
+                                    {calculateSkillsMatch()[0] + "% Match"}
                                     <br/>
                                 </List.Item>
                             </Link>
@@ -125,12 +168,22 @@ const RoleApplicants = ({getApplicantsByRoleListingId, applicants: {applicants, 
 RoleApplicants.propTypes = {
     getApplicantsByRoleListingId: PropTypes.func.isRequired,
     applicants: PropTypes.object.isRequired,
+    getRoleListing: PropTypes.func.isRequired,
+    roleListing: PropTypes.object.isRequired,
+    roleSkill: PropTypes.object.isRequired,
+    getRoleSkillsByRoleId: PropTypes.func.isRequired,
+    staffSkill: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state: any) => ({
     applicants: state.applicants,
+    roleListing: state.roleListing,
+    roleSkill: state.roleSkill,
+    staffSkill: state.staffSkill,
 });
 
 export default connect(mapStateToProps, {
     getApplicantsByRoleListingId,
+    getRoleListing,
+    getRoleSkillsByRoleId
 })(RoleApplicants);
