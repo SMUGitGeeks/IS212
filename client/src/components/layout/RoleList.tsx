@@ -1,18 +1,19 @@
-import {StarFilled} from '@ant-design/icons';
 import React, {useEffect} from 'react';
 import {getRoleListings} from '../../actions/roleListings';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {List, Skeleton, Space} from 'antd';
+import {List, Skeleton, Space, Progress, Typography} from 'antd';
 import {Link} from 'react-router-dom';
+import { getRoleSkillsByRoleId } from "../../actions/roleSkills";
 
+const { Text } = Typography;
 
 const RoleList = ({
-                      getRoleListings,
-                      roleListing: {roleListings, loading},
-                      staffSkill: {staffSkill},
-                      auth: {user, isHR}
-                  }: any) => {
+                    getRoleListings,
+                    roleListing: {roleListings, loading},
+                    staffSkill: {staffSkill},
+                    auth: {user, isHR}
+                }: any) => {
     useEffect(() => {
         getRoleListings(user);
 
@@ -20,7 +21,6 @@ const RoleList = ({
 
 
     const date = new Date();
-
 
     return loading ?
         <List
@@ -56,7 +56,7 @@ const RoleList = ({
                 </div>
             }
             renderItem={(item: any) => (
-                <Link to={`/role/${item.rl_id}`}>
+                <Link to={`/roleListing/${item.rl_id}`}>
                     <List.Item
                         key={item.role_name}
                         // actions={[
@@ -67,12 +67,11 @@ const RoleList = ({
                         extra={
                             <>
                                 <Space direction='vertical'>
-                                    <StarFilled style={{fontSize: '18px'}}/>
-                                    {/* <img
-                      width={200}
-                      alt="logo"
-                      src={item.imgSrc}
-                    /> */}
+                                    <Progress type="circle" size={60} percent={item.skill_match} 
+                                    // <Progress type="circle" size={80} percent={90} 
+                                    format={(percent) => 
+                                    `${percent}%`
+                                    } />
                                 </Space>
                             </>
                         }
@@ -107,4 +106,12 @@ const mapStateToProps = (state: any) => ({
     auth: state.auth
 });
 
-export default connect(mapStateToProps, {getRoleListings})(RoleList);
+export default connect(mapStateToProps, {getRoleSkillsByRoleId, getRoleListings})(RoleList);
+
+function useCallback(arg0: (skillsPerRole: any) => number) {
+    throw new Error('Function not implemented.');
+}
+function useState<T>(arg0: {}): [any, any] {
+    throw new Error('Function not implemented.');
+}
+

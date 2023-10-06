@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import Roles from './Roles';
+import Roles from './RoleListing';
 import { store } from '../../mockStore';
 import { Provider } from 'react-redux';
 import {mockMatchMedia} from "../../setupTests";

@@ -65,18 +65,6 @@ const StaffList = ({
                         //   <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
                         //   <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
                         // ]}
-                        extra={
-                            <>
-                                <Space direction='vertical'>
-                                    <StarFilled style={{fontSize: '18px'}}/>
-                                    {/* <img
-                      width={200}
-                      alt="logo"
-                      src={item.imgSrc}
-                    /> */}
-                                </Space>
-                            </>
-                        }
                     >
                         <List.Item.Meta
                             title={item.fname + " " + item.lname}

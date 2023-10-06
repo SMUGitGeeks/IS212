@@ -2,7 +2,7 @@ import React, {Fragment, useEffect} from 'react';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import './App.css';
 import Home from './components/pages/Home';
-import Roles from './components/pages/Roles';
+import RoleListing from './components/pages/RoleListing';
 import RolePage from "./components/pages/RolePage";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
@@ -17,7 +17,7 @@ import Profile from './components/pages/Profile';
 import Restricted from "./components/pages/Restricted";
 import HR from "./components/pages/HR";
 import Staff from "./components/pages/Staff";
-import RoleApplicants from './components/pages/RoleApplicants';
+import StaffDetail from './components/pages/StaffDetail';
 
 const {Header, Footer, Sider, Content} = Layout;
 
@@ -56,22 +56,22 @@ const App = ({getStaffSkillsByStaffId, getApplicationsByStaffId, auth: {user, is
                                 isHR ? (
                                     <Routes>
                                         <Route path="/" element={<Home/>}/>
-                                        <Route path="/roles" element={<Roles/>}/>
-                                        <Route path="/role/:roleListingId" element={<RolePage/>}/>
+                                        <Route path="/roleListing" element={<RoleListing/>}/>
+                                        <Route path="/roleListing/:roleListingId" element={<RolePage />} />
                                         <Route path="/profile" element={<Profile/>}/>
                                         <Route path="/hr" element={<HR/>}/>
                                         <Route path="/staff" element={<Staff/>}/>
-                                        <Route path="/role/:roleListingId/applicants" element={<RoleApplicants/>}/>
+                                        <Route path="/staff/:staffId" element={<StaffDetail/>}/>
                                     </Routes>
                                 ) : (
                                     <Routes>
                                         <Route path="/" element={<Home/>}/>
-                                        <Route path="/roles" element={<Roles/>}/>
-                                        <Route path="/role/:roleListingId" element={<RolePage/>}/>
+                                        <Route path="/roleListing" element={<RoleListing/>}/>
+                                        <Route path="/roleListing/:roleListingId" element={<RolePage/>}/>
                                         <Route path="/profile" element={<Profile/>}/>
                                         <Route path="/hr" element={<Restricted/>}/>
                                         <Route path="/staff" element={<Restricted/>}/>
-                                        <Route path="/role/:roleListingId/applicants" element={<Restricted/>}/>
+                                        <Route path="/staff/:staffId" element={<Restricted/>}/>
                                     </Routes>
                                 )}
                             </Content>
