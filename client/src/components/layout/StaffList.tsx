@@ -1,26 +1,25 @@
+import {StarFilled} from '@ant-design/icons';
 import React, {useEffect} from 'react';
-import {getRoleListings} from '../../actions/roleListings';
+import {getStaffListings} from '../../actions/staffListings';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {List, Skeleton, Space, Progress, Typography} from 'antd';
+import {List, Skeleton, Space} from 'antd';
 import {Link} from 'react-router-dom';
-import { getRoleSkillsByRoleId } from "../../actions/roleSkills";
 
-const { Text } = Typography;
 
-const RoleList = ({
-                    getRoleListings,
-                    roleListing: {roleListings, loading},
-                    staffSkill: {staffSkill},
-                    auth: {user}
-                }: any) => {
+const StaffList = ({
+                       getStaffListings,
+                       staffListing: {staffListings, loading},
+                   }: any) => {
     useEffect(() => {
-        getRoleListings(user);
+        getStaffListings();
 
-    }, [getRoleListings, user]);
+    }, [getStaffListings]);
+    console.log(staffListings);
 
 
     const date = new Date();
+
 
     return loading ?
         <List
@@ -40,6 +39,7 @@ const RoleList = ({
             )}
         />
         :
+
         <List
             itemLayout="vertical"
             size="large"
@@ -49,16 +49,17 @@ const RoleList = ({
                 },
                 pageSize: 10,
             }}
-            dataSource={roleListings}
+            dataSource={staffListings}
+
             footer={
                 <div>
                     <b>ant design</b> footer part
                 </div>
             }
             renderItem={(item: any) => (
-                <Link to={`/roleListing/${item.rl_id}`}>
+                <Link to={`/staff/${item.staff_id}`}>
                     <List.Item
-                        key={item.role_name}
+                        key={item.fname}
                         // actions={[
                         //   <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
                         //   <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
@@ -67,24 +68,23 @@ const RoleList = ({
                         extra={
                             <>
                                 <Space direction='vertical'>
-                                    <Progress type="circle" size={60} percent={item.skill_match} 
-                                    // <Progress type="circle" size={80} percent={90} 
-                                    format={(percent) => 
-                                    `${percent}%`
-                                    } />
+                                    <StarFilled style={{fontSize: '18px'}}/>
+                                    {/* <img
+                      width={200}
+                      alt="logo"
+                      src={item.imgSrc}
+                    /> */}
                                 </Space>
                             </>
                         }
                     >
                         <List.Item.Meta
-                            title={item.role_name}
+                            title={item.fname + " " + item.lname}
                             // description={item.description}
-                            description={date.getDate() - new Date(item.rl_open).getDate() + " days ago"}
+                            description={item.dept}
                         />
-                        {item.skill_match}
                         <br/>
-                        {(isHR) &&
-                            item.application_count + " applications submitted"}
+
 
                     </List.Item>
                 </Link>
@@ -93,25 +93,13 @@ const RoleList = ({
         />
 }
 
-RoleList.propTypes = {
-    getRoleListings: PropTypes.func.isRequired,
-    roleListing: PropTypes.object.isRequired,
-    staffSkill: PropTypes.object.isRequired,
-    auth: PropTypes.object.isRequired
+StaffList.propTypes = {
+    getStaffListings: PropTypes.func.isRequired,
+    staffListing: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = (state: any) => ({
-    roleListing: state.roleListing,
-    staffSkill: state.staffSkill,
-    auth: state.auth
+    staffListing: state.staffListing,
 });
 
-export default connect(mapStateToProps, {getRoleSkillsByRoleId, getRoleListings})(RoleList);
-
-function useCallback(arg0: (skillsPerRole: any) => number) {
-    throw new Error('Function not implemented.');
-}
-function useState<T>(arg0: {}): [any, any] {
-    throw new Error('Function not implemented.');
-}
-
+export default connect(mapStateToProps, {getStaffListings})(StaffList);

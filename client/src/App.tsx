@@ -1,5 +1,5 @@
-import React, {Fragment, useEffect, useState} from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import React, {Fragment, useEffect} from 'react';
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import './App.css';
 import Home from './components/pages/Home';
 import Roles from './components/pages/Roles';
@@ -8,12 +8,15 @@ import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {loginHR, loginStaff} from "./actions/auth";
 import Login from "./components/pages/Login";
-import { Layout, MenuProps} from 'antd';
+import {Layout} from 'antd';
 import Sidebar from './components/layout/Sidebar';
 import Navbar from './components/layout/Navbar';
-import { getStaffSkillsByStaffId } from "./actions/staffSkills";
-import { getApplicationsByStaffId } from "./actions/applications";
+import {getStaffSkillsByStaffId} from "./actions/staffSkills";
+import {getApplicationsByStaffId} from "./actions/applications";
 import Profile from './components/pages/Profile';
+import Restricted from "./components/pages/Restricted";
+import HR from "./components/pages/HR";
+import Staff from "./components/pages/Staff";
 
 const {Header, Footer, Sider, Content} = Layout;
 
@@ -25,7 +28,7 @@ const footerStyle: React.CSSProperties = {
 
 const rowGutterStyle = {xs: 8, sm: 16, md: 24, lg: 32};
 
-const App = ({getStaffSkillsByStaffId, getApplicationsByStaffId, auth: {user, loading}}:any ) => {
+const App = ({getStaffSkillsByStaffId, getApplicationsByStaffId, auth: {user, isHR, loading}}: any) => {
     // getStaffSkillsByStaffId and getApplicationsByStaffId should be called once user is no longer null
     useEffect(() => {
         if (!loading && user) {
@@ -34,34 +37,47 @@ const App = ({getStaffSkillsByStaffId, getApplicationsByStaffId, auth: {user, lo
             getApplicationsByStaffId(user);
         }
     }, [getStaffSkillsByStaffId, getApplicationsByStaffId, user, loading]);
-  return (
-      user==null ?
-          <Fragment>
-            <Login />
-          </Fragment> :
-
-        <Router>
+    return (
+        user == null ?
             <Fragment>
-                <Layout style={{minHeight: "100vh"}}>
-                  <Sidebar />
-                  <Layout>
-                    <Header style={{padding: '0px 0px', backgroundColor: "white", width: "100%"}}>
-                      <Navbar />
-                    </Header>
-                    <Content >
-                      <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/roles" element={<Roles />} />
+                <Login/>
+            </Fragment> :
+
+            <Router>
+                <Fragment>
+                    <Layout style={{minHeight: "100vh"}}>
+                        <Sidebar/>
+                        <Layout>
+                            <Header style={{padding: '0px 0px', backgroundColor: "white", width: "100%"}}>
+                                <Navbar/>
+                            </Header>
+                            <Content>{
+                                isHR ? (
+                                    <Routes>
+                                        <Route path="/" element={<Home/>}/>
+                                        <Route path="/roles" element={<Roles/>}/>
                         <Route path="/roleListing/:roleListingId" element={<RolePage />} />
-                        <Route path="/profile" element={<Profile />} />
-                      </Routes>
-                    </Content>
-                    <Footer style={footerStyle}>Footer</Footer>
-                  </Layout>
-                </Layout>
-            </Fragment>
-          </Router>
-  );
+                                        <Route path="/profile" element={<Profile/>}/>
+                                        <Route path="/hr" element={<HR/>}/>
+                                        <Route path="/staff" element={<Staff/>}/>
+                                    </Routes>
+                                ) : (
+                                    <Routes>
+                                        <Route path="/" element={<Home/>}/>
+                                        <Route path="/roles" element={<Roles/>}/>
+                                        <Route path="/role/:roleListingId" element={<RolePage/>}/>
+                                        <Route path="/profile" element={<Profile/>}/>
+                                        <Route path="/hr" element={<Restricted/>}/>
+                                        <Route path="/staff" element={<Restricted/>}/>
+                                    </Routes>
+                                )}
+                            </Content>
+                            <Footer style={footerStyle}>Footer</Footer>
+                        </Layout>
+                    </Layout>
+                </Fragment>
+            </Router>
+    );
 }
 
 
