@@ -2,15 +2,16 @@ import axios from 'axios';
 import {
     FILTER_STAFF_LISTINGS_BY_SKILL_ID,
     FILTER_STAFF_LISTINGS_BY_STAFF_ID,
+    FILTER_STAFF_LISTINGS_BY_DEPARTMENT,
     GET_STAFF_LISTING,
     GET_STAFF_LISTINGS,
     SORT_STAFF_LISTINGS_BY_FNAME,
     SORT_STAFF_LISTINGS_BY_LNAME,
-    STAFF_LISTINGS_ERROR
+    STAFF_LISTINGS_ERROR,
 } from './types';
 import {ActionType, SortPayloadType} from "../types";
 
-// Get all roles listings
+// Get all staff
 export const getStaffListings = () => async (dispatch: (action: ActionType) => void) => {
     try {
         const res = await axios.get('/api/staff/details')
@@ -81,6 +82,7 @@ export const filterStaffListingsByStaffId = (payload: any) => async (dispatch: (
     });
 }
 
+// Allow filtering of staff based on skill name
 export const filterStaffListingsBySkillId = (payload: any) => async (dispatch: (action: ActionType) => void) => {
     dispatch({
         type: FILTER_STAFF_LISTINGS_BY_SKILL_ID,
@@ -88,5 +90,12 @@ export const filterStaffListingsBySkillId = (payload: any) => async (dispatch: (
     });
 }
 
+// Allow filtering of staff based on department 
+export const filterStaffListingsByDepartment = (payload: any) => async (dispatch: (action: ActionType) => void) => {
+    dispatch({
+        type: FILTER_STAFF_LISTINGS_BY_DEPARTMENT,
+        payload
+    });
+}
 
 

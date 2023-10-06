@@ -2,6 +2,7 @@ import {Select, SelectProps, Space, Typography} from "antd";
 import {
     filterStaffListingsBySkillId,
     filterStaffListingsByStaffId,
+    filterStaffListingsByDepartment,
     getStaffListings
 } from '../../actions/staffListings';
 import {getSkills} from '../../actions/skills';
@@ -28,12 +29,22 @@ const StaffSearchFilter = ({getStaffListings, getSkills, skill, staffListing: {r
         }
     ];
     let skillNames: SelectProps['options'] = [
+        // as more options selected, 
         {
             label: "Loading...",        // text that is shown to user
             value: "",      // value of the thing selected
             disabled: true,    // can have a bool line to determine t/f also
         }
     ];
+    let departments: SelectProps['options'] = [
+        // as more options selected,
+        {
+            label: "Loading...",        // text that is shown to user
+            value: "",      // value of the thing selected
+            disabled: true,    // can have a bool line to determine t/f also
+            }
+    ];
+
     if (!loading) {
         staffNames = rawStaffListings.map((staff: any) => {
             return {
@@ -50,6 +61,22 @@ const StaffSearchFilter = ({getStaffListings, getSkills, skill, staffListing: {r
             }
         });
     }
+    if (!loading) {
+        const uniqueDepartmentsSet = new Set(); // Create a Set to store unique values
+        departments = rawStaffListings
+          .map((staff: any) => staff.dept) // Extract department values
+          .filter((dept: any) => {
+            if (!uniqueDepartmentsSet.has(dept)) {
+              uniqueDepartmentsSet.add(dept); // Add unique department values to the Set
+              return true; // Include the department in the result
+            }
+            return false; // Exclude duplicate departments
+          })
+          .map((dept: any) => ({
+            label: dept,
+            value: dept,
+          }));
+      }
 
     // roleTypes is of type array of integer
     const handleStaffChange = (staffIds: number[]) => {
@@ -59,12 +86,15 @@ const StaffSearchFilter = ({getStaffListings, getSkills, skill, staffListing: {r
     const handleSkillChange = (skillIds: number[]) => {
         dispatch(filterStaffListingsBySkillId({skillIds}) as any);
     }
+    const handleDeptChange = (dept: string[]) => {
+        dispatch(filterStaffListingsByDepartment({dept}) as any);
+    }
 
 
     return (
         <Space direction='vertical' size="small" style={{width: "100%"}}>
             <Title level={4}>Filters</Title>
-            <Title level={5}>Role Type</Title>
+            <Title level={5}>Staff Name</Title>
             {/* Tag Search */}
             <Select
                 mode="multiple"
@@ -75,6 +105,7 @@ const StaffSearchFilter = ({getStaffListings, getSkills, skill, staffListing: {r
                 options={staffNames}
                 optionFilterProp={"label"}
             />
+            <Title level={5}>Skill Name</Title>
             <Select
                 mode="multiple"
                 style={{width: '80%'}}
@@ -82,6 +113,16 @@ const StaffSearchFilter = ({getStaffListings, getSkills, skill, staffListing: {r
                 defaultValue={[]}
                 onChange={handleSkillChange}
                 options={skillNames}
+                optionFilterProp={"label"}
+            />
+            <Title level={5}>Department</Title>
+            <Select
+                mode="multiple"
+                style={{width: '80%'}}
+                placeholder="Please select"
+                defaultValue={[]}
+                onChange={handleDeptChange}
+                options={departments}
                 optionFilterProp={"label"}
             />
         </Space>
@@ -92,7 +133,7 @@ StaffSearchFilter.propTypes = {
     getStaffListings: PropTypes.func.isRequired,
     getSkills: PropTypes.func.isRequired,
     staffListing: PropTypes.object.isRequired,
-    skill: PropTypes.object.isRequired
+    skill: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = (state: any) => ({

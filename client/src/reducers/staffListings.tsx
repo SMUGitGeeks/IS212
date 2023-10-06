@@ -1,6 +1,7 @@
 import {
     FILTER_STAFF_LISTINGS_BY_SKILL_ID,
     FILTER_STAFF_LISTINGS_BY_STAFF_ID,
+    FILTER_STAFF_LISTINGS_BY_DEPARTMENT,
     GET_STAFF_LISTING,
     GET_STAFF_LISTINGS,
     SORT_STAFF_LISTINGS_BY_FNAME,
@@ -103,6 +104,20 @@ export default function (state = initialState, action: ActionType) {
                         return false;
                     }
                 );
+                return {
+                    ...state,
+                    staffListings: filteredStaffListings,
+                }
+            }
+        case FILTER_STAFF_LISTINGS_BY_DEPARTMENT:
+            // payload is an Array of department names
+            if (payload["dept"].length === 0) {
+                return {
+                    ...state,
+                    staffListings: state.rawStaffListings
+                }
+            } else {
+                let filteredStaffListings = state.rawStaffListings.filter((rawStaffListing: any) => payload["dept"].includes(rawStaffListing.dept));
                 return {
                     ...state,
                     staffListings: filteredStaffListings,
