@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {Link, useParams} from 'react-router-dom';
 import PropTypes from "prop-types";
 import {connect, useDispatch} from 'react-redux';
-import {getStaffListingsByRLId} from '../../actions/staffListings';
+import {getStaffListingsByRLId, getStaffListingByRLIdAndStaffId} from '../../actions/staffListings';
 import {Container} from 'react-bootstrap';
 import {List, Select, Skeleton, Space} from 'antd';
 import {getRoleListing} from '../../actions/roleListings';
@@ -37,23 +37,17 @@ const RoleApplicants = ({
                             getRoleListing,
                             roleListing: {roleListing},
                             roleSkill: {roleSkills},
-                            getRoleSkillsByRoleId, getStaffListingsByRLId,
-                            staffListing: {staffListingsByRLId, loading},
+                            getRoleSkillsByRoleId, getStaffListingsByRLId, getStaffListingByRLIdAndStaffId,
+                            staffListing: {staffListingsByRLId, staffListing, loading},
                             staffSkill: {staffSkill},
                         }: any) => {
     const {roleListingId} = useParams();
     useEffect(() => {
         getStaffListingsByRLId(roleListingId);
-    }, [getStaffListingsByRLId]);
-
-    useEffect(() => {
         getRoleListing(roleListingId);
         getRoleSkillsByRoleId(roleListingId);
-    }, [getRoleListing]);
-
-    useEffect(() => {
-        getApplicantByStaffId(3);
-    }, [getApplicantByStaffId]);
+        getStaffListingByRLIdAndStaffId(3);
+    }, [getStaffListingsByRLId, getRoleListing, getStaffListingByRLIdAndStaffId]);
 
     const dispatch = useDispatch();
 
@@ -190,5 +184,5 @@ export default connect(mapStateToProps, {
     getStaffListingsByRLId,
     getRoleListing,
     getRoleSkillsByRoleId,
-    getApplicantByStaffId
+    getStaffListingByRLIdAndStaffId
 })(RoleApplicants);
