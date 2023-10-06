@@ -18,6 +18,7 @@ import Restricted from "./components/pages/Restricted";
 import HR from "./components/pages/HR";
 import Staff from "./components/pages/Staff";
 import StaffDetail from './components/pages/StaffDetail';
+import RoleListingManager from './components/pages/RoleListingManager';
 
 const {Header, Footer, Sider, Content} = Layout;
 
@@ -62,6 +63,7 @@ const App = ({getStaffSkillsByStaffId, getApplicationsByStaffId, auth: {user, is
                                         <Route path="/hr" element={<HR/>}/>
                                         <Route path="/staff" element={<Staff/>}/>
                                         <Route path="/staff/:staffId" element={<StaffDetail/>}/>
+                                        <Route path="/listingManage" element={<RoleListingManager/>}/>
                                     </Routes>
                                 ) : (
                                     <Routes>
@@ -72,6 +74,7 @@ const App = ({getStaffSkillsByStaffId, getApplicationsByStaffId, auth: {user, is
                                         <Route path="/hr" element={<Restricted/>}/>
                                         <Route path="/staff" element={<Restricted/>}/>
                                         <Route path="/staff/:staffId" element={<Restricted/>}/>
+                                        <Route path="/listingManage" element={<Restricted/>}/>
                                     </Routes>
                                 )}
                             </Content>

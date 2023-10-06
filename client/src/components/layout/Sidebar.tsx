@@ -40,7 +40,12 @@ const Sidebar = ({logout, auth: {isHR}}: any) => {
         });
         items.push({
             label: (<Link to={"/staff"}>{"Staff"}</Link>),
-            key: '/staff',
+            key: 'staff',
+            icon: <SearchOutlined/>,
+        });
+        items.push({
+            label: (<Link to={"/listingManage"}>{"Role Listing Management"}</Link>),
+            key: 'listingManage',
             icon: <SearchOutlined/>,
         })
     }
