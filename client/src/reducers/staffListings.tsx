@@ -33,7 +33,7 @@ export default function (state = initialState, action: ActionType) {
         case GET_STAFF_LISTING:
             return {
                 ...state,
-                roleListing: payload,
+                staffListing: payload,
                 loading: false
             };
         case STAFF_LISTINGS_ERROR:
