@@ -1,4 +1,4 @@
-import { Radio, Space, Card, RadioChangeEvent, Tag, Empty } from "antd";
+import { Radio, Space, Card, RadioChangeEvent, Tag, Empty, Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { getStaffSkillsByStaffId } from "../../actions/staffSkills";
 import PropTypes from 'prop-types';
@@ -41,6 +41,7 @@ const ProfileSkills = ({getStaffSkillsByStaffId, staffSkill: { staffSkill, loadi
     return (
         <Card>
             <Space size={20} direction="vertical" style={{width: "100%"}}>
+                <h2 style={{marginTop:0}}>My Skills</h2>
                 <Radio.Group value={skillState} buttonStyle="solid" onChange={selectChange}>
                     <Radio.Button value="all">All</Radio.Button>
                     <Radio.Button value="active">Active</Radio.Button>
@@ -50,9 +51,8 @@ const ProfileSkills = ({getStaffSkillsByStaffId, staffSkill: { staffSkill, loadi
                 <div></div>
 
                 {loading ?
-                    <div>
-                        <LoadingOutlined /> 
-                        Loading...
+                    <div style={{textAlign: "center", paddingTop: "10vh", paddingBottom: "10vh"}}>
+                        <Spin />
                     </div>
                     :
                     staffSkill.map((skill: any) => (

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import type {MenuProps} from 'antd';
 import {Layout, Menu} from 'antd';
-import {Link} from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {logout} from '../../actions/auth';
@@ -10,6 +10,9 @@ import {HomeOutlined, LogoutOutlined, SearchOutlined} from '@ant-design/icons';
 const {Sider} = Layout;
 
 const Sidebar = ({logout, auth: {isHR}}: any) => {
+    const location = useLocation()
+    const pageName = location.pathname.split("/")[1]
+
     const items: MenuProps['items'] = [
         {
             label: (<Link to={"/"}>{"Home"}</Link>),
@@ -17,8 +20,8 @@ const Sidebar = ({logout, auth: {isHR}}: any) => {
             icon: <HomeOutlined/>,
         },
         {
-            label: (<Link to={"/roles"}>{"Search Roles"}</Link>),
-            key: '/roles',
+            label: (<Link to={"/roleListing"}>{"Search Roles"}</Link>),
+            key: 'roleListing',
             icon: <SearchOutlined/>,
         },
         // run logout action
@@ -52,7 +55,7 @@ const Sidebar = ({logout, auth: {isHR}}: any) => {
     return (
         <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
             <h3 style={{color: "white", marginLeft: "25%"}}>SPRB LOGO</h3>
-            <Menu theme="dark" defaultSelectedKeys={['/']} mode="inline" items={items}/>
+            <Menu theme="dark" defaultSelectedKeys={pageName === "" ? ["/"] : [pageName]} mode="inline" items={items}/>
         </Sider>
     )
 }
