@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import PropTypes from "prop-types";
 import { connect, useDispatch } from 'react-redux';
-import { getApplicantsByRoleListingId } from '../../actions/applicants';
+import { getApplicantByStaffId, getApplicantsByRoleListingId } from '../../actions/applicants';
 import { Container } from 'react-bootstrap';
 import { List, Select, Skeleton, Space } from 'antd';
 import { getRoleListing } from '../../actions/roleListings';
@@ -40,6 +40,7 @@ const RoleApplicants = ({getRoleListing,
                         getApplicantsByRoleListingId,
                         applicants: {applicants, loading},
                         staffSkill: {staffSkill},
+                        getApplicantByStaffId
                     }: any) => {
     const {roleListingId} = useParams();
     useEffect(() => {
@@ -50,6 +51,10 @@ const RoleApplicants = ({getRoleListing,
         getRoleListing(roleListingId);
         getRoleSkillsByRoleId(roleListingId);
     }, [getRoleListing]);
+
+    useEffect(() => {
+        getApplicantByStaffId(3);
+    }, [getApplicantByStaffId]);
 
     const dispatch = useDispatch();
 
@@ -173,6 +178,7 @@ RoleApplicants.propTypes = {
     roleSkill: PropTypes.object.isRequired,
     getRoleSkillsByRoleId: PropTypes.func.isRequired,
     staffSkill: PropTypes.object.isRequired,
+    getApplicantByStaffId: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state: any) => ({
@@ -185,5 +191,6 @@ const mapStateToProps = (state: any) => ({
 export default connect(mapStateToProps, {
     getApplicantsByRoleListingId,
     getRoleListing,
-    getRoleSkillsByRoleId
+    getRoleSkillsByRoleId,
+    getApplicantByStaffId
 })(RoleApplicants);

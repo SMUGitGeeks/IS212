@@ -47,20 +47,24 @@ export const getApplicantsByRoleListingId = (payload: GetApplicantsByRoleListing
 export const getApplicantByStaffId = (staffId: number) => async (dispatch: (action: ActionType) => void, getState: any) => {
     try {
         // Get the applicants data from the state
-        const applicants = getState().applicants.applicants;
+        const applicants = await getState().applicants.applicants;
+        // console.log(applicants)
     
         // Find the applicant with the matching staff ID
         const applicant = applicants.find((applicant: any) => applicant.staff_id === staffId);
+        console.log(applicant)
     
         // Get the staff information for the HR
-        const staffRes = await axios.get(`/api/staff/details/${applicant.staff_id}`);
-        const staff = staffRes.data;
+        // const staffRes = await axios.get(`/api/staff/details/${applicant.staff_id}`);
+        // const staff = staffRes.data;
 
-        const staffInformation = { ...applicant, staff };
+        // const staffInformation = { ...applicant, staff };
+        // console.log(staff);
+        // console.log(staffInformation)
 
         dispatch({
         type: GET_APPLICANT_BY_STAFF_ID,
-        payload: staffInformation,
+        payload: applicant,
         });
     } catch (err: any) {
         dispatch({
