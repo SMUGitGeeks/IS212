@@ -1,4 +1,4 @@
-import {GET_APPLICANTS_BY_ROLE_LISTING_ID, APPLICANTS_ERROR} from '../actions/types';
+import {GET_APPLICANTS_BY_ROLE_LISTING_ID, APPLICANTS_ERROR, GET_APPLICANT_BY_STAFF_ID, APPLICANT_ERROR} from '../actions/types';
 
 import {ActionType} from "../types";
 
@@ -25,7 +25,20 @@ export default function (state = initialState, action: ActionType) {
                 error: payload,
                 applications: [],
                 loading: false
-            }
+            };
+        case GET_APPLICANT_BY_STAFF_ID:
+            return {
+                ...state,
+                applicant: payload,
+                loading: false
+            };
+        case APPLICANT_ERROR:
+            return {
+                ...state,
+                error: payload,
+                applicant: null,
+                loading: false
+            };
         default:
             return state;
     }

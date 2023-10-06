@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {GET_APPLICANTS_BY_ROLE_LISTING_ID, APPLICANTS_ERROR} from './types';
+import {GET_APPLICANTS_BY_ROLE_LISTING_ID, APPLICANTS_ERROR, GET_APPLICANT_BY_STAFF_ID, APPLICANT_ERROR} from './types';
 import {ActionType, GetApplicantsByRoleListingIdPayloadType} from "../types";
 
 
@@ -43,3 +43,29 @@ export const getApplicantsByRoleListingId = (payload: GetApplicantsByRoleListing
     }
 }
 
+// Get applicant by staff ID
+export const getApplicantByStaffId = (staffId: number) => async (dispatch: (action: ActionType) => void, getState: any) => {
+    try {
+        // Get the applicants data from the state
+        const applicants = getState().applicants.applicants;
+    
+        // Find the applicant with the matching staff ID
+        const applicant = applicants.find((applicant: any) => applicant.staff_id === staffId);
+    
+        // Get the staff information for the HR
+        const staffRes = await axios.get(`/api/staff/details/${applicant.staff_id}`);
+        const staff = staffRes.data;
+
+        const staffInformation = { ...applicant, staff };
+
+        dispatch({
+        type: GET_APPLICANT_BY_STAFF_ID,
+        payload: staffInformation,
+        });
+    } catch (err: any) {
+        dispatch({
+        type: APPLICANT_ERROR,
+        payload: { msg: err.response.statusText, status: err.response.status },
+        });
+    }
+  };
