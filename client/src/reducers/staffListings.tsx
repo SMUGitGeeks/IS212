@@ -117,7 +117,7 @@ export default function (state = initialState, action: ActionType) {
                 loading: false
             };
         case SORT_STAFF_LISTINGS_BY_SKILL_MATCH:
-            let sortedStaffListingsBySkillMatch = state.staffListings.sort((a: any, b: any) => (a.skill_match < b.skill_match) ? 1 : -1);
+            let sortedStaffListingsBySkillMatch = state.staffListings.sort((a: any, b: any) => (a.skill_match < b.skill_match) ? -1 : 1);
             return {
                 ...state,
                 staffListings: sortedStaffListingsBySkillMatch,
