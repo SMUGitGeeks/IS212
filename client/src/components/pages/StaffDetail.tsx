@@ -15,22 +15,15 @@ const {Title, Text} = Typography;
 const StaffDetail = ({getStaffSkillsByStaffId, 
                     staffSkill: {staffSkill, loading}, 
                     getStaffListing, 
-                    staffListing: {staffListing}
+                    staffListing
                 }: any) => {
 
     const {staffId} = useParams();
 
     useEffect(() => {
         getStaffSkillsByStaffId(staffId)
-    }, [getStaffSkillsByStaffId]);
-
-    useEffect(() => {
-        // if (staffId) {
         getStaffListing(staffId)
-        // }
-    }, [getStaffListing]);
-
-    // console.log(staffDetailLoading)
+    }, [getStaffSkillsByStaffId,getStaffListing]);
 
     const [skillState, setSkillState] = useState("all");
 
@@ -62,28 +55,28 @@ const StaffDetail = ({getStaffSkillsByStaffId,
         {
             key: '1',
             label: 'Staff ID',
-            children: staffListing.loading ? <LoadingOutlined /> : staffListing.staff_id,
+            children: staffListing.staffListing === null ? <LoadingOutlined /> : staffListing.staffListing.staff_id,
         },
         {
             key: '2',
             label: 'Department',
-            children: staffListing.loading ? <LoadingOutlined /> : staffListing.dept,
+            children: staffListing.staffListing === null? <LoadingOutlined /> : staffListing.staffListing.dept,
         },
         {
             key: '3',
             label: 'Phone',
-            children: staffListing.loading ? <LoadingOutlined /> : staffListing.phone,
+            children: staffListing.staffListing === null ? <LoadingOutlined /> : staffListing.staffListing.phone,
         },
         {
             key: '4',
             label: 'Email',
-            children: staffListing.loading ? <LoadingOutlined /> : staffListing.email,
+            children: staffListing.staffListing === null ? <LoadingOutlined /> : staffListing.staffListing.email,
         },
         {
             key: '5',
             label: 'Address',
             span: 2,
-            children: staffListing.loading ? <LoadingOutlined /> : staffListing.biz_address,
+            children: staffListing.staffListing === null ? <LoadingOutlined /> : staffListing.biz_address,
         },
     ];
 
@@ -117,7 +110,7 @@ const StaffDetail = ({getStaffSkillsByStaffId,
     return (
         <Container>
             <Space direction="vertical" size={20}>
-                <Title level={2}>{staffListing.fname + " " + staffListing.lname}</Title>
+                <Title level={2}>{ staffListing.staffListing === null ? <LoadingOutlined /> : staffListing.staffListing.fname + " " + staffListing.staffListing.lname}</Title>
                 <Card>
                     <Title level={3} style={{marginTop:0, marginBottom: 30}}>Staff Details</Title>
                     <Descriptions layout="vertical" items={items} />

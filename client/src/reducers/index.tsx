@@ -16,5 +16,5 @@ export default combineReducers({
     application,
     roleSkill,
     staffListing,
-    skill
+    skill,
 })

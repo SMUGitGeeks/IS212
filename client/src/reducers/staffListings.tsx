@@ -3,14 +3,17 @@ import {
     FILTER_STAFF_LISTINGS_BY_STAFF_ID,
     GET_STAFF_LISTING,
     GET_STAFF_LISTINGS,
+    GET_STAFF_LISTINGS_BY_RL_ID,
     SORT_STAFF_LISTINGS_BY_FNAME,
     SORT_STAFF_LISTINGS_BY_LNAME,
-    STAFF_LISTINGS_ERROR
+    SORT_STAFF_LISTINGS_BY_SKILL_MATCH,
+    STAFF_LISTINGS_ERROR,
 } from '../actions/types';
 import {ActionType} from "../types";
 
 const initialState = {
     staffListings: [],
+    staffListingsByRLId: [],
     rawStaffListings: [],
     staffListing: null,
     loading: true,
@@ -32,8 +35,7 @@ export default function (state = initialState, action: ActionType) {
                     rawStaffListings: payload,
                     loading: false
                 };
-            }
-            else {
+            } else {
                 return {
                     ...state,
                     staffListings: payload,
@@ -107,6 +109,19 @@ export default function (state = initialState, action: ActionType) {
                     ...state,
                     staffListings: filteredStaffListings,
                 }
+            }
+        case GET_STAFF_LISTINGS_BY_RL_ID:
+            return {
+                ...state,
+                staffListingsByRLId: payload,
+                loading: false
+            };
+        case SORT_STAFF_LISTINGS_BY_SKILL_MATCH:
+            let sortedStaffListingsBySkillMatch = state.staffListingsByRLId.sort((a: any, b: any) => (a.skill_match < b.skill_match) ? 1 : -1);
+            return {
+                ...state,
+                staffListings: sortedStaffListingsBySkillMatch,
+                rawStaffListings: sortedStaffListingsBySkillMatch,
             }
         default:
             return state;
