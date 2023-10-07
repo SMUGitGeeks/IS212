@@ -4,6 +4,7 @@ import {
     filterStaffListingsByStaffId,
     filterStaffListingsByDepartment,
     getStaffListings,
+    // clearAllStaffListingsFilters
 } from '../../actions/staffListings';
 import {getSkills} from '../../actions/skills';
 import {connect, useDispatch} from "react-redux";
@@ -79,18 +80,29 @@ const StaffSearchFilter = ({getStaffListings, getSkills, skill, staffListing: {r
             }));
         }
 
+    // const [staffId, setStaffId] = useState<any[]>([]);
+    // const [skillIds, setSkillIds] = useState<any[]>([]);
+    // const [dept, setDept] = useState<any[]>([]);
+
     // roleTypes is of type array of integer
     const handleStaffChange = (staffId: number[]) => {
         dispatch(filterStaffListingsByStaffId({staffId}) as any);
+        // setStaffId(staffId);
     }
 
     const handleSkillChange = (skillIds: number[]) => {
         dispatch(filterStaffListingsBySkillId({skillIds}) as any);
+        // setSkillIds(skillIds);
     }
     const handleDeptChange = (dept: string[]) => {
         dispatch(filterStaffListingsByDepartment({dept}) as any);
+        // setDept(dept);
     }
     const clearFilters = () => {
+    //     dispatch(clearAllStaffListingsFilters as any);
+        // setStaffId([]);
+        // setDept([]);
+        // setSkillIds([]);
     }
 
 
@@ -104,11 +116,13 @@ const StaffSearchFilter = ({getStaffListings, getSkills, skill, staffListing: {r
                 style={{width: '80%'}}
                 placeholder="Please select"
                 defaultValue={[]}
+                // value={staffId}
                 onChange={handleStaffChange}
                 options={staffNames}
                 optionFilterProp={"label"}
                 suffixIcon={<SearchOutlined />}
                 allowClear
+                // onClear={() => handleStaffChange}
             />
 
             <Divider />
@@ -119,10 +133,12 @@ const StaffSearchFilter = ({getStaffListings, getSkills, skill, staffListing: {r
                 style={{width: '80%'}}
                 placeholder="Please select"
                 defaultValue={[]}
+                // value={skillIds}
                 onChange={handleSkillChange}
                 options={skillNames}
                 optionFilterProp={"label"}
                 allowClear
+                // onClear={() => handleSkillChange}
             />
             <Title level={5}>Department</Title>
             <Select
@@ -130,10 +146,12 @@ const StaffSearchFilter = ({getStaffListings, getSkills, skill, staffListing: {r
                 style={{width: '80%'}}
                 placeholder="Please select"
                 defaultValue={[]}
+                // value={dept}
                 onChange={handleDeptChange}
                 options={departments}
                 optionFilterProp={"label"}
                 allowClear
+                // onClear={() => handleDeptChange}
             />
             <Button type="default" onClick={clearFilters}>Reset Filters</Button>
         </Space>

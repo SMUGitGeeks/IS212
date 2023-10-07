@@ -6,7 +6,8 @@ import {
     GET_STAFF_LISTINGS,
     SORT_STAFF_LISTINGS_BY_FNAME,
     SORT_STAFF_LISTINGS_BY_LNAME,
-    STAFF_LISTINGS_ERROR
+    STAFF_LISTINGS_ERROR,
+    // CLEAR_ALL_STAFF_LISTINGS_FILTERS
 } from '../actions/types';
 import {ActionType} from "../types";
 
@@ -155,6 +156,11 @@ export default function (state = initialState, action: ActionType) {
                     staffListings: filteredStaffListings,
                 }
             }
+        // case CLEAR_ALL_STAFF_LISTINGS_FILTERS:
+        //     return {
+        //         ...state,
+        //         staffListings: state.rawStaffListings,
+        //     }
         default:
             return state;
     }

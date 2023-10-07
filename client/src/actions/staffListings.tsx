@@ -8,6 +8,7 @@ import {
     SORT_STAFF_LISTINGS_BY_FNAME,
     SORT_STAFF_LISTINGS_BY_LNAME,
     STAFF_LISTINGS_ERROR,
+    // CLEAR_ALL_STAFF_LISTINGS_FILTERS,
 } from './types';
 import {ActionType, SortPayloadType} from "../types";
 
@@ -102,4 +103,10 @@ export const filterStaffListingsByDepartment = (payload: any) => async (dispatch
     });
 }
 
-
+// Clear all filters
+// export const clearAllStaffListingsFilters = (payload: any) => async (dispatch: (action: ActionType) => void) => {
+//     dispatch({
+//         type: CLEAR_ALL_STAFF_LISTINGS_FILTERS,
+//         payload
+//     });
+// }
