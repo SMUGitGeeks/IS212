@@ -7,6 +7,7 @@ import {Container} from 'react-bootstrap';
 import {List, Select, Skeleton, Space} from 'antd';
 import {getRoleListing} from '../../actions/roleListings';
 import {getRoleSkillsByRoleId} from '../../actions/roleSkills';
+import {sortStaffListingsBySkillMatch} from '../../actions/staffListings';
 
 interface filterOption {
     value: string;
@@ -58,10 +59,12 @@ const RoleApplicants = ({
         let direction = value;
         // if (direction === 'recent') {
         //     dispatch(sortRoleListingsByDate({direction}) as any);
-        // } else if (direction === 'skillmatch') {
-        //     dispatch(sortRoleListingsBySkillMatch({direction}) as any);
-        // } else {
-        //     dispatch(sortRoleListingsByName({direction}) as any);
+        // } else 
+        if (direction === 'skillmatch') {
+            dispatch(sortStaffListingsBySkillMatch({direction}) as any);
+        }
+        //  else {
+        //     dispatch(sortStaffListingsByFName({direction}) as any);
         // }
     }
 
@@ -154,7 +157,7 @@ const RoleApplicants = ({
                                         title={item.fname + " " + item.lname}
                                         description={item.dept}
                                     />
-                                    {calculateSkillsMatch()[0] + "% Match"}
+                                    {item.skill_match + "% Match"}
                                     <br/>
                                 </List.Item>
                             </Link>
