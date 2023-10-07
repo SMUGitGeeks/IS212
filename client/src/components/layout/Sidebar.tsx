@@ -5,7 +5,7 @@ import {Link, useLocation} from 'react-router-dom';
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {logout} from '../../actions/auth';
-import {HomeOutlined, LogoutOutlined, SearchOutlined} from '@ant-design/icons';
+import {HomeOutlined, LogoutOutlined, SearchOutlined, AuditOutlined } from '@ant-design/icons';
 
 const {Sider} = Layout;
 
@@ -23,12 +23,6 @@ const Sidebar = ({logout, auth: {isHR}}: any) => {
             label: (<Link to={"/roleListing"}>{"Search Roles"}</Link>),
             key: 'roleListing',
             icon: <SearchOutlined/>,
-        },
-        // run logout action
-        {
-            label: (<Link to={""} onClick={logout}>Logout</Link>),
-            key: 'logout',
-            icon: <LogoutOutlined/>,
         }
     ];
 
@@ -36,24 +30,21 @@ const Sidebar = ({logout, auth: {isHR}}: any) => {
         items.push({
             label: (<Link to={"/hr"}>{"HR"}</Link>),
             key: '/hr',
-            icon: <SearchOutlined/>,
-        });
-        items.push({
-            label: (<Link to={"/staff"}>{"Staff"}</Link>),
-            key: 'staff',
-            icon: <SearchOutlined/>,
+            // icon: <SearchOutlined/>,
         });
         items.push({
             label: (<Link to={"/listingManage"}>{"Role Listing Management"}</Link>),
             key: 'listingManage',
-            icon: <SearchOutlined/>,
+            icon: <AuditOutlined />,
         })
     }
 
-    // const onClick: MenuProps['onClick'] = ({ key }) => {
-    //     // go to the react route
-    //     // code here    
-    // }
+    items.push({
+        // run logout action
+        label: (<Link to={""} onClick={logout}>Logout</Link>),
+        key: 'logout',
+        icon: <LogoutOutlined/>,
+    })
 
     const [collapsed, setCollapsed] = useState(false);
 
