@@ -4,13 +4,15 @@ import {
     FILTER_STAFF_LISTINGS_BY_STAFF_ID,
     GET_STAFF_LISTING,
     GET_STAFF_LISTINGS,
+    GET_STAFF_LISTINGS_BY_RL_ID,
     SORT_STAFF_LISTINGS_BY_FNAME,
     SORT_STAFF_LISTINGS_BY_LNAME,
-    STAFF_LISTINGS_ERROR
+    SORT_STAFF_LISTINGS_BY_SKILL_MATCH,
+    STAFF_LISTINGS_ERROR,
 } from './types';
 import {ActionType, SortPayloadType} from "../types";
 
-// Get all roles listings
+// Get all staff listings
 export const getStaffListings = () => async (dispatch: (action: ActionType) => void) => {
     try {
         const res = await axios.get('/api/staff/details')
@@ -88,5 +90,84 @@ export const filterStaffListingsBySkillId = (payload: any) => async (dispatch: (
     });
 }
 
+export const getStaffListingsByRLId = (payload: any) => async (dispatch: (action: ActionType) => void) => {
+    try {
+        // payload is the role listing id
+        console.log("Getting staff listings by role listing id " + payload);
 
+        const res = await axios.get('/api/role_listing/details')
+        const res2 = await axios.get('/api/staff/details');
+        // role/skills have [{"role_id":2,"skill_id":1},{"role_id":5,"skill_id":2}...]
+        const res3 = await axios.get('/api/role/skills');
+        // staff/skills have [{"staff_id":1,"skill_id":1},{"staff_id":1,"skill_id":2}...]
+        const res4 = await axios.get('/api/staff/skills');
+        const res5 = await axios.get('/api/role_listing/applications/' + payload)
+        // if no applicants
+        if (res5.data.length === 0) {
+        }
+        // console.log(" ===== NEW TEST =====")
+        // console.log("Number of Applications: " + res5.data.length)
+        // for each application
+        for (let i = 0; i < res5.data.length; i++) {
+            // console.log("=== NEW Application ===")
+            // console.log("Staff_id: " + res5.data[i].staff_id);
+            // for each application, get and add role id
+            for (let j = 0; j < res.data.length; j++) {
+                if (res5.data[i]["rl_id"] === res.data[j]["rl_id"]) {
+                    // add the role_id of res.dsta[j] into res5.data[i]
+                    res5.data[i].role_id = res.data[j].role_id;
+                }
+            }
+            // for each application, get and add staff details
+            for (let j = 0; j < res2.data.length; j++) {
+                if (res5.data[i]["staff_id"] === res2.data[j]["staff_id"]) {
+                    res5.data[i].fname = res2.data[j].fname;
+                    res5.data[i].lname = res2.data[j].lname;
+                    res5.data[i].dept = res2.data[j].dept;
+                    res5.data[i].email = res2.data[j].email;
+                    res5.data[i].phone = res2.data[j].phone;
+                    res5.data[i].biz_address = res2.data[j].biz_address;
+                    res5.data[i].sys_role = res2.data[j].sys_role;
+                }
+            }
+            let skillMatch = 0;
+            let skillCount = 0;
+            // for each application, get skill % match with the role listing
+            // console.log("Role_id: " + res5.data[i].role_id);
+            let rl_skill_list = [];
+            for (let j = 0; j < res3.data.length; j++) {
+                if (res5.data[i]["role_id"] === res3.data[j]["role_id"]) {
+                    skillCount++;
+                    rl_skill_list.push(res3.data[j]["skill_id"]);
+                    // console.log("RL_Skill_List: " + rl_skill_list);
+                    // console.log("SkillCount: " + skillCount)
+                }
+            }
+            for (let k = 0; k < res4.data.length; k++) {
+                if (rl_skill_list.includes(res4.data[k]["skill_id"]) && (res4.data[k]["staff_id"] === res5.data[i]["staff_id"]) && (res4.data[k]["ss_status"] === "active")) {
+                    skillMatch++;
+                    // console.log("SkillMatch: " + skillMatch)
+                }
+            }
+            res5.data[i].skill_match = Math.round(skillMatch / skillCount * 100);
+            // console.log("Skills Matched percentage: " + res5.data[i].skill_match);
+        }
+        dispatch({
+            type: GET_STAFF_LISTINGS_BY_RL_ID,
+            payload: res5.data
+        });
+    } catch (err: any) {
+        // console.log(err);
+        dispatch({
+            type: STAFF_LISTINGS_ERROR,
+            payload: {msg: err.response.statusText, status: err.response.status}
+        });
+    }
+}
 
+export const sortStaffListingsBySkillMatch = (payload: SortPayloadType) => async (dispatch: (action: ActionType) => void) => {
+    dispatch({
+        type: SORT_STAFF_LISTINGS_BY_SKILL_MATCH,
+        payload
+    });
+}
