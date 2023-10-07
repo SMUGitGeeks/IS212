@@ -5,7 +5,9 @@ import {
     ROLE_LISTINGS_ERROR,
     SORT_ROLE_LISTINGS_BY_DATE,
     SORT_ROLE_LISTINGS_BY_NAME,
-    SORT_ROLE_LISTINGS_BY_SKILL_MATCH
+    SORT_ROLE_LISTINGS_BY_SKILL_MATCH,
+    GET_ROLE_LISTINGS_CREATED_BY_HR,
+    GET_ROLE_LISTINGS_CREATED_BY_HR_ERROR
 } from '../actions/types';
 import {ActionType, RoleListingsType} from "../types";
 
@@ -14,7 +16,9 @@ const initialState = {
     rawRoleListings: [],
     roleListing: null,
     loading: true,
-    error: {}
+    error: {},
+    hrRoleListings : [],
+    hrRoleListing : null,
 }
 
 export default function (state = initialState, action: ActionType) {
@@ -78,6 +82,19 @@ export default function (state = initialState, action: ActionType) {
                 ...state,
                 roleListings: sortedRoleListingsBySkillMatch,
                 rawRoleListings: sortedRoleListingsBySkillMatch,
+            }
+        case GET_ROLE_LISTINGS_CREATED_BY_HR:
+            return {
+                ...state,
+                hrRoleListings: payload,
+                hrRoleListing: payload[0],
+                loading: false
+            }
+        case GET_ROLE_LISTINGS_CREATED_BY_HR_ERROR:
+            return {
+                ...state,
+                error: payload,
+                loading: false
             }
         default:
             return state;
