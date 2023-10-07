@@ -15,7 +15,6 @@ const pages: pageType = {
     "": "Welcome Back!",
     "roleListing": "Search Roles",
     "hr": "HR",
-    "staff": "Staff",
     "listingManage": "Role Listing Management",
     "profile": "Profile",
     "staffDetail": "Staff Detail",
