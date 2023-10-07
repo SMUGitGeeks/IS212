@@ -136,8 +136,8 @@ export const getRoleListingsCreatedByHR = (payload: GetRoleListingsByHRPayLoadTy
             for (let j = 0; j < res2.data.length; j++) {                
                 // check if the role listing is still open or closed
                 let today = new Date();
-                console.log(today)
-                if (res.data[i]["rl_creator"] === payload) {
+                // console.log(today)
+                if (res.data[i]["rl_creator"] === payload && res.data[i]["role_id"] === res2.data[j]["role_id"]) {
                     res.data[i].role_name = res2.data[j].role_name;
                     res.data[i].role_description = res2.data[j].role_description;
                     res.data[i].role_status = res2.data[j].role_status;

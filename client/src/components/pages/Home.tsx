@@ -8,7 +8,6 @@ const Home = () => {
         <Container>
             {/* Skill Based Role Portal - Home */}
             <MyApplications />
-            <HrRoleListings />
         </Container>
     )
 }
