@@ -45,6 +45,7 @@ const HrRoleListings = ({ getRoleListingsCreatedByHR, roleListing: { hrRoleListi
             <Radio.Group value={listingState} buttonStyle="solid" onChange={selectChange}>
                 <Radio.Button value="all">All</Radio.Button>
                 <Radio.Button value="Closed">Closed</Radio.Button>
+                <Radio.Button value={user}>My Created Listings</Radio.Button>
             </Radio.Group>
             <List
             itemLayout="vertical"
@@ -56,39 +57,38 @@ const HrRoleListings = ({ getRoleListingsCreatedByHR, roleListing: { hrRoleListi
             pageSize: 3,
             }}
             dataSource={hrRoleListings}
-            footer={
-            <div>
-                <b>ant design</b> footer part
-            </div>
-            }
+            // footer={
+            // <div>
+            //     <b>ant design</b> footer part
+            // </div>
+            // }
             renderItem={(item: any) => (
-                item.rl_status === listingState || listingState === "all" ?
-
-            <List.Item
-                key={item.role_name}
-                extra={
-                    <Space direction="vertical" size={30}>
-                        <Tooltip placement="top" title='Edit'>
-                            <FormOutlined style={{fontSize: 20}}/>
-                        </Tooltip>
+                item.rl_status === listingState || item.rl_creator === listingState || listingState === "all" ?
+                <List.Item
+                    key={item.role_name}
+                    extra={
+                        <Space direction="vertical" size={30}>
+                            <Tooltip placement="top" title='Edit'>
+                                <FormOutlined style={{fontSize: 20}}/>
+                            </Tooltip>
+                        </Space>
+                        
+                    }
+                >
+                    <List.Item.Meta
+                    title={item.role_name}
+                    description={item.department}
+                    />
+                    <Space direction="horizontal" wrap size={40}>
+                        <div><EnvironmentOutlined /> {item.location}</div>
+                        <div><CalendarOutlined /> {new Date(item.rl_open).toLocaleDateString()} - {new Date(item.rl_close).toLocaleDateString()}</div>
+                        <div><ClockCircleOutlined /> {new Date(item.rl_ts_create).toLocaleDateString()}</div>
+                        <Tag color={item.rl_status === "Open" ? "green" : "red"} >{item.rl_status}</Tag>
                     </Space>
-                    
-                }
-            >
-                <List.Item.Meta
-                title={item.role_name}
-                description={item.department}
-                />
-                <Space direction="horizontal" wrap size={40}>
-                    <div><EnvironmentOutlined /> {item.location}</div>
-                    <div><CalendarOutlined /> {new Date(item.rl_open).toLocaleDateString()} - {new Date(item.rl_close).toLocaleDateString()}</div>
-                    <div><ClockCircleOutlined /> {new Date(item.rl_ts_create).toLocaleDateString()}</div>
-                    <Tag color={item.rl_status === "Open" ? "green" : "red"} >{item.rl_status}</Tag>
-                </Space>
-                <br /><br />
-                <div>{item.rl_desc}</div>
-            </List.Item> 
-            : <></>
+                    <br /><br />
+                    <div>{item.rl_desc}</div>
+                </List.Item> 
+                : <></>
             )}
         />
         </Space>
