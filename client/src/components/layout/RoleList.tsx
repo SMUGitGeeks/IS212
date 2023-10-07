@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {getRoleListings} from '../../actions/roleListings';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {List, Skeleton, Space, Progress, Typography, Tag} from 'antd';
+import {List, Skeleton, Space, Progress, Typography, Tag, Empty} from 'antd';
 import {Link} from 'react-router-dom';
 import { getRoleSkillsByRoleId } from "../../actions/roleSkills";
 import { EnvironmentOutlined, CalendarOutlined, ClockCircleOutlined } from '@ant-design/icons';
@@ -37,6 +37,10 @@ const RoleList = ({
 
             )}
         />
+        : roleListings.length === 0 ?
+        <div style={{height: '50vh', display: "flex", alignItems:"center"}}>
+            <Empty description='No Role Listings Available' style={{width: "100%"}}/>
+        </div>
         :
         <List
             itemLayout="vertical"
@@ -54,27 +58,29 @@ const RoleList = ({
             //     </div>
             // }
             renderItem={(item: any) => (
-                <Link to={`/roleListing/${item.rl_id}`}>
-                    <List.Item
-                        key={item.role_name}
-                        // actions={[
-                        //   <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
-                        //   <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
-                        //   <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
-                        // ]}
-                        extra={
-                            <>
-                                <Space direction='vertical'>
-                                    <div style={{fontStyle: "italic"}}>Skill Match</div>
-                                    <Progress type="circle" size={60} percent={item.skill_match} 
-                                    // <Progress type="circle" size={80} percent={90} 
-                                    format={(percent) => 
-                                    `${percent}%`
-                                    } />
-                                </Space>
-                            </>
-                        }
-                    >
+                    item.rl_status === "Open" ?
+                    <Link to={`/roleListing/${item.rl_id}`}>
+                        <List.Item
+                            key={item.role_name}
+                            // actions={[
+                            //   <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
+                            //   <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
+                            //   <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
+                            // ]}
+                            extra={
+                                <>
+                                    <Space direction='vertical'>
+                                        <div style={{fontStyle: "italic"}}>Skill Match</div>
+                                        <Progress type="circle" size={60} percent={item.skill_match} 
+                                        // <Progress type="circle" size={80} percent={90} 
+                                        format={(percent) => 
+                                        `${percent}%`
+                                        } />
+                                    </Space>
+                                </>
+                            }
+                        >
+                            
                         <List.Item.Meta
                             title={item.role_name}
                             // description={item.description}
@@ -89,10 +95,9 @@ const RoleList = ({
                         <div>{item.rl_desc}</div>
                         {(isHR) &&
                             item.application_count + " applications submitted"}
-
-                    </List.Item>
-                </Link>
-
+                        </List.Item>
+                    </Link>
+                    : <></>
             )}
         />
 }

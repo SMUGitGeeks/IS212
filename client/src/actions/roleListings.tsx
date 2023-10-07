@@ -22,6 +22,16 @@ export const getRoleListings = (id: number) => async (dispatch: (action: ActionT
         // staff/skills have [{"staff_id":1,"skill_id":1},{"staff_id":1,"skill_id":2}...]
         const res4 = await axios.get('/api/staff/skills/' + id);
         const res5 = await axios.get('/api/role_listing/applications');
+        const date = new Date();
+
+        // Remove role listings that are closed
+        for (let i = 0; i < res.data.length; i++) {
+            if (date > new Date(res.data[i]["rl_close"])) {
+                res.data.splice(i, 1);
+                i--;
+            }
+        }
+
         // include skill % match in role listings
         for (let i = 0; i < res.data.length; i++) {
             let skillMatch = 0;
@@ -40,6 +50,7 @@ export const getRoleListings = (id: number) => async (dispatch: (action: ActionT
 
             for (let j = 0; j < res2.data.length; j++) {
                 if (res.data[i]["role_id"] === res2.data[j]["role_id"]) {
+                    console.log('hi')
                     res.data[i].role_name = res2.data[j].role_name;
                     res.data[i].role_description = res2.data[j].role_description;
                     res.data[i].role_status = res2.data[j].role_status;
