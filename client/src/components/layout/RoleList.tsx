@@ -58,7 +58,6 @@ const RoleList = ({
             //     </div>
             // }
             renderItem={(item: any) => (
-                    item.rl_status === "Open" ?
                     <Link to={`/roleListing/${item.rl_id}`}>
                         <List.Item
                             key={item.role_name}
@@ -97,7 +96,6 @@ const RoleList = ({
                             item.application_count + " applications submitted"}
                         </List.Item>
                     </Link>
-                    : <></>
             )}
         />
 }
