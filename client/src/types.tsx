@@ -40,3 +40,7 @@ export interface GetApplicationsByStaffIdPayloadType {
 export interface GetRoleSkillsByRoleIdPayloadType {
     roleId: number;
 }
+
+export interface GetRoleListingsByHRPayLoadType {
+    staffId: number;
+}
