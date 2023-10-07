@@ -1,13 +1,11 @@
 import React from 'react';
 import {Container} from "react-bootstrap";
 import StaffList from '../layout/StaffList';
-import {Col, Row, Select, Space, Typography} from 'antd';
+import {Col, Row, Select, Space} from 'antd';
 import {useDispatch} from 'react-redux';
 import {rowGutterStyle} from '../../App';
 import {sortStaffListingsByFName, sortStaffListingsByLName} from "../../actions/staffListings";
 import StaffSearchFilter from "../layout/StaffSearchFilter";
-
-const {Title} = Typography;
 
 interface filterOption {
     value: string;

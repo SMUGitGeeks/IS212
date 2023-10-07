@@ -74,13 +74,13 @@ export default function (state = initialState, action: ActionType) {
             }
         case FILTER_STAFF_LISTINGS_BY_STAFF_ID:
             // payload is an Array of role ids
-            if (payload["staffIds"].length === 0) {
+            if (payload["staffIds"] === undefined || payload["staffIds"].length === 0) {
                 return {
                     ...state,
                     staffListings: state.rawStaffListings
                 }
             } else {
-                let filteredStaffListings = state.rawStaffListings.filter((rawStaffListing: any) => payload["staffIds"].includes(rawStaffListing.staff_id));
+                let filteredStaffListings = state.rawStaffListings.filter((rawStaffListing: any) => payload["staffIds"] === (rawStaffListing.staff_id));
                 return {
                     ...state,
                     staffListings: filteredStaffListings,
@@ -143,13 +143,13 @@ export default function (state = initialState, action: ActionType) {
         
         case FILTER_STAFF_LISTINGS_BY_DEPARTMENT:
             // payload is an Array of department names
-            if (payload["dept"].length === 0) {
+            if (payload["dept"] === undefined || payload["dept"].length === 0) {
                 return {
                     ...state,
                     staffListings: state.rawStaffListings
                 }
             } else {
-                let filteredStaffListings = state.rawStaffListings.filter((rawStaffListing: any) => payload["dept"].includes(rawStaffListing.dept));
+                let filteredStaffListings = state.rawStaffListings.filter((rawStaffListing: any) => payload["dept"] === (rawStaffListing.dept));
                 return {
                     ...state,
                     staffListings: filteredStaffListings,
