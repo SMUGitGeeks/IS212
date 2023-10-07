@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import React, {useEffect, useState} from "react";
 import { Empty, List, Radio, RadioChangeEvent, Skeleton, Space, Tag, Tooltip } from 'antd';
-import Icon, { EnvironmentOutlined, CalendarOutlined, FormOutlined, ClockCircleOutlined } from '@ant-design/icons';
+import Icon, { EnvironmentOutlined, CalendarOutlined, FormOutlined, ClockCircleOutlined, LoadingOutlined } from '@ant-design/icons';
 import { getStaffListings } from "../../actions/staffListings";
 import type { CustomIconComponentProps } from '@ant-design/icons/lib/components/Icon';
 
@@ -17,9 +17,14 @@ const CreatorSvg = () => (
 
 const CreatorIcon = (props: Partial<CustomIconComponentProps>) => (
     <Icon component={CreatorSvg} {...props} />
-  );
+    );
 
-const HrRoleListings = ({ getRoleListingsCreatedByHR, roleListing: { hrRoleListings, loading }, auth: { user }, getStaffListings, staffListing: {staffListings} }: any) => {
+const HrRoleListings = ({ 
+                        getRoleListingsCreatedByHR, 
+                        roleListing: { hrRoleListings, loading }, 
+                        auth: { user }, getStaffListings, 
+                        staffListing
+                    }: any) => {
     useEffect(() => {
         if (user) {
             getRoleListingsCreatedByHR(user);
@@ -35,92 +40,95 @@ const HrRoleListings = ({ getRoleListingsCreatedByHR, roleListing: { hrRoleListi
     }
 
     const getHRName = (id: number) => {
-        let staff = staffListings.find((staffListing: any) => staffListing.staff_id === id);
+        let staff = staffListing.staffListings.find((staffListing: any) => staffListing.staff_id === id);
         return staff.fname + " " + staff.lname;
     }
 
     return (
-        // if HrRoleListings is not null, then print it out
-        loading ? (
-            <List
-            itemLayout="vertical"
-            size="large"
-            pagination={{
-                pageSize: 10,
-            }}
-            dataSource={Array.from({length: 8}).map((_, i) => i)}
-            renderItem={(item: any) => (
-                <List.Item
-                    key={item}
-                >
-                    <Skeleton active title/>
-                </List.Item>
-
-            )}
-        />
-        ) : 
-        hrRoleListings !== null ? ( 
-            <Space direction="vertical" style={{width: '100%'}}>
+        <Space direction="vertical" style={{width: '100%'}}>
             <Radio.Group value={listingState} buttonStyle="solid" onChange={selectChange}>
-                <Radio.Button value="all">All</Radio.Button>
+                <Radio.Button value="all">My Created Listings</Radio.Button>
                 <Radio.Button value="Closed">Closed</Radio.Button>
-                <Radio.Button value={user}>My Created Listings</Radio.Button>
             </Radio.Group>
-            <List
-            itemLayout="vertical"
-            size="large"
-            pagination={{
-            onChange: (page) => {
-                console.log(page);
-            },
-            pageSize: 3,
-            }}
-            dataSource={hrRoleListings}
-            // footer={
-            // <div>
-            //     <b>ant design</b> footer part
-            // </div>
-            // }
-            renderItem={(item: any) => (
-                item.rl_status === listingState || item.rl_creator === listingState || listingState === "all" ?
-                <List.Item
-                    key={item.role_name}
-                    extra={
-                        <Space direction="vertical" size={30}>
-                            <Tooltip placement="top" title='Edit'>
-                                <FormOutlined style={{fontSize: 20}}/>
-                            </Tooltip>
+        {
+            // if HrRoleListings is not null, then print it out
+            loading ? (
+                <List
+                itemLayout="vertical"
+                size="large"
+                pagination={{
+                    pageSize: 10,
+                }}
+                dataSource={Array.from({length: 8}).map((_, i) => i)}
+                renderItem={(item: any) => (
+                    <List.Item
+                        key={item}
+                    >
+                        <Skeleton active title/>
+                    </List.Item>
+
+                )}
+            />
+            ) : 
+            hrRoleListings !== null ? ( 
+                
+                <List
+                itemLayout="vertical"
+                size="large"
+                pagination={{
+                onChange: (page) => {
+                    console.log(page);
+                },
+                pageSize: 3,
+                }}
+                dataSource={hrRoleListings}
+                // footer={
+                // <div>
+                //     <b>ant design</b> footer part
+                // </div>
+                // }
+                renderItem={(item: any) => (
+                    item.rl_status === listingState || listingState === "all" ?
+                    <List.Item
+                        key={item.role_name}
+                        extra={
+                            <Space direction="vertical" size={30}>
+                                <Tooltip placement="top" title='Edit'>
+                                    <FormOutlined style={{fontSize: 20}}/>
+                                </Tooltip>
+                            </Space>
+                            
+                        }
+                    >
+                        <List.Item.Meta
+                        title={item.role_name}
+                        description={item.department}
+                        />
+                        <Space direction="horizontal" wrap size={40}>
+                            <Tag color={item.rl_status === "Open" ? "green" : "red"} >{item.rl_status}</Tag>
+                            <div><EnvironmentOutlined /> {item.location}</div>
+                            <div><CalendarOutlined /> {new Date(item.rl_open).toLocaleDateString()} - {new Date(item.rl_close).toLocaleDateString()}</div>
+                            <div><ClockCircleOutlined /> {new Date(item.rl_ts_create).toLocaleDateString()}</div>
+                            <div style={{display: 'flex', alignItems: 'center'}}>
+                                <CreatorIcon/>
+                                &nbsp;
+                                <span>Created by: { staffListing.loading ? <LoadingOutlined /> :
+                                getHRName(item.rl_creator)}</span>
+                            </div>
                         </Space>
-                        
-                    }
-                >
-                    <List.Item.Meta
-                    title={item.role_name}
-                    description={item.department}
-                    />
-                    <Space direction="horizontal" wrap size={40}>
-                        <Tag color={item.rl_status === "Open" ? "green" : "red"} >{item.rl_status}</Tag>
-                        <div><EnvironmentOutlined /> {item.location}</div>
-                        <div><CalendarOutlined /> {new Date(item.rl_open).toLocaleDateString()} - {new Date(item.rl_close).toLocaleDateString()}</div>
-                        <div><ClockCircleOutlined /> {new Date(item.rl_ts_create).toLocaleDateString()}</div>
-                        <div style={{display: 'flex', alignItems: 'center'}}>
-                            <CreatorIcon/>
-                            &nbsp;
-                            <span>{"Created by: " + getHRName(item.rl_creator)}</span>
-                        </div>
-                    </Space>
-                    <br /><br />
-                    <div>{item.rl_desc}</div>
-                </List.Item> 
-                : <></>
-            )}
-        />
+                        <br /><br />
+                        <div>{item.rl_desc}</div>
+                    </List.Item> 
+                    : <></>
+                )}
+            />
+            ) : (
+                <div>
+                    <Empty description="No role listings found" />
+                </div>
+            )
+        }
         </Space>
-        ) : (
-            <div>
-                <Empty description="No role listings found" />
-            </div>
-        )
     );
 
 }
