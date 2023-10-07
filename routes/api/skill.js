@@ -10,12 +10,5 @@ const router = express.Router();
 router.route("/details/").get(controllers.getSkillDetails);
 
 
-
-
-
-
-
-
-
 module.exports = router;
 

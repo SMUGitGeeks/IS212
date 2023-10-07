@@ -1,7 +1,7 @@
-import { render, screen } from '@testing-library/react';
+import {render, screen} from '@testing-library/react';
 import Roles from './RoleListing';
-import { store } from '../../mockStore';
-import { Provider } from 'react-redux';
+import {store} from '../../mockStore';
+import {Provider} from 'react-redux';
 import {mockMatchMedia} from "../../setupTests";
 import {BrowserRouter} from "react-router-dom";
 

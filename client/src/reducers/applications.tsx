@@ -1,4 +1,4 @@
-import {GET_APPLICATIONS_BY_STAFF_ID, APPLICATIONS_ERROR} from '../actions/types';
+import {APPLICATIONS_ERROR, GET_APPLICATIONS_BY_STAFF_ID} from '../actions/types';
 
 import {ActionType} from "../types";
 

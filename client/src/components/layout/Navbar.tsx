@@ -1,11 +1,11 @@
 import React from 'react';
-import {Row, Col, Avatar, Tooltip} from 'antd';
+import {Avatar, Col, Row, Tooltip} from 'antd';
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import { UserOutlined } from '@ant-design/icons';
-import { rowGutterStyle } from '../../App';
-import { Link, useLocation } from 'react-router-dom';
-import { Container } from 'react-bootstrap';
+import {UserOutlined} from '@ant-design/icons';
+import {rowGutterStyle} from '../../App';
+import {Link, useLocation} from 'react-router-dom';
+import {Container} from 'react-bootstrap';
 
 interface pageType {
     [key: string]: string
@@ -26,11 +26,10 @@ const pages: pageType = {
     "staffListing": "Staff Listing"
 }
 
-
 const Navbar = ({auth: {user, loading}}: any) => {
     const location = useLocation()
     const pageName = location.pathname.split("/")[1]
-    
+
     return (
         <Container>
             <Row gutter={rowGutterStyle} align='middle' justify='space-between' style={{width: "100%"}}>
@@ -41,17 +40,14 @@ const Navbar = ({auth: {user, loading}}: any) => {
                 <Col>
                     <Tooltip title={"User id: " + user}>
                         <Link to={"/profile"}>
-                            <Avatar size="large" icon={<UserOutlined />} />
+                            <Avatar size="large" icon={<UserOutlined/>}/>
                         </Link>
                     </Tooltip>
                 </Col>
-                {/* <Col>
-                </Col> */}
             </Row>
         </Container>
     )
 }
-
 
 Navbar.propTypes = {
     auth: PropTypes.object.isRequired

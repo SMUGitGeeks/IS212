@@ -2,12 +2,12 @@ import {
     FILTER_ROLE_LISTINGS_BY_ROLE_ID,
     GET_ROLE_LISTING,
     GET_ROLE_LISTINGS,
+    GET_ROLE_LISTINGS_CREATED_BY_HR,
+    GET_ROLE_LISTINGS_CREATED_BY_HR_ERROR,
     ROLE_LISTINGS_ERROR,
     SORT_ROLE_LISTINGS_BY_DATE,
     SORT_ROLE_LISTINGS_BY_NAME,
-    SORT_ROLE_LISTINGS_BY_SKILL_MATCH,
-    GET_ROLE_LISTINGS_CREATED_BY_HR,
-    GET_ROLE_LISTINGS_CREATED_BY_HR_ERROR
+    SORT_ROLE_LISTINGS_BY_SKILL_MATCH
 } from '../actions/types';
 import {ActionType, RoleListingsType} from "../types";
 
@@ -17,8 +17,8 @@ const initialState = {
     roleListing: null,
     loading: true,
     error: {},
-    hrRoleListings : [],
-    hrRoleListing : null,
+    hrRoleListings: [],
+    hrRoleListing: null,
 }
 
 export default function (state = initialState, action: ActionType) {

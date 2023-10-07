@@ -2,13 +2,13 @@ import {
     FILTER_STAFF_LISTINGS_BY_SKILL_ID,
     FILTER_STAFF_LISTINGS_BY_STAFF_ID,
     GET_STAFF_LISTING,
+    GET_STAFF_LISTING_BY_RL_ID_AND_STAFF_ID,
     GET_STAFF_LISTINGS,
     GET_STAFF_LISTINGS_BY_RL_ID,
     SORT_STAFF_LISTINGS_BY_FNAME,
     SORT_STAFF_LISTINGS_BY_LNAME,
     SORT_STAFF_LISTINGS_BY_SKILL_MATCH,
     STAFF_LISTINGS_ERROR,
-    GET_STAFF_LISTING_BY_RL_ID_AND_STAFF_ID,
 } from '../actions/types';
 import {ActionType} from "../types";
 
@@ -118,7 +118,7 @@ export default function (state = initialState, action: ActionType) {
                 loading: false
             }
         case GET_STAFF_LISTING_BY_RL_ID_AND_STAFF_ID:
-                const staffListing = state.staffListingsByRLId.filter((staffListing: any) => staffListing.staff_id === payload);
+            const staffListing = state.staffListingsByRLId.filter((staffListing: any) => staffListing.staff_id === payload);
             return {
                 ...state,
                 staffListing: staffListing,

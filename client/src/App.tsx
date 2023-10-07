@@ -16,7 +16,6 @@ import {getApplicationsByStaffId} from "./actions/applications";
 import Profile from './components/pages/Profile';
 import Restricted from "./components/pages/Restricted";
 import HR from "./components/pages/HR";
-import Staff from "./components/pages/Staff";
 import RoleApplicants from './components/pages/RoleApplicants';
 import StaffDetail from './components/pages/StaffDetail';
 import RoleListingManager from './components/pages/RoleListingManager';
@@ -32,10 +31,8 @@ const footerStyle: React.CSSProperties = {
 const rowGutterStyle = {xs: 8, sm: 16, md: 24, lg: 32};
 
 const App = ({getStaffSkillsByStaffId, getApplicationsByStaffId, auth: {user, isHR, loading}}: any) => {
-    // getStaffSkillsByStaffId and getApplicationsByStaffId should be called once user is no longer null
     useEffect(() => {
         if (!loading && user) {
-            // Assuming user.id contains the staff member's ID
             getStaffSkillsByStaffId(user);
             getApplicationsByStaffId(user);
         }
@@ -59,7 +56,7 @@ const App = ({getStaffSkillsByStaffId, getApplicationsByStaffId, auth: {user, is
                                     <Routes>
                                         <Route path="/" element={<Home/>}/>
                                         <Route path="/roleListing" element={<RoleListing/>}/>
-                                        <Route path="/roleListing/:rl_id" element={<RolePage />} />
+                                        <Route path="/roleListing/:rl_id" element={<RolePage/>}/>
                                         <Route path="/profile" element={<Profile/>}/>
                                         <Route path="/hr" element={<HR/>}/>
                                         <Route path="/role/:roleListingId/applicants" element={<RoleApplicants/>}/>

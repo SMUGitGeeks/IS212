@@ -1,4 +1,3 @@
-import type {DescriptionsProps} from "antd";
 import {Button, Col, Divider, Progress, Row, Space, Tag, Typography,} from "antd";
 import {Container} from "react-bootstrap";
 import {AimOutlined, CheckCircleOutlined, ClockCircleOutlined, SolutionOutlined} from "@ant-design/icons";
@@ -49,9 +48,7 @@ export const RoleDescription = ({
 
     const calculateSkillsMatch = () => {
         let matchedSkills = 0;
-        // let missingSkills = 0;
         let numRoleSkills = roleSkills.length;
-
         let missingSkillNames = [] as any;
         staffSkill.forEach((staffSkill: any) => {
             roleSkills.forEach((roleSkill: any) => {
@@ -69,34 +66,11 @@ export const RoleDescription = ({
                 }
             });
         });
-
         let match = (matchedSkills / numRoleSkills) * 100;
         return [match.toFixed(2), missingSkillNames];
     };
 
     const [matchPercentage, missingSkills] = calculateSkillsMatch();
-
-    // const calculateDateDifference = () => {};
-
-    const onChange = (key: string | string[]) => {
-        // console.log(key);
-    };
-    // ===================================
-
-    // Important Details =================
-    const importantDetails: DescriptionsProps["items"] = [
-        {
-            key: "1",
-            label: "UserName",
-            children: "Zhou Maomao",
-        },
-        {
-            key: "2",
-            label: "Telephone",
-            children: "1810000000",
-        },
-    ];
-    // ===================================
 
     return loading ? (
         <h1>Loading...</h1>
@@ -109,27 +83,22 @@ export const RoleDescription = ({
                             <h1>{roleListing.role_name}</h1>
                             <h3>"Department"</h3>
                             <Space direction="horizontal" wrap>
-
                             </Space>
                         </div>
                     </Col>
                     <Col xs={24} sm={24} md={9} lg={7} xl={5}>
-                        {/* <Space direction="vertical" align="center" size="large"> */}
-                            <Button type="primary" size="large" icon={<SolutionOutlined/>}>Apply Now</Button>
-                            
-                        {/* </Space> */}
+                        <Button type="primary" size="large" icon={<SolutionOutlined/>}>Apply Now</Button>
                     </Col>
                 </Row>
 
                 <Row gutter={rowGutterStyle} justify="space-between">
-                    {/* Description coloumn */}
                     <Col xs={24} sm={24} md={24} lg={15} xl={17}>
                         <Space direction="vertical">
                             {
                                 roleListing.rl_desc ?
                                     <>
                                         <Divider orientation="left" orientationMargin="0"
-                                                style={{fontSize: 23}}>Details</Divider>
+                                                 style={{fontSize: 23}}>Details</Divider>
                                         {roleListing.rl_desc}
                                     </> : <></>
                             }
@@ -144,10 +113,7 @@ export const RoleDescription = ({
                             }
                         </Space>
                     </Col>
-
                     <Col xs={24} sm={24} md={24} lg={0} style={{paddingTop: "10%"}}><Divider/></Col>
-
-                    {/* Skills Column */}
                     <Col xs={24} sm={24} md={24} lg={8} xl={6} xxl={5}>
                         <Space direction="vertical" style={{width: "100%"}}>
                             {isHR ?
@@ -160,8 +126,6 @@ export const RoleDescription = ({
                                 <p style={{fontSize: 12, color: "grey", margin: "0"}}>Skills<br/>Matched</p>
                             </Space>
                             <Progress percent={matchPercentage} showInfo={false}/>
-
-                            {/* Display Role's skills */}
                             <Divider orientation="left" orientationMargin="0">All Skills Required</Divider>
                             <Space size={[0, 8]} wrap>
                                 {roleSkills.map((skill: any) => (
@@ -176,9 +140,6 @@ export const RoleDescription = ({
                                          color={color(skill.skill_status)}>{skill[0]}</Tag>
                                 ))}
                             </Space>
-
-                            {/* Separated into skills match vs missing */}
-                            {/* <Collapse items={items} defaultActiveKey={['1']} onChange={onChange} /> */}
                         </Space>
                     </Col>
                 </Row>
@@ -193,8 +154,6 @@ RoleDescription.propTypes = {
     roleListing: PropTypes.object.isRequired,
     staffSkill: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired
-
-    // roleListingId: PropTypes.number.isRequired
 };
 
 const mapStateToProps = (state: any) => ({
