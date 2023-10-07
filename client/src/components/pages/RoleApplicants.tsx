@@ -95,7 +95,6 @@ const RoleApplicants = ({
                             size="large"
                             pagination={staffListingsByRLId.length > 10 ? {
                                 onChange: (page) => {
-                                    console.log(page);
                                 },
                                 pageSize: 10,
                             } : false}

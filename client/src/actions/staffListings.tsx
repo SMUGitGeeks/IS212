@@ -46,7 +46,6 @@ export const getStaffListings = () => async (dispatch: (action: ActionType) => v
 export const getStaffListing = (id: number) => async (dispatch: (action: ActionType) => void) => {
     try {
         const res = await axios.get(`/api/staff/details/${id}`);
-        console.log(res.data[0]);
         dispatch({
             type: GET_STAFF_LISTING,
             payload: res.data[0]

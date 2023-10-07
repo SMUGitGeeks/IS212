@@ -32,7 +32,6 @@ const RoleSearchFilter = ({getRoles, role: {roles, loading}}: any) => {
     }
 
     const handleChange = (roleIds: number[]) => {
-        console.log(roleIds);
         dispatch(filterRoleListingsByRoleId({roleIds}) as any);
     }
 

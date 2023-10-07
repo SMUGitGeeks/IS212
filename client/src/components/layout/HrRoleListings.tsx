@@ -48,7 +48,6 @@ const HrRoleListings = ({
 
     const selectChange = (e: RadioChangeEvent) => {
         setListingState(e.target.value);
-        console.log(e.target.value)
     }
 
     const getHRName = (id: number) => {
@@ -87,7 +86,6 @@ const HrRoleListings = ({
                             size="large"
                             pagination={{
                                 onChange: (page) => {
-                                    console.log(page);
                                 },
                                 pageSize: 3,
                             }}

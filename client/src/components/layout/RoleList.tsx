@@ -47,7 +47,6 @@ const RoleList = ({
                 size="large"
                 pagination={roleListings.length < 10 ? false : {
                     onChange: (page) => {
-                        console.log(page);
                     },
                     pageSize: 10,
                 }}

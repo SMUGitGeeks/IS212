@@ -47,7 +47,6 @@ export const getRoleListings = (id: number) => async (dispatch: (action: ActionT
             res.data[i].skill_match = Math.round(skillMatch / skillCount * 100);
             for (let j = 0; j < res2.data.length; j++) {
                 if (res.data[i]["role_id"] === res2.data[j]["role_id"]) {
-                    console.log('hi')
                     res.data[i].role_name = res2.data[j].role_name;
                     res.data[i].role_description = res2.data[j].role_description;
                     res.data[i].role_status = res2.data[j].role_status;
