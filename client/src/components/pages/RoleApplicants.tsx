@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import {connect, useDispatch} from 'react-redux';
 import {getStaffListingsByRLId} from '../../actions/staffListings';
 import {Container} from 'react-bootstrap';
-import {List, Select, Skeleton, Space} from 'antd';
+import {Empty, List, Select, Skeleton, Space} from 'antd';
 import {getRoleListing} from '../../actions/roleListings';
 import {getRoleSkillsByRoleId} from '../../actions/roleSkills';
 import {sortStaffListingsBySkillMatch} from '../../actions/staffListings';
@@ -124,22 +124,24 @@ const RoleApplicants = ({
 
                         )}
                     />
+                    : staffListingsByRLId.length === 0 && !loading?
+                        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description='No Applicants'/>
                     :
                     <List
                         itemLayout="vertical"
                         size="large"
-                        pagination={{
+                        pagination={ staffListingsByRLId.length > 10 ? {
                             onChange: (page) => {
                                 console.log(page);
                             },
                             pageSize: 10,
-                        }}
+                        }: false}
                         dataSource={staffListingsByRLId}
-                        footer={
-                            <div>
-                                <b>ant design</b> footer part
-                            </div>
-                        }
+                        // footer={
+                        //     <div>
+                        //         <b>ant design</b> footer part
+                        //     </div>
+                        // }
                         renderItem={(item: any) => (
                             <Link to={`/staff/${item.staff_id}`}>
                                 <List.Item
