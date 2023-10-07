@@ -2,16 +2,14 @@ import React, {useEffect} from 'react';
 import {getRoleListings} from '../../actions/roleListings';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {List, Skeleton, Space, Progress, Typography} from 'antd';
+import {List, Skeleton, Space, Progress, Typography, Tag} from 'antd';
 import {Link} from 'react-router-dom';
 import { getRoleSkillsByRoleId } from "../../actions/roleSkills";
-
-const { Text } = Typography;
+import { EnvironmentOutlined, CalendarOutlined, ClockCircleOutlined } from '@ant-design/icons';
 
 const RoleList = ({
                     getRoleListings,
                     roleListing: {roleListings, loading},
-                    staffSkill: {staffSkill},
                     auth: {user, isHR}
                 }: any) => {
     useEffect(() => {
@@ -43,18 +41,18 @@ const RoleList = ({
         <List
             itemLayout="vertical"
             size="large"
-            pagination={{
+            pagination={ roleListings.length < 10 ? false : {
                 onChange: (page) => {
                     console.log(page);
                 },
                 pageSize: 10,
             }}
             dataSource={roleListings}
-            footer={
-                <div>
-                    <b>ant design</b> footer part
-                </div>
-            }
+            // footer={
+            //     <div>
+            //         <b>ant design</b> footer part
+            //     </div>
+            // }
             renderItem={(item: any) => (
                 <Link to={`/roleListing/${item.rl_id}`}>
                     <List.Item
@@ -67,6 +65,7 @@ const RoleList = ({
                         extra={
                             <>
                                 <Space direction='vertical'>
+                                    <div style={{fontStyle: "italic"}}>Skill Match</div>
                                     <Progress type="circle" size={60} percent={item.skill_match} 
                                     // <Progress type="circle" size={80} percent={90} 
                                     format={(percent) => 
@@ -79,10 +78,15 @@ const RoleList = ({
                         <List.Item.Meta
                             title={item.role_name}
                             // description={item.description}
-                            description={date.getDate() - new Date(item.rl_open).getDate() + " days ago"}
+                            description={item.department}
                         />
-                        {item.skill_match}
-                        <br/>
+                        <Space direction="horizontal" wrap size={[40,10]}>
+                            <div><ClockCircleOutlined /> Posted {Math.round((date.getTime() - new Date(item.rl_open).getTime()) / (1000*60*60*24)) + " days ago"}</div>
+                            <div><CalendarOutlined /> Closing Date: {new Date(item.rl_close).toLocaleDateString()}</div>
+                            <div><EnvironmentOutlined /> {item.location}</div>
+                        </Space>
+                        <br/><br />
+                        <div>{item.rl_desc}</div>
                         {(isHR) &&
                             item.application_count + " applications submitted"}
 
