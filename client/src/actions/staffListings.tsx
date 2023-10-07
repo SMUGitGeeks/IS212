@@ -9,6 +9,7 @@ import {
     SORT_STAFF_LISTINGS_BY_LNAME,
     SORT_STAFF_LISTINGS_BY_SKILL_MATCH,
     STAFF_LISTINGS_ERROR,
+    GET_STAFF_LISTING_BY_RL_ID_AND_STAFF_ID,
 } from './types';
 import {ActionType, SortPayloadType} from "../types";
 
@@ -164,6 +165,26 @@ export const getStaffListingsByRLId = (payload: any) => async (dispatch: (action
         });
     }
 }
+
+export const getStaffListingByRLIdAndStaffId = (staffId: number) => async (dispatch: (action: ActionType) => void) => {
+try {
+    dispatch({
+        type: GET_STAFF_LISTING_BY_RL_ID_AND_STAFF_ID,
+        payload: staffId,
+    });
+} catch (err:any) {
+    dispatch({
+        type: STAFF_LISTINGS_ERROR,
+        payload: {msg: err.response.statusText, status: err.response.status}
+    });
+    
+}
+
+
+}
+
+
+
 
 export const sortStaffListingsBySkillMatch = (payload: SortPayloadType) => async (dispatch: (action: ActionType) => void) => {
     dispatch({
