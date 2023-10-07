@@ -40,10 +40,10 @@ export const RoleDescription = ({
                                     staffSkill: {staffSkill},
                                 }: any) => {
 
-    const {roleListingId} = useParams();
+    const {rl_id} = useParams();
     useEffect(() => {
-        getRoleListing(roleListingId);
-        getRoleSkillsByRoleId(roleListingId);
+        getRoleListing(rl_id);
+        getRoleSkillsByRoleId(rl_id);
     }, [getRoleListing]);
 
     const calculateSkillsMatch = () => {
@@ -186,8 +186,6 @@ RoleDescription.propTypes = {
     roleSkill: PropTypes.object.isRequired,
     roleListing: PropTypes.object.isRequired,
     staffSkill: PropTypes.object.isRequired,
-
-    // roleListingId: PropTypes.number.isRequired
 };
 
 const mapStateToProps = (state: any) => ({

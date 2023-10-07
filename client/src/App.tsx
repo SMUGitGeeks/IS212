@@ -58,7 +58,7 @@ const App = ({getStaffSkillsByStaffId, getApplicationsByStaffId, auth: {user, is
                                     <Routes>
                                         <Route path="/" element={<Home/>}/>
                                         <Route path="/roleListing" element={<RoleListing/>}/>
-                                        <Route path="/roleListing/:roleListingId" element={<RolePage />} />
+                                        <Route path="/roleListing/:rl_id" element={<RolePage />} />
                                         <Route path="/profile" element={<Profile/>}/>
                                         <Route path="/hr" element={<HR/>}/>
                                         <Route path="/staff" element={<Staff/>}/>
@@ -69,7 +69,7 @@ const App = ({getStaffSkillsByStaffId, getApplicationsByStaffId, auth: {user, is
                                     <Routes>
                                         <Route path="/" element={<Home/>}/>
                                         <Route path="/roleListing" element={<RoleListing/>}/>
-                                        <Route path="/roleListing/:roleListingId" element={<RolePage/>}/>
+                                        <Route path="/roleListing/:rl_id" element={<RolePage/>}/>
                                         <Route path="/profile" element={<Profile/>}/>
                                         <Route path="/hr" element={<Restricted/>}/>
                                         <Route path="/staff" element={<Restricted/>}/>
