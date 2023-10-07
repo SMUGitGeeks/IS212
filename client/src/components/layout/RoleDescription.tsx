@@ -41,10 +41,10 @@ export const RoleDescription = ({
                                     auth: {isHR},
                                 }: any) => {
 
-    const {roleListingId} = useParams();
+    const {rl_id} = useParams();
     useEffect(() => {
-        getRoleListing(roleListingId);
-        getRoleSkillsByRoleId(roleListingId);
+        getRoleListing(rl_id);
+        getRoleSkillsByRoleId(rl_id);
     }, [getRoleListing]);
 
     const calculateSkillsMatch = () => {

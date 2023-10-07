@@ -4,12 +4,9 @@ import { sortRoleListingsByName, filterRoleListingsByRoleId } from "../../action
 import {connect, useDispatch} from "react-redux";
 import PropTypes from "prop-types";
 import {useEffect} from "react";
+import { SearchOutlined } from '@ant-design/icons';
 
 const {Title} = Typography;
-
-const handleChange = (value: string[]) => {
-    console.log(`selected ${value}`);
-};
 
 const RoleSearchFilter = ({ getRoles, role: {roles, loading}} : any) =>  {
 
@@ -18,13 +15,6 @@ const RoleSearchFilter = ({ getRoles, role: {roles, loading}} : any) =>  {
     }, [getRoles]);
     const dispatch = useDispatch();
 
-    const filter = () => {
-
-    }
-
-    const onChange = (value: any) => {
-        console.log(value)
-    }
     let roleTypes : SelectProps['options'] = [
         {
             label: "Loading...",        // text that is shown to user
@@ -51,17 +41,17 @@ const RoleSearchFilter = ({ getRoles, role: {roles, loading}} : any) =>  {
 
     return (
         <Space direction='vertical' size="small" style={{width: "100%"}}>
-            <Title level={4}>Filters</Title>
-            <Title level={5}>Role Type</Title>
+            <Title level={4}>Search Role Type</Title>
             {/* Tag Search */}
             <Select
                 mode="multiple"
-                style={{ width: '80%' }}
+                style={{ width: '100%' }}
                 placeholder="Please select"
                 defaultValue={[]}
                 onChange={handleChange}
                 options={roleTypes}
                 optionFilterProp={"label"}
+                suffixIcon={<SearchOutlined />}
             />
         </Space>
     );

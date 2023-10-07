@@ -6,6 +6,7 @@ import {
     GET_STAFF_LISTINGS_BY_RL_ID,
     SORT_STAFF_LISTINGS_BY_FNAME,
     SORT_STAFF_LISTINGS_BY_LNAME,
+    SORT_STAFF_LISTINGS_BY_SKILL_MATCH,
     STAFF_LISTINGS_ERROR,
     GET_STAFF_LISTING_BY_RL_ID_AND_STAFF_ID,
 } from '../actions/types';
@@ -123,6 +124,13 @@ export default function (state = initialState, action: ActionType) {
                 staffListing: staffListing,
                 loading: false
             };
+        case SORT_STAFF_LISTINGS_BY_SKILL_MATCH:
+            let sortedStaffListingsBySkillMatch = state.staffListingsByRLId.sort((a: any, b: any) => (a.skill_match < b.skill_match) ? 1 : -1);
+            return {
+                ...state,
+                staffListings: sortedStaffListingsBySkillMatch,
+                rawStaffListings: sortedStaffListingsBySkillMatch,
+            }
         default:
             return state;
     }
