@@ -1,7 +1,4 @@
-import {
-    GET_ROLE_SKILLS_BY_ROLE_ID,
-    ROLE_SKILLS_ERROR
-} from '../actions/types';
+import {GET_ROLE_SKILLS_BY_ROLE_ID, ROLE_SKILLS_ERROR} from '../actions/types';
 
 const initialState = {
     roleSkills: [],
@@ -10,10 +7,10 @@ const initialState = {
     error: {}
 }
 
-export default function(state = initialState, action: any) {
-    const { type, payload } = action;
+export default function (state = initialState, action: any) {
+    const {type, payload} = action;
 
-    switch(type) {
+    switch (type) {
         case GET_ROLE_SKILLS_BY_ROLE_ID:
             return {
                 ...state,

@@ -1,7 +1,6 @@
 import {LOGIN_ERROR, LOGIN_HR, LOGIN_STAFF, LOGOUT} from './types';
 import {ActionType} from "../types";
 
-// Get all roles
 export const loginStaff = () => async (dispatch: (action: ActionType) => void) => {
     try {
         dispatch({

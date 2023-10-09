@@ -5,14 +5,13 @@ import {Link, useLocation} from 'react-router-dom';
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {logout} from '../../actions/auth';
-import {HomeOutlined, LogoutOutlined, SearchOutlined, AuditOutlined } from '@ant-design/icons';
+import {AuditOutlined, HomeOutlined, LogoutOutlined, SearchOutlined} from '@ant-design/icons';
 
 const {Sider} = Layout;
 
 const Sidebar = ({logout, auth: {isHR}}: any) => {
     const location = useLocation()
     const pageName = location.pathname.split("/")[1]
-
     const items: MenuProps['items'] = [
         {
             label: (<Link to={"/"}>{"Home"}</Link>),
@@ -30,24 +29,20 @@ const Sidebar = ({logout, auth: {isHR}}: any) => {
         items.push({
             label: (<Link to={"/hr"}>{"HR"}</Link>),
             key: '/hr',
-            // icon: <SearchOutlined/>,
         });
         items.push({
             label: (<Link to={"/listingManage"}>{"Role Listing Management"}</Link>),
             key: 'listingManage',
-            icon: <AuditOutlined />,
+            icon: <AuditOutlined/>,
         })
     }
 
     items.push({
-        // run logout action
         label: (<Link to={""} onClick={logout}>Logout</Link>),
         key: 'logout',
         icon: <LogoutOutlined/>,
     })
-
     const [collapsed, setCollapsed] = useState(false);
-
     return (
         <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
             <h3 style={{color: "white", marginLeft: "25%"}}>SPRB LOGO</h3>
@@ -55,7 +50,6 @@ const Sidebar = ({logout, auth: {isHR}}: any) => {
         </Sider>
     )
 }
-
 
 Sidebar.propTypes = {
     logout: PropTypes.func.isRequired,

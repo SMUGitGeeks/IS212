@@ -1,29 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {useParams} from 'react-router-dom';
 import PropTypes from "prop-types";
-import { getStaffSkillsByStaffId } from '../../actions/staffSkills';
-import { connect } from 'react-redux';
-import { Card, Descriptions, Empty, Radio, Space, Tag, Typography } from 'antd';
-import { getStaffListing } from '../../actions/staffListings';
-import { Container } from 'react-bootstrap';
-import type { DescriptionsProps, RadioChangeEvent } from 'antd';
-import { CheckCircleOutlined, ClockCircleOutlined, LoadingOutlined } from '@ant-design/icons';
+import {getStaffSkillsByStaffId} from '../../actions/staffSkills';
+import {connect} from 'react-redux';
+import type {DescriptionsProps, RadioChangeEvent} from 'antd';
+import {Card, Descriptions, Empty, Radio, Space, Tag, Typography} from 'antd';
+import {getStaffListing} from '../../actions/staffListings';
+import {Container} from 'react-bootstrap';
+import {CheckCircleOutlined, ClockCircleOutlined, LoadingOutlined} from '@ant-design/icons';
 
 const {Title, Text} = Typography;
 
-
-const StaffDetail = ({getStaffSkillsByStaffId, 
-                    staffSkill: {staffSkill, loading}, 
-                    getStaffListing, 
-                    staffListing
-                }: any) => {
+const StaffDetail = ({
+                         getStaffSkillsByStaffId,
+                         staffSkill: {staffSkill, loading},
+                         getStaffListing,
+                         staffListing
+                     }: any) => {
 
     const {staffId} = useParams();
 
     useEffect(() => {
         getStaffSkillsByStaffId(staffId)
         getStaffListing(staffId)
-    }, [getStaffSkillsByStaffId,getStaffListing]);
+    }, [getStaffSkillsByStaffId, getStaffListing]);
 
     const [skillState, setSkillState] = useState("all");
 
@@ -43,9 +43,9 @@ const StaffDetail = ({getStaffSkillsByStaffId,
 
     const tagIcon = (status: String) => {
         if (status === "active") {
-            return <CheckCircleOutlined />;
+            return <CheckCircleOutlined/>;
         } else if (status === "in-progress") {
-            return <ClockCircleOutlined />;
+            return <ClockCircleOutlined/>;
         } else {
             return <></>;
         }
@@ -55,28 +55,28 @@ const StaffDetail = ({getStaffSkillsByStaffId,
         {
             key: '1',
             label: 'Staff ID',
-            children: staffListing.staffListing === null ? <LoadingOutlined /> : staffListing.staffListing.staff_id,
+            children: staffListing.staffListing === null ? <LoadingOutlined/> : staffListing.staffListing.staff_id,
         },
         {
             key: '2',
             label: 'Department',
-            children: staffListing.staffListing === null? <LoadingOutlined /> : staffListing.staffListing.dept,
+            children: staffListing.staffListing === null ? <LoadingOutlined/> : staffListing.staffListing.dept,
         },
         {
             key: '3',
             label: 'Phone',
-            children: staffListing.staffListing === null ? <LoadingOutlined /> : staffListing.staffListing.phone,
+            children: staffListing.staffListing === null ? <LoadingOutlined/> : staffListing.staffListing.phone,
         },
         {
             key: '4',
             label: 'Email',
-            children: staffListing.staffListing === null ? <LoadingOutlined /> : staffListing.staffListing.email,
+            children: staffListing.staffListing === null ? <LoadingOutlined/> : staffListing.staffListing.email,
         },
         {
             key: '5',
             label: 'Address',
             span: 2,
-            children: staffListing.staffListing === null ? <LoadingOutlined /> : staffListing.biz_address,
+            children: staffListing.staffListing === null ? <LoadingOutlined/> : staffListing.biz_address,
         },
     ];
 
@@ -87,10 +87,9 @@ const StaffDetail = ({getStaffSkillsByStaffId,
         all: number;
         [key: string]: number;
     };
-    
+
     const numStaffSkillTypes = (staffSkills: any[]) => {
-        const counts: SkillCounts = { active: 0, 'in-progress': 0, unverified: 0, all: 0 };
-        
+        const counts: SkillCounts = {active: 0, 'in-progress': 0, unverified: 0, all: 0};
         staffSkills.forEach((skill) => {
             if (skill.skill_status === "active") {
                 if (skill.ss_status === "active") {
@@ -103,20 +102,21 @@ const StaffDetail = ({getStaffSkillsByStaffId,
                 counts.all++;
             }
         });
-        
+
         return counts;
     };
 
     return (
         <Container>
             <Space direction="vertical" size={20}>
-                <Title level={2}>{ staffListing.staffListing === null ? <LoadingOutlined /> : staffListing.staffListing.fname + " " + staffListing.staffListing.lname}</Title>
+                <Title level={2}>{staffListing.staffListing === null ?
+                    <LoadingOutlined/> : staffListing.staffListing.fname + " " + staffListing.staffListing.lname}</Title>
                 <Card>
-                    <Title level={3} style={{marginTop:0, marginBottom: 30}}>Staff Details</Title>
-                    <Descriptions layout="vertical" items={items} />
+                    <Title level={3} style={{marginTop: 0, marginBottom: 30}}>Staff Details</Title>
+                    <Descriptions layout="vertical" items={items}/>
                 </Card>
                 <Card>
-                    <Title level={3} style={{marginTop:0, marginBottom: 30}}>Skills</Title>
+                    <Title level={3} style={{marginTop: 0, marginBottom: 30}}>Skills</Title>
                     <Space size={20} direction="vertical" style={{width: "100%"}}>
                         <Radio.Group value={skillState} buttonStyle="solid" onChange={selectChange}>
                             <Radio.Button value="all">All</Radio.Button>
@@ -128,22 +128,23 @@ const StaffDetail = ({getStaffSkillsByStaffId,
 
                         {loading ?
                             <div>
-                                <LoadingOutlined /> 
+                                <LoadingOutlined/>
                                 Loading...
                             </div>
                             : numStaffSkillTypes(staffSkill)[skillState] === 0 ?
-                            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/> :
-                            <Space direction='horizontal' wrap style={{width: '100%'}}> {
-                                staffSkill.map((skill: any) => (
-                                    (skill.ss_status === skillState || skillState === "all") && skill.skill_status === 'active' ?
-                                    <Tag style={{padding:10}} color={color(skill.skill_status)} icon={tagIcon(skill.skill_status)} key={skill.skill_id}>
-                                        {skill.skill_name}
-                                    </Tag>
-                            
-                                    : 
-                                    <></>
-                                ))
-                            } </Space>
+                                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/> :
+                                <Space direction='horizontal' wrap style={{width: '100%'}}> {
+                                    staffSkill.map((skill: any) => (
+                                        (skill.ss_status === skillState || skillState === "all") && skill.skill_status === 'active' ?
+                                            <Tag style={{padding: 10}} color={color(skill.skill_status)}
+                                                 icon={tagIcon(skill.skill_status)} key={skill.skill_id}>
+                                                {skill.skill_name}
+                                            </Tag>
+
+                                            :
+                                            <></>
+                                    ))
+                                } </Space>
                         }
                     </Space>
                 </Card>

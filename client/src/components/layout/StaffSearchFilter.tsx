@@ -11,7 +11,6 @@ import {useEffect} from "react";
 
 const {Title} = Typography;
 
-
 const StaffSearchFilter = ({getStaffListings, getSkills, skill, staffListing: {rawStaffListings, loading}}: any) => {
 
     useEffect(() => {
@@ -22,16 +21,16 @@ const StaffSearchFilter = ({getStaffListings, getSkills, skill, staffListing: {r
 
     let staffNames: SelectProps['options'] = [
         {
-            label: "Loading...",        // text that is shown to user
-            value: "",      // value of the thing selected
-            disabled: true,    // can have a bool line to determine t/f also
+            label: "Loading...",
+            value: "",
+            disabled: true,
         }
     ];
     let skillNames: SelectProps['options'] = [
         {
-            label: "Loading...",        // text that is shown to user
-            value: "",      // value of the thing selected
-            disabled: true,    // can have a bool line to determine t/f also
+            label: "Loading...",
+            value: "",
+            disabled: true,
         }
     ];
     if (!loading) {
@@ -51,7 +50,6 @@ const StaffSearchFilter = ({getStaffListings, getSkills, skill, staffListing: {r
         });
     }
 
-    // roleTypes is of type array of integer
     const handleStaffChange = (staffIds: number[]) => {
         dispatch(filterStaffListingsByStaffId({staffIds}) as any);
     }
@@ -65,7 +63,6 @@ const StaffSearchFilter = ({getStaffListings, getSkills, skill, staffListing: {r
         <Space direction='vertical' size="small" style={{width: "100%"}}>
             <Title level={4}>Filters</Title>
             <Title level={5}>Role Type</Title>
-            {/* Tag Search */}
             <Select
                 mode="multiple"
                 style={{width: '80%'}}

@@ -2,16 +2,16 @@ import React, {useEffect} from 'react';
 import {getRoleListings} from '../../actions/roleListings';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {List, Skeleton, Space, Progress, Typography, Tag, Empty} from 'antd';
+import {Empty, List, Progress, Skeleton, Space} from 'antd';
 import {Link} from 'react-router-dom';
-import { getRoleSkillsByRoleId } from "../../actions/roleSkills";
-import { EnvironmentOutlined, CalendarOutlined, ClockCircleOutlined } from '@ant-design/icons';
+import {getRoleSkillsByRoleId} from "../../actions/roleSkills";
+import {CalendarOutlined, ClockCircleOutlined, EnvironmentOutlined} from '@ant-design/icons';
 
 const RoleList = ({
-                    getRoleListings,
-                    roleListing: {roleListings, loading},
-                    auth: {user, isHR}
-                }: any) => {
+                      getRoleListings,
+                      roleListing: {roleListings, loading},
+                      auth: {user, isHR}
+                  }: any) => {
     useEffect(() => {
         getRoleListings(user);
 
@@ -38,66 +38,56 @@ const RoleList = ({
             )}
         />
         : roleListings.length === 0 ?
-        <div style={{height: '50vh', display: "flex", alignItems:"center"}}>
-            <Empty description='No Role Listings Available' style={{width: "100%"}}/>
-        </div>
-        :
-        <List
-            itemLayout="vertical"
-            size="large"
-            pagination={ roleListings.length < 10 ? false : {
-                onChange: (page) => {
-                    console.log(page);
-                },
-                pageSize: 10,
-            }}
-            dataSource={roleListings}
-            // footer={
-            //     <div>
-            //         <b>ant design</b> footer part
-            //     </div>
-            // }
-            renderItem={(item: any) => (
+            <div style={{height: '50vh', display: "flex", alignItems: "center"}}>
+                <Empty description='No Role Listings Available' style={{width: "100%"}}/>
+            </div>
+            :
+            <List
+                itemLayout="vertical"
+                size="large"
+                pagination={roleListings.length < 10 ? false : {
+                    onChange: (page) => {
+                    },
+                    pageSize: 10,
+                }}
+                dataSource={roleListings}
+                renderItem={(item: any) => (
                     <Link to={`/roleListing/${item.rl_id}`}>
                         <List.Item
                             key={item.role_name}
-                            // actions={[
-                            //   <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
-                            //   <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
-                            //   <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
-                            // ]}
                             extra={
                                 <>
                                     <Space direction='vertical'>
                                         <div style={{fontStyle: "italic"}}>Skill Match</div>
-                                        <Progress type="circle" size={60} percent={item.skill_match} 
-                                        // <Progress type="circle" size={80} percent={90} 
-                                        format={(percent) => 
-                                        `${percent}%`
-                                        } />
+                                        <Progress type="circle" size={60} percent={item.skill_match}
+                                            // <Progress type="circle" size={80} percent={90}
+                                                  format={(percent) =>
+                                                      `${percent}%`
+                                                  }/>
                                     </Space>
                                 </>
                             }
                         >
-                            
-                        <List.Item.Meta
-                            title={item.role_name}
-                            // description={item.description}
-                            description={item.department}
-                        />
-                        <Space direction="horizontal" wrap size={[40,10]}>
-                            <div><ClockCircleOutlined /> Posted {Math.round((date.getTime() - new Date(item.rl_open).getTime()) / (1000*60*60*24)) + " days ago"}</div>
-                            <div><CalendarOutlined /> Closing Date: {new Date(item.rl_close).toLocaleDateString()}</div>
-                            <div><EnvironmentOutlined /> {item.location}</div>
-                        </Space>
-                        <br/><br />
-                        <div>{item.rl_desc}</div>
-                        {(isHR) &&
-                            item.application_count + " applications submitted"}
+                            <List.Item.Meta
+                                title={item.role_name}
+                                description={item.department}
+                            />
+                            <Space direction="horizontal" wrap size={[40, 10]}>
+                                <div>
+                                    <ClockCircleOutlined/> Posted {Math.round((date.getTime() - new Date(item.rl_open).getTime()) / (1000 * 60 * 60 * 24)) + " days ago"}
+                                </div>
+                                <div><CalendarOutlined/> Closing Date: {new Date(item.rl_close).toLocaleDateString()}
+                                </div>
+                                <div><EnvironmentOutlined/> {item.location}</div>
+                            </Space>
+                            <br/><br/>
+                            <div>{item.rl_desc}</div>
+                            {(isHR) &&
+                                item.application_count + " applications submitted"}
                         </List.Item>
                     </Link>
-            )}
-        />
+                )}
+            />
 }
 
 RoleList.propTypes = {
@@ -114,11 +104,4 @@ const mapStateToProps = (state: any) => ({
 });
 
 export default connect(mapStateToProps, {getRoleSkillsByRoleId, getRoleListings})(RoleList);
-
-function useCallback(arg0: (skillsPerRole: any) => number) {
-    throw new Error('Function not implemented.');
-}
-function useState<T>(arg0: {}): [any, any] {
-    throw new Error('Function not implemented.');
-}
 

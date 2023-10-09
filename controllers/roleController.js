@@ -15,7 +15,7 @@ exports.getRoleDetail = async (req, res) => {
         const [rows, fields] = await connection.promise().query('SELECT * FROM role_details WHERE role_id = ?', [req.params.id]);
         if (rows.length > 0) {
             res.json(rows);
-            
+
         } else {
             res.status(404).send('Role not found');
         }
@@ -40,7 +40,7 @@ exports.getRoleSkill = async (req, res) => {
         const [rows, fields] = await connection.promise().query('SELECT * FROM role_skills WHERE role_id = ?', [req.params.id]);
         if (rows.length > 0) {
             res.json(rows);
-            
+
         } else {
             res.status(404).send('Role skills not found');
         }

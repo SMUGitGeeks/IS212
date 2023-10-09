@@ -1,14 +1,10 @@
 import axios from 'axios';
-import {GET_APPLICATIONS_BY_STAFF_ID, APPLICATIONS_ERROR} from './types';
+import {APPLICATIONS_ERROR, GET_APPLICATIONS_BY_STAFF_ID} from './types';
 import {ActionType, GetApplicationsByStaffIdPayloadType} from "../types";
 
-
-// Get all skills
 export const getApplicationsByStaffId = (payload: GetApplicationsByStaffIdPayloadType) => async (dispatch: (action: ActionType) => void) => {
     try {
-        console.log(payload);
         const res = await axios.get('/api/staff/application/' + payload)
-        // if no application
         if (res.data.length === 0) {
         }
         for (let i = 0; i < res.data.length; i++) {

@@ -2,10 +2,8 @@ import axios from 'axios';
 import {GET_STAFF_SKILLS_BY_STAFF_ID, STAFF_SKILLS_ERROR} from './types';
 import {ActionType, GetStaffSkillsByStaffIdPayloadType} from "../types";
 
-// Get all skills
 export const getStaffSkillsByStaffId = (payload: GetStaffSkillsByStaffIdPayloadType) => async (dispatch: (action: ActionType) => void) => {
     try {
-        console.log("getStaffSkillsByStaffId called");
         const res = await axios.get('/api/staff/skills/' + payload)
         const res2 = await axios.get('/api/skill/details');
         for (let i = 0; i < res.data.length; i++) {

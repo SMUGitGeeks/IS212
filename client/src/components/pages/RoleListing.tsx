@@ -1,13 +1,11 @@
 import React from 'react';
 import {Container} from "react-bootstrap";
 import RoleList from '../layout/RoleList';
-import {Col, Row, Select, Space, Typography} from 'antd';
+import {Col, Row, Select, Space} from 'antd';
 import RoleSearchFilter from '../layout/RoleSearchFilter';
 import {useDispatch} from 'react-redux';
 import {sortRoleListingsByDate, sortRoleListingsByName, sortRoleListingsBySkillMatch} from '../../actions/roleListings';
 import {rowGutterStyle} from '../../App';
-
-const {Title} = Typography;
 
 interface filterOption {
     value: string;
@@ -35,11 +33,8 @@ const sortOptions: filterOption[] = [
 ]
 
 const RoleListing = () => {
-
     const dispatch = useDispatch();
-
     const onChange = (value: string) => {
-        console.log(value)
         let direction = value;
         if (direction === 'recent') {
             dispatch(sortRoleListingsByDate({direction}) as any);
@@ -53,14 +48,12 @@ const RoleListing = () => {
     return (
         <Container>
             <Space direction="vertical" size={16} style={{display: 'flex'}}>
-                {/* <Title level={2}>Search Roles</Title> */}
                 <div style={{marginTop: 20}}></div>
                 <Row justify={'end'} gutter={rowGutterStyle}>
                     <Col>
                         <Select
                             style={{width: 200}}
                             placeholder="Sort by"
-                            // defaultValue={'default'}
                             optionFilterProp="children"
                             filterOption={true}
                             options={sortOptions}
@@ -75,7 +68,6 @@ const RoleListing = () => {
                     </Col>
                     <Col xs={4} sm={4} md={4} lg={0} xl={0} style={{padding: '20px'}}></Col>
                     <Col xs={22} sm={22} md={22} lg={15} xl={17}>
-
                         <RoleList/>
                     </Col>
                 </Row>
