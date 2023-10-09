@@ -8,7 +8,8 @@ import {
     ROLE_LISTINGS_ERROR,
     SORT_ROLE_LISTINGS_BY_DATE,
     SORT_ROLE_LISTINGS_BY_NAME,
-    SORT_ROLE_LISTINGS_BY_SKILL_MATCH
+    SORT_ROLE_LISTINGS_BY_SKILL_MATCH,
+    POST_ROLE_LISTING
 } from './types';
 import {
     ActionType,
@@ -160,6 +161,17 @@ export const getRoleListingsCreatedByHR = (payload: GetRoleListingsByHRPayLoadTy
     }
 }
 
-
-
-
+export const postRoleListing = (roleListing: any) => async (dispatch: (action: ActionType) => void) => {
+    try {
+        const res = await axios.post('/api/role_listing', roleListing);
+        dispatch({
+            type: POST_ROLE_LISTING,
+            payload: res.data
+        });
+    } catch (err: any) {
+        dispatch({
+            type: ROLE_LISTINGS_ERROR,
+            payload: {msg: err.response.statusText, status: err.response.status}
+        });
+    }
+}
