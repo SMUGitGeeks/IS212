@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {APPLICATIONS_ERROR, GET_APPLICATIONS_BY_STAFF_ID} from './types';
+import {APPLICATIONS_ERROR, GET_APPLICATIONS_BY_STAFF_ID, GET_APPLICATION_BY_STAFF_ID_AND_RL_ID} from './types';
 import {ActionType, GetApplicationsByStaffIdPayloadType, PostApplicationLoadType} from "../types";
 
 export const getApplicationsByStaffId = (payload: GetApplicationsByStaffIdPayloadType) => async (dispatch: (action: ActionType) => void) => {
@@ -36,6 +36,22 @@ export const getApplicationsByStaffId = (payload: GetApplicationsByStaffIdPayloa
         });
     }
 }
+
+export const getApplicationByStaffIdAndRLId = (rl_id: number) => async (dispatch: (action: ActionType) => void) => {
+    try {
+        dispatch({
+            type: GET_APPLICATION_BY_STAFF_ID_AND_RL_ID,
+            payload: rl_id,
+        });
+    } catch (err: any) {
+        dispatch({
+            type: APPLICATIONS_ERROR,
+            payload: {msg: err.response.statusText, status: err.response.status}
+        });
+    }
+}
+
+
 
 export const postApplication = (payload: PostApplicationLoadType) => async (dispatch: (action: ActionType) => void) => {
     // post data retrieved from frontend with data retrieved from the frontend

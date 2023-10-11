@@ -1,8 +1,8 @@
-import {Button, Col, Divider, Progress, Row, Space, Tag, Typography,} from "antd";
+import {Button, Col, Divider, Progress, Row, Space, Tag, Typography, Modal, Input,} from "antd";
 import {Container} from "react-bootstrap";
 import {AimOutlined, CheckCircleOutlined, ClockCircleOutlined, SolutionOutlined} from "@ant-design/icons";
 import {rowGutterStyle} from "../../App";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {getRoleSkillsByRoleId} from "../../actions/roleSkills";
 import {getRoleListing} from "../../actions/roleListings";
 import {connect, useDispatch} from "react-redux";
@@ -74,16 +74,48 @@ export const RoleDescription = ({
 
     // onclick function that uses postapplication action when button is clicked which sends rl_id, staff_id, status from both the role listing and the staff as payload
     const dispatch = useDispatch();
-    const onClick = () => {
+    // const onClick = () => {
+    //     let payload = {
+    //         "rl_id": roleListing.rl_id,
+    //         "staff_id": user,
+    //         "role_app_status": "applied",
+    //         "app_text": textBody,
+    //     }
+    //     console.log("clicked")
+    //     dispatch(postApplication(payload) as any)
+    //     dispatch(getApplicationsByStaffId(user) as any)
+    // }
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [textBody, setTextBody] = useState("");
+
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleOk = () => {
         let payload = {
             "rl_id": roleListing.rl_id,
             "staff_id": user,
             "role_app_status": "applied",
+            "app_text": textBody,
         }
         console.log("clicked")
         dispatch(postApplication(payload) as any)
         dispatch(getApplicationsByStaffId(user) as any)
-    }
+        setIsModalOpen(false);
+
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
+
+    const { TextArea } = Input;
+
+    const onCharChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setTextBody(e.target.value);
+    };
 
     const [matchPercentage, missingSkills] = calculateSkillsMatch();
 
@@ -102,7 +134,21 @@ export const RoleDescription = ({
                         </div>
                     </Col>
                     <Col xs={24} sm={24} md={9} lg={7} xl={5}>
-                        <Button type="primary" size="large" icon={<SolutionOutlined/>} onClick={onClick}>Apply Now</Button>
+                        <Button type="primary" size="large" icon={<SolutionOutlined/>} onClick={showModal}>Apply Now</Button>
+                        <Modal title="Role Application" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} okText="Submit">
+                            <p>Why are you suitable for this role?</p>
+                            <TextArea
+                                showCount
+                                maxLength={1000}
+                                style={{ height: 110, resize: 'none' }}
+                                onChange={onCharChange}
+                                placeholder="Enter your answer here"
+                                value = {textBody}
+                            />
+                            <br/>
+                            <br/>
+
+                        </Modal>
                     </Col>
                 </Row>
 

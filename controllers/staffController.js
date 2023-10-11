@@ -92,12 +92,9 @@ exports.createApplication = async (req, res) => {
             return res.status(400).json({error: 'All fields are required'});
         }
 
-        app_ts = 'now()';
-
-
         // Insert the new role listing into the database
-        const sql = 'INSERT INTO application (rl_id, staff_id, role_app_status, app_ts, app_text) VALUES (?, ?, ?, ?, ?)';
-        await connection.promise().query(sql, [rl_id, staff_id, role_app_status, app_ts, app_text]);
+        const sql = 'INSERT INTO application (rl_id, staff_id, role_app_status, app_ts, app_text) VALUES (?, ?, ?, NOW(), ?)';
+        await connection.promise().query(sql, [rl_id, staff_id, role_app_status, app_text]);
 
         // Send a success response
         res.status(201).json({message: 'Role listing created successfully'});
