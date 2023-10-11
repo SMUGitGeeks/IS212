@@ -5,9 +5,11 @@ import {rowGutterStyle} from "../../App";
 import React, {useEffect} from "react";
 import {getRoleSkillsByRoleId} from "../../actions/roleSkills";
 import {getRoleListing} from "../../actions/roleListings";
-import {connect} from "react-redux";
+import {connect, useDispatch} from "react-redux";
 import PropTypes from "prop-types";
 import {Link, useParams} from "react-router-dom";
+import auth from "../../reducers/auth";
+import { getApplicationsByStaffId, postApplication } from "../../actions/applications";
 
 const {Title, Text} = Typography;
 
@@ -37,7 +39,7 @@ export const RoleDescription = ({
                                     roleSkill: {roleSkills},
                                     getRoleSkillsByRoleId,
                                     staffSkill: {staffSkill},
-                                    auth: {isHR},
+                                    auth: {user, isHR},
                                 }: any) => {
 
     const {rl_id} = useParams();
@@ -70,6 +72,19 @@ export const RoleDescription = ({
         return [match.toFixed(2), missingSkillNames];
     };
 
+    // onclick function that uses postapplication action when button is clicked which sends rl_id, staff_id, status from both the role listing and the staff as payload
+    const dispatch = useDispatch();
+    const onClick = () => {
+        let payload = {
+            "rl_id": roleListing.rl_id,
+            "staff_id": user,
+            "role_app_status": "applied",
+        }
+        console.log("clicked")
+        dispatch(postApplication(payload) as any)
+        dispatch(getApplicationsByStaffId(user) as any)
+    }
+
     const [matchPercentage, missingSkills] = calculateSkillsMatch();
 
     return loading ? (
@@ -87,7 +102,7 @@ export const RoleDescription = ({
                         </div>
                     </Col>
                     <Col xs={24} sm={24} md={9} lg={7} xl={5}>
-                        <Button type="primary" size="large" icon={<SolutionOutlined/>}>Apply Now</Button>
+                        <Button type="primary" size="large" icon={<SolutionOutlined/>} onClick={onClick}>Apply Now</Button>
                     </Col>
                 </Row>
 

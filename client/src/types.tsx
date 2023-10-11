@@ -44,3 +44,9 @@ export interface GetRoleSkillsByRoleIdPayloadType {
 export interface GetRoleListingsByHRPayLoadType {
     staffId: number;
 }
+
+export interface PostApplicationLoadType {
+    staff_id: number;
+    rl_id: number;
+    role_app_status: string;
+}

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {APPLICATIONS_ERROR, GET_APPLICATIONS_BY_STAFF_ID} from './types';
-import {ActionType, GetApplicationsByStaffIdPayloadType} from "../types";
+import {ActionType, GetApplicationsByStaffIdPayloadType, PostApplicationLoadType} from "../types";
 
 export const getApplicationsByStaffId = (payload: GetApplicationsByStaffIdPayloadType) => async (dispatch: (action: ActionType) => void) => {
     try {
@@ -37,3 +37,22 @@ export const getApplicationsByStaffId = (payload: GetApplicationsByStaffIdPayloa
     }
 }
 
+export const postApplication = (payload: PostApplicationLoadType) => async (dispatch: (action: ActionType) => void) => {
+    // post data retrieved from frontend with data retrieved from the frontend
+    try {
+        console.log("got clicked")
+        
+        // let payload = {"rl_id": 1,
+        // "staff_id":1,                 // staff_id here has a different convention from the usual staffId used in payload
+        // "role_app_status": "applied"
+        // }
+        console.log(payload)
+        const res = await axios.post('/api/staff/application/', payload)
+    } catch (err: any) {
+        dispatch({
+            type: APPLICATIONS_ERROR,
+            payload: {msg: err.response.statusText, status: err.response.status}
+        });
+    }
+
+}

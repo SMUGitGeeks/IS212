@@ -84,7 +84,7 @@ exports.createApplication = async (req, res) => {
     try {
         // Extract data from the request body
 
-        let {rl_id, staff_id, role_app_status} = req.body; // yet to add supporting doc
+        let {rl_id, staff_id, role_app_status, app_text} = req.body; // yet to add supporting doc
 
 
         // Validate the data (if needed)
@@ -96,8 +96,8 @@ exports.createApplication = async (req, res) => {
 
 
         // Insert the new role listing into the database
-        const sql = 'INSERT INTO application (rl_id, staff_id, role_app_status, app_ts) VALUES (?, ?, ?, ?)';
-        await connection.promise().query(sql, [rl_id, staff_id, role_app_status, app_ts]);
+        const sql = 'INSERT INTO application (rl_id, staff_id, role_app_status, app_ts, app_text) VALUES (?, ?, ?, ?, ?)';
+        await connection.promise().query(sql, [rl_id, staff_id, role_app_status, app_ts, app_text]);
 
         // Send a success response
         res.status(201).json({message: 'Role listing created successfully'});
