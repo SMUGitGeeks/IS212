@@ -5,6 +5,7 @@ import {ActionType} from "../types";
 const initialState = {
     applications: [],
     application: null,
+    // isApplied: false,
     loading: true,
     error: {}
 }
@@ -37,3 +38,6 @@ export default function (state = initialState, action: ActionType) {
             return state;
     }
 }
+
+
+
