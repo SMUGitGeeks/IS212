@@ -1,5 +1,5 @@
 import {Container} from "react-bootstrap";
-import type {TableProps} from 'antd';
+import type {PaginationProps, TableProps} from 'antd';
 import {Skeleton, Space, Table, Tag, Modal, Tooltip} from 'antd';
 import type {ColumnsType, FilterValue, SorterResult} from 'antd/es/table/interface';
 import {getApplicationsByStaffId} from "../../actions/applications";
@@ -40,9 +40,9 @@ const MyApplications = ({getApplicationsByStaffId, application: {applications, l
 
     const showPromiseConfirm = (id:any) => {
         confirm({
-            title: 'Are you sure you want to withdraw this application?',
+            title: 'Warning',
             icon: <ExclamationCircleFilled />,
-            content: 'rl_id:' + id,
+            content: <div>Are you sure you want to withdraw this application? <br /> rl_id: {id}</div>,
             okText: "Confirm Withdraw",
             okButtonProps: {danger: true},
             onOk() {
@@ -61,25 +61,28 @@ const MyApplications = ({getApplicationsByStaffId, application: {applications, l
             title: 'Role Name',
             dataIndex: 'role_name',
             render: (role_name: any) =>
-                <Skeleton loading={loading} active>
+                <Skeleton active style={{width: "100%"}} paragraph={{width: "100%", rows: 1}} title={false} loading={loading}> 
                     {role_name}
                 </Skeleton>
             ,
             sorter: (a, b) => a.role_name.length - b.role_name.length,
             sortOrder: sortedInfo.columnKey === 'roleName' ? sortedInfo.order : null,
             // ellipsis: true,
+            width: '44rem',
         },
         {
             title: 'Date Applied',
             dataIndex: 'app_ts',
             render: (date: any) =>
-                <Skeleton loading={loading} active>
+                <Skeleton active style={{width: "100%"}} paragraph={{width: "100%", rows: 1}} title={false} loading={loading}> 
                     {new Date(date).toLocaleDateString()}
                 </Skeleton>
             ,
             sorter: (a, b) => new Date(a.app_ts).getTime() - new Date(b.app_ts).getTime(),
             sortOrder: sortedInfo.columnKey === 'dateApplied' ? sortedInfo.order : null,
             // ellipsis: true,
+            width: '44rem',
+            responsive: ['md'],
         },
         {
             title: 'Status',
@@ -89,50 +92,75 @@ const MyApplications = ({getApplicationsByStaffId, application: {applications, l
             ],
             dataIndex: 'role_app_status',
             render: (record: any) =>
-                <>
-                    <Skeleton loading={loading} active>
-                        <Tag color={record === "applied" ? 'green' : "red"}>{record}</Tag>
-                    </Skeleton>
-                </>
+                <Skeleton active style={{width: "100%"}} paragraph={{width: "100%", rows: 1}} title={false} loading={loading}> 
+                    <Tag color={record === "applied" ? 'green' : "red"}>
+                        {record === "applied" ? 'Applied' : "Withdrawn"}
+                    </Tag>
+                </Skeleton> 
             ,
             width: '6rem',
+            responsive: ['sm'],
         },
         {
             title: 'Actions',
-            dataIndex: 'rl_id',
+            // dataIndex: 'rl_id',
             render: (record: any) => 
-            <Space size={10}>
-                <Tooltip placement="top" title="Withdraw" >
-                    <span onClick={() => showPromiseConfirm(record)}>
-                        <WithdrawIcon style={{fontSize: 18}}/>
-                    </span>
-                </Tooltip>
-                <Tooltip placement="top" title="View Details">
-                    <Link to={"/roleListing/" + record}>
-                        <FileTextOutlined style={{fontSize: 18}}/>
-                    </Link>
-                </Tooltip>
-            </Space>
+                <Skeleton active style={{width: "100%"}} paragraph={{width: "100%", rows: 1}} title={false} loading={loading}> 
+                    <Space size={10}>
+                        {
+                            record.role_app_status === "applied" ? 
+                                <Tooltip placement="top" title="Withdraw" >
+                                    <span onClick={() => showPromiseConfirm(record.rl_id)}>
+                                        <WithdrawIcon style={{fontSize: 18}}/>
+                                    </span>
+                                </Tooltip>
+                            : null
+                        }
+                        <Tooltip placement="top" title="View Details">
+                            <Link to={"/roleListing/" + record.rl_id}>
+                                <FileTextOutlined style={{fontSize: 18}}/>
+                            </Link>
+                        </Tooltip>
+                    </Space>
+                </Skeleton>
             ,
             width: '6rem',  
         }
     ];
 
+    const showTotal: PaginationProps['showTotal'] = (total) => `Total: ${total}`;
+
     return (
 
         <Container>
             <h1>My Applications</h1>
-            <Table columns={columns} dataSource={
-                loading ?
-                    Array.from({length: 3}).map((_, i) => {
-                        return {
-                            key: i,
-                            role_name: "",
-                            app_ts: "",
-                            role_app_status: ""
-                        }
-                    }) : applications
-            } onChange={handleChange}/>
+            <Table 
+                columns={columns} 
+                dataSource={
+                    loading ?
+                        Array.from({length: 3}).map((_, i) => {
+                            return {
+                                key: i,
+                                role_name: "",
+                                app_ts: "",
+                                role_app_status: "",
+                                rl_id: ""
+                            }
+                        }) : applications
+                } 
+                onChange={handleChange}
+                pagination={ 
+                    applications.length < 10 ? false : 
+                    { 
+                        total: applications.length, 
+                        defaultCurrent: 1, 
+                        pageSize: 10, 
+                        responsive: true, 
+                        showTotal: showTotal,
+                        size: "small"
+                    }
+                }
+            />
         </Container>
     );
 }
