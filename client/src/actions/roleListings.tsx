@@ -9,13 +9,13 @@ import {
     SORT_ROLE_LISTINGS_BY_DATE,
     SORT_ROLE_LISTINGS_BY_NAME,
     SORT_ROLE_LISTINGS_BY_SKILL_MATCH,
-    UPDATE_ROLE_LISTING
 } from './types';
 import {
     ActionType,
     FilterRoleListingsByRoleIdPayloadType,
     GetRoleListingsByHRPayLoadType,
-    SortPayloadType
+    SortPayloadType,
+    UpdateRoleListingLoadType,
 } from "../types";
 
 export const getRoleListings = (id: number) => async (dispatch: (action: ActionType) => void) => {
@@ -161,13 +161,9 @@ export const getRoleListingsCreatedByHR = (payload: GetRoleListingsByHRPayLoadTy
     }
 }
 
-export const updateRoleListing = (id: string, updatedListing: any) => async (dispatch: (action: ActionType) => void) => {
+export const updateRoleListing = (id: number, payload: UpdateRoleListingLoadType) => async (dispatch: (action: ActionType) => void) => {
     try {
-        const res = await axios.put(`/api/role_listing/${id}`, updatedListing);
-        dispatch({
-            type: UPDATE_ROLE_LISTING,
-            payload: res.data
-        });
+        const res = await axios.put('/api/role_listing/' + id, payload)
     } catch (err: any) {
         dispatch({
             type: ROLE_LISTINGS_ERROR,

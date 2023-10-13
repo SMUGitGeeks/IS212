@@ -44,3 +44,12 @@ export interface GetRoleSkillsByRoleIdPayloadType {
 export interface GetRoleListingsByHRPayLoadType {
     staffId: number;
 }
+
+export interface UpdateRoleListingLoadType {
+    rl_close: string;
+    rl_desc: string;
+    rl_open: string;
+    role_id: number;
+    rl_source: number,
+    rl_updater: number,
+}

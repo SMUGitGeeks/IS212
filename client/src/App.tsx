@@ -19,7 +19,7 @@ import HR from "./components/pages/HR";
 import RoleApplicants from './components/pages/RoleApplicants';
 import StaffDetail from './components/pages/StaffDetail';
 import RoleListingManager from './components/pages/RoleListingManager';
-import RoleListingUpdate from './components/pages/RoleListingUpdate';
+import UpdateRoleListing from './components/pages/UpdateRoleListing';
 
 const {Header, Footer, Sider, Content} = Layout;
 
@@ -63,7 +63,7 @@ const App = ({getStaffSkillsByStaffId, getApplicationsByStaffId, auth: {user, is
                                         <Route path="/role/:roleListingId/applicants" element={<RoleApplicants/>}/>
                                         <Route path="/staff/:staffId" element={<StaffDetail/>}/>
                                         <Route path="/listingManage" element={<RoleListingManager/>}/>
-                                        <Route path="/listingManage/update/:rl_id" element={<RoleListingUpdate/>}/>
+                                        <Route path="/listingManage/update/:rl_id" element={<UpdateRoleListing/>}/>
                                     </Routes>
                                 ) : (
                                     <Routes>

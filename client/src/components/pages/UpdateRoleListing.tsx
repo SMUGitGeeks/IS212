@@ -1,20 +1,15 @@
-import { Form, Input, Select, SelectProps, Button, Typography, DatePicker, Space, Card, Tag, Row, Col } from "antd";
+import { Form, Input, Select, Button, DatePicker, Tag, Row, Col, Modal } from "antd";
 import React, { useEffect } from "react";
 import { Container } from "react-bootstrap";
 import {connect, useDispatch} from "react-redux";
 import PropTypes from "prop-types";
-import {SearchOutlined, PlusOutlined} from '@ant-design/icons';
+import {SearchOutlined, LoadingOutlined} from '@ant-design/icons';
 import { getRoleSkillsByRoleId } from "../../actions/roleSkills";
-import { getRoleListing } from "../../actions/roleListings";
-import { useParams } from "react-router-dom";
-import type { RangePickerProps } from 'antd/es/date-picker';
+import { getRoleListing, updateRoleListing } from "../../actions/roleListings";
+import { useNavigate, useParams } from "react-router-dom";
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { getSkills } from "../../actions/skills";
-import skills from "../../reducers/skills";
 
-const { Option } = Select;
-const { Text } = Typography;
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
 
@@ -29,20 +24,14 @@ const tailLayout = {
     wrapperCol: { offset: 4, span: 16 },
 };
 
-// const disabledDate: RangePickerProps['disabledDate'] = (current) => {
-//     // Can not select days before today and today
-//     return current && current < dayjs().endOf('day');
-// };
-
 const rangeConfig = {
     rules: [{ type: 'array' as const, required: true, message: 'Please select time!' }],
 };
 
-
-const RoleListingUpdate = ({
+const UpdateRoleListing = ({
                             getRoleListing,
-                            roleListing: {roleListing, loading},
-                            roleSkill: {roleSkills},
+                            roleListing: {roleListing, loading, updateSuccess},
+                            roleSkill,
                             getRoleSkillsByRoleId,
                             auth: {user},
                         }: any) => {
@@ -53,7 +42,7 @@ const RoleListingUpdate = ({
         getRoleSkillsByRoleId(rl_id);
     }, [getRoleListing, getRoleSkillsByRoleId]);
 
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
     
     const [form] = Form.useForm();
 
@@ -68,30 +57,34 @@ const RoleListingUpdate = ({
         });
     }
 
-    // const onRoleChange = () => {
-    //     form.setFieldsValue({ 
-    //         roleName: roleListing.role_name, 
-    //         roleDescription: roleListing.role_description,
-    //         roleListingDescription: roleListing.rl_desc,
-    //         department: roleListing.department,
-    //         location: roleListing.location,
-    //     });
-    // };
+    const navigate = useNavigate()
     
     const onFinish = (fieldsValue: any) => {
+        Modal.success({
+            title: 'Saving Changes',
+            content: 'Role Listing has been successfully updated.'
+            ,
+            okText: 'Return to Listing'
+            ,
+            onOk() {
+                navigate("/listingManage/" + roleListing.rl_id)
+            },
+        });
+
         const rangeValue = fieldsValue['applicationPeriod'];
-        const values = {
-            ...fieldsValue,
-            rl_open: rangeValue[0].toISOString(),
-            rl_close: rangeValue[1].toISOString(),
-            role_id: roleListing.role_id,
-            rl_source: roleListing.rl_source,
-            rl_updater: user,
-        };
-        delete values['roleName']; 
-        delete values['roleDescription']; 
-        delete values['applicationPeriod']; 
-        console.log('Received values of form: ', values);
+        if (rl_id) {
+            const payload = {
+                "rl_close": rangeValue[1].toISOString(),
+                "rl_desc": fieldsValue.rl_desc,
+                "rl_open": rangeValue[0].toISOString(),
+                "role_id": roleListing.role_id,
+                "rl_source": roleListing.rl_source,
+                "rl_updater": user,
+                "department": fieldsValue.department,
+                "location": fieldsValue.location,
+            }
+            dispatch(updateRoleListing(parseInt(rl_id), payload) as any)
+        }
     };
     
     return (
@@ -100,6 +93,11 @@ const RoleListingUpdate = ({
                 <Col span={22}>
                     <h1>Update Role Listing</h1>
                 </Col>
+                { loading ? 
+                    <Col>
+                        <LoadingOutlined /> Loading Data
+                    </Col> : <></>
+                }
                 <Col span={22}>
                     <Form
                     {...layout}
@@ -146,7 +144,8 @@ const RoleListingUpdate = ({
                             />
                         </Form.Item>
                         <Form.Item label="Skills">
-                            {roleSkills.map((skill:any) => (
+                            { roleSkill.loading ? <LoadingOutlined /> :
+                            roleSkill.roleSkills.map((skill:any) => (
                                 <Tag style={{fontSize: '11pt', padding: 10}} color="blue">{skill.skill_name}</Tag>
                             ))}
                         </Form.Item>
@@ -164,7 +163,7 @@ const RoleListingUpdate = ({
     );
 }
 
-RoleListingUpdate.propTypes = {
+UpdateRoleListing.propTypes = {
     getRoleSkillsByRoleId: PropTypes.func.isRequired,
     getRoleListing: PropTypes.func.isRequired,
     roleSkill: PropTypes.object.isRequired,
@@ -180,4 +179,4 @@ const mapStateToProps = (state: any) => ({
 export default connect(mapStateToProps, {
     getRoleSkillsByRoleId,
     getRoleListing,
-})(RoleListingUpdate);
+})(UpdateRoleListing);

@@ -8,7 +8,6 @@ import {
     SORT_ROLE_LISTINGS_BY_DATE,
     SORT_ROLE_LISTINGS_BY_NAME,
     SORT_ROLE_LISTINGS_BY_SKILL_MATCH,
-    UPDATE_ROLE_LISTING,
 } from '../actions/types';
 import {ActionType, RoleListingsType} from "../types";
 
@@ -95,13 +94,6 @@ export default function (state = initialState, action: ActionType) {
             return {
                 ...state,
                 error: payload,
-                loading: false
-            };
-        case UPDATE_ROLE_LISTING:
-            return {
-                ...state,
-                roleListings: state.roleListings.map((roleListing: RoleListingsType) => roleListing.rl_id === payload.rl_id ? {...roleListing, ...payload} : roleListing),
-                hrRoleListings: state.hrRoleListings.map((roleListing: RoleListingsType) => roleListing.rl_id === payload.rl_id ? {...roleListing, ...payload} : roleListing),
                 loading: false
             };
         default:
