@@ -79,6 +79,7 @@ export const getRoleListing = (id: number) => async (dispatch: (action: ActionTy
     try {
         const res = await axios.get(`/api/role_listing/details/${id}`);
         const res2 = await axios.get('/api/role/details');
+        
         for (let i = 0; i < res.data.length; i++) {
             for (let j = 0; j < res2.data.length; j++) {
                 if (res.data[i]["role_id"] === res2.data[j]["role_id"]) {

@@ -1,6 +1,6 @@
 import axios from 'axios';
-import {APPLICATIONS_ERROR, GET_APPLICATIONS_BY_STAFF_ID} from './types';
-import {ActionType, GetApplicationsByStaffIdPayloadType} from "../types";
+import {APPLICATIONS_ERROR, GET_APPLICATIONS_BY_STAFF_ID, GET_APPLICATION_BY_STAFF_ID_AND_RL_ID} from './types';
+import {ActionType, GetApplicationsByStaffIdPayloadType, PostApplicationPayloadType, UploadApplicationPayloadType} from "../types";
 
 export const getApplicationsByStaffId = (payload: GetApplicationsByStaffIdPayloadType) => async (dispatch: (action: ActionType) => void) => {
     try {
@@ -35,5 +35,69 @@ export const getApplicationsByStaffId = (payload: GetApplicationsByStaffIdPayloa
             payload: {msg: err.response.statusText, status: err.response.status}
         });
     }
+}
+
+export const getApplicationByStaffIdAndRLId = (rl_id: number) => async (dispatch: (action: ActionType) => void) => {
+    try {
+        dispatch({
+            type: GET_APPLICATION_BY_STAFF_ID_AND_RL_ID,
+            payload: rl_id,
+        });
+    } catch (err: any) {
+        dispatch({
+            type: APPLICATIONS_ERROR,
+            payload: {msg: err.response.statusText, status: err.response.status}
+        });
+    }
+}
+
+
+
+export const postApplication = (payload: PostApplicationPayloadType) => async (dispatch: (action: ActionType) => void) => {
+    // post data retrieved from frontend with data retrieved from the frontend
+    try {
+        console.log("got clicked")
+        
+        // let payload = {"rl_id": 1,
+        // "staff_id":1,                 // staff_id here has a different convention from the usual staffId used in payload
+        // "role_app_status": "applied"
+        // }
+        console.log(payload)
+        const res = await axios.post('/api/staff/application/', payload)
+
+        
+    } catch (err: any) {
+        dispatch({
+            type: APPLICATIONS_ERROR,
+            payload: {msg: err.response.statusText, status: err.response.status}
+        });
+    }
+
+}
+
+export const updateApplication = (payload: UploadApplicationPayloadType ) => async (dispatch: (action: ActionType) => void) => {
+    // post data retrieved from frontend with data retrieved from the frontend
+    try {
+        console.log("got clicked")
+        
+        // let payload = {"rl_id": 3,
+        // "staff_id":3,                 // staff_id here has a different convention from the usual staffId used in payload
+        // "role_app_status": "applied",
+        // "app_text": "Hello word"
+        // }
+        console.log(payload)
+        const {rl_id, staff_id} = payload;
+        console.log("role_id: "+ rl_id)
+        console.log("staff_id: "+ staff_id)
+        const res = await axios.put(`/api/staff/application/${rl_id}/${staff_id}`, payload)
+
+        
+    } catch (err: any) {
+        dispatch({
+            type: APPLICATIONS_ERROR,
+            payload: {msg: err.response.statusText, status: err.response.status}
+        });
+    }
+
 }
 

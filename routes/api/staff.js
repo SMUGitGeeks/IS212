@@ -14,11 +14,17 @@ router.route("/skills/:id").get(controllers.getStaffSkill);
 router.route("/role/:id").get(controllers.getStaffRoles);
 router.route("/application/:id").get(controllers.getStaffApplications);
 
-// @route   POST api/staff/application/create
+// @route   POST api/staff/application/
 // @desc    Test route
 // @access  Public
 
 router.route("/application/").post(controllers.createApplication);
+
+// @route   PUT api/staff/application/:id
+// @desc    Test route
+// @access  Public
+
+router.route("/application/:rl_id/:staff_id").put(controllers.updateApplicationStatus);
 
 
 module.exports = router;
