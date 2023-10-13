@@ -9,7 +9,7 @@ import {connect, useDispatch} from "react-redux";
 import PropTypes from "prop-types";
 import {Link, useParams} from "react-router-dom";
 import auth from "../../reducers/auth";
-import { getApplicationByStaffIdAndRLId, getApplicationsByStaffId, postApplication } from "../../actions/applications";
+import { getApplicationByStaffIdAndRLId, getApplicationsByStaffId, postApplication, updateApplication } from "../../actions/applications";
 import { application } from "express";
 
 const {Title, Text} = Typography;
@@ -142,7 +142,24 @@ export const RoleDescription = ({
 
             setIsModalOpen(false);
             
-        } 
+        } else if (application[0].role_app_status === "withdrawn") {
+            let payload = {
+                "rl_id": roleListing.rl_id,
+                "staff_id": user,
+                "role_app_status": "applied",
+                "app_text": textBody,
+            }
+            dispatch(updateApplication(payload) as any)
+
+            dispatch(getApplicationsByStaffId(user) as any)
+            .then(() => {
+                  dispatch(getApplicationByStaffIdAndRLId(roleListing.rl_id) as any)
+                
+              })
+            
+
+            setIsModalOpen(false);
+        }
 
         
         // else if (application[0].role_app_status === "withdrawn") { Doing this nowwwwww

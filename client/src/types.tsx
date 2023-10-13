@@ -45,7 +45,13 @@ export interface GetRoleListingsByHRPayLoadType {
     staffId: number;
 }
 
-export interface PostApplicationLoadType {
+export interface PostApplicationPayloadType {
+    staff_id: number;
+    rl_id: number;
+    role_app_status: string;
+}
+
+export interface UploadApplicationPayloadType {
     staff_id: number;
     rl_id: number;
     role_app_status: string;
