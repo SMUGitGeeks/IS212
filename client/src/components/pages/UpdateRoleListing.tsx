@@ -104,12 +104,11 @@ const UpdateRoleListing = ({
                     form={form}
                     name="control-hooks"
                     onFinish={onFinish}
-                    // style={{ maxWidth: 600 }}
                     scrollToFirstError
                     size="large"
                     colon={false}
                     >
-                        <Form.Item name="roleName" label="Role name" rules={[{ required: false }]} >
+                        <Form.Item name="roleName" label="Role name" rules={[{ required: false}]} >
                             <Input readOnly bordered={false}/>
                         </Form.Item>
                         <Form.Item name="roleDescription" label="Role Description" rules={[{ required: false,  }]}>
@@ -121,21 +120,11 @@ const UpdateRoleListing = ({
                                 autoSize={{ minRows: 3}}
                             />
                         </Form.Item>
-                        <Form.Item name="department" label="Department" rules={[{ required: true,  }]}>
-                            <Select
-                                showSearch
-                                style={{width: '30%'}}
-                                optionFilterProp={"label"}
-                                suffixIcon={<SearchOutlined/>}
-                            />
+                        <Form.Item name="department" label="Department" rules={[{ required: true,  message: "Please input a department"}]}>
+                            <Input/>
                         </Form.Item>
-                        <Form.Item name="location" label="Location" rules={[{ required: true,  }]}>
-                            <Select
-                                showSearch
-                                style={{width: '30%'}}
-                                optionFilterProp={"label"}
-                                suffixIcon={<SearchOutlined/>}
-                            />
+                        <Form.Item name="location" label="Location" rules={[{ required: true, message: "Please input a location (country)" }]}>
+                            <Input/>
                         </Form.Item>
                         <Form.Item name="applicationPeriod" label="Application Period" {...rangeConfig}>
                             <RangePicker
