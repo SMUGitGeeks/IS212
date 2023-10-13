@@ -142,32 +142,7 @@ export const RoleDescription = ({
 
             setIsModalOpen(false);
             
-        } else if (application[0].role_app_status === "withdrawn") {
-            let payload = {
-                "rl_id": roleListing.rl_id,
-                "staff_id": user,
-                "role_app_status": "applied",
-                "app_text": textBody,
-            }
-            dispatch(updateApplication(payload) as any)
-
-            dispatch(getApplicationsByStaffId(user) as any)
-            .then(() => {
-                  dispatch(getApplicationByStaffIdAndRLId(roleListing.rl_id) as any)
-                
-              })
-            
-
-            setIsModalOpen(false);
-        }
-
-        
-        // else if (application[0].role_app_status === "withdrawn") { Doing this nowwwwww
-            
-
-        
-        
-        
+        }         
 
     };
 
