@@ -117,14 +117,26 @@ const HrRoleListings = ({
                                             <div>
                                                 <CalendarOutlined/> {new Date(item.rl_open).toLocaleDateString()} - {new Date(item.rl_close).toLocaleDateString()}
                                             </div>
+                                        </Space>
+                                        <br /><br />
+                                        <Space direction="horizontal" wrap size={66}>
+                                            <div style={{display: 'flex', alignItems: 'center'}}>
+                                                <CreatorIcon/>
+                                                &nbsp;&nbsp;
+                                                <span>Created by: {staffListing.loading ? <LoadingOutlined/> :
+                                                    getHRName(item.rl_creator)}</span>
+                                            </div>
                                             <div>
-                                                <ClockCircleOutlined/> {new Date(item.rl_ts_create).toLocaleDateString()}
+                                                <ClockCircleOutlined /> Created on: {new Date(item.rl_ts_create).toLocaleDateString()}
                                             </div>
                                             <div style={{display: 'flex', alignItems: 'center'}}>
                                                 <CreatorIcon/>
-                                                &nbsp;
-                                                <span>Created by: {staffListing.loading ? <LoadingOutlined/> :
+                                                &nbsp;&nbsp;
+                                                <span>Last Updated by: {staffListing.loading ? <LoadingOutlined/> :
                                                     getHRName(item.rl_creator)}</span>
+                                            </div>
+                                            <div>
+                                                <ClockCircleOutlined /> Last Updated on: "insert"
                                             </div>
                                         </Space>
                                         <br/><br/>
