@@ -82,9 +82,11 @@ export const getRoleListing = (id: number) => async (dispatch: (action: ActionTy
         for (let i = 0; i < res.data.length; i++) {
             for (let j = 0; j < res2.data.length; j++) {
                 if (res.data[i]["role_id"] === res2.data[j]["role_id"]) {
-                    res.data[i].role_name = res2.data[j].role_name;
-                    res.data[i].role_description = res2.data[j].role_description;
-                    res.data[i].role_status = res2.data[j].role_status;
+                    if (res2.data[j]["role_status"] === "active") {
+                        res.data[i].role_name = res2.data[j].role_name;
+                        res.data[i].role_description = res2.data[j].role_description;
+                        res.data[i].role_status = res2.data[j].role_status;
+                    }
                 }
             }
         }

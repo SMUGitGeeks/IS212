@@ -81,7 +81,7 @@ export const RoleDescription = ({
                     <Col xs={24} sm={24} md={15} lg={17} xl={19}>
                         <div className="">
                             <h1>{roleListing.role_name}</h1>
-                            <h3>"Department"</h3>
+                            <h3>Department: {roleListing.department}</h3>
                             <Space direction="horizontal" wrap>
                             </Space>
                         </div>
