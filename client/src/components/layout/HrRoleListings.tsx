@@ -13,6 +13,7 @@ import Icon, {
 import {getStaffListings} from "../../actions/staffListings";
 import type {CustomIconComponentProps} from '@ant-design/icons/lib/components/Icon';
 import {useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 
 const CreatorSvg = () => (
     <svg width="14" height="14" viewBox="0 3 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -94,6 +95,7 @@ const HrRoleListings = ({
                             dataSource={hrRoleListings}
                             renderItem={(item: any) => (
                                 item.rl_status === listingState || listingState === "all" ?
+                                    <Link to={`/listingManage/${item.rl_id}`}>
                                     <List.Item
                                         key={item.role_name}
                                         extra={
@@ -142,6 +144,7 @@ const HrRoleListings = ({
                                         <br/><br/>
                                         <div>{item.rl_desc}</div>
                                     </List.Item>
+                                    </Link>
                                     : <></>
                             )}
                         />
