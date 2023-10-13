@@ -163,7 +163,7 @@ const CreateRoleListing = ({
                     <Form.Item name="roleDescription" label="Role Description" rules={[{ required: false,  }]}>
                         <Input readOnly bordered={false}/>
                     </Form.Item>
-                    <Form.Item name="rl_desc" label="Role Description" rules={[{ required: false,  }]}>
+                    <Form.Item name="rl_desc" label="Role Listing Description" rules={[{ required: false,  }]}>
                         <TextArea
                             placeholder="Add descriptions"
                             autoSize={{ minRows: 3}}
