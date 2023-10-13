@@ -146,6 +146,10 @@ export const getRoleListingsCreatedByHR = (payload: GetRoleListingsByHRPayLoadTy
                     } else {
                         res.data[i].rl_status = "Open";
                     }
+                    console.log(res.data[i].rl_status)
+                } else if (res.data[i]["rl_creator"] !== payload){
+                    res.data.splice(i, 1);
+                    i--;
                 }
             }
         }

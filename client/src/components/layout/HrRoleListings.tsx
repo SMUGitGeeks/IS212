@@ -86,11 +86,11 @@ const HrRoleListings = ({
                         <List
                             itemLayout="vertical"
                             size="large"
-                            pagination={{
+                            pagination={ hrRoleListings.length > 10 ? {
                                 onChange: (page) => {
                                 },
-                                pageSize: 3,
-                            }}
+                                pageSize: 10,
+                            } : false}
                             dataSource={hrRoleListings}
                             renderItem={(item: any) => (
                                 item.rl_status === listingState || listingState === "all" ?
