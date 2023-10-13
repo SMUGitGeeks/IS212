@@ -12,6 +12,7 @@ import Icon, {
 } from '@ant-design/icons';
 import {getStaffListings} from "../../actions/staffListings";
 import type {CustomIconComponentProps} from '@ant-design/icons/lib/components/Icon';
+import {useNavigate} from "react-router-dom";
 
 const CreatorSvg = () => (
     <svg width="14" height="14" viewBox="0 3 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -45,6 +46,7 @@ const HrRoleListings = ({
     }, [getRoleListingsCreatedByHR, getStaffListings]);
 
     const [listingState, setListingState] = useState("all");
+    const navigate = useNavigate();
 
     const selectChange = (e: RadioChangeEvent) => {
         setListingState(e.target.value);
@@ -97,7 +99,9 @@ const HrRoleListings = ({
                                         extra={
                                             <Space direction="vertical" size={30}>
                                                 <Tooltip placement="top" title='Edit'>
+                                                <span onClick={() => navigate("/listingManage/update/" + item.rl_id)}>
                                                     <FormOutlined style={{fontSize: 20}}/>
+                                                </span>
                                                 </Tooltip>
                                             </Space>
                                         }

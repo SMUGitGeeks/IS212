@@ -46,7 +46,7 @@ const UpdateRoleListing = ({
     
     const [form] = Form.useForm();
 
-    if (!loading) {
+    if (roleListing !== null) {
         form.setFieldsValue({ 
             roleName: roleListing.role_name, 
             roleDescription: roleListing.role_description,
@@ -114,7 +114,7 @@ const UpdateRoleListing = ({
                         <Form.Item name="roleDescription" label="Role Description" rules={[{ required: false,  }]}>
                             <Input readOnly bordered={false}/>
                         </Form.Item>
-                        <Form.Item name="rl_desc" label="Role Description" rules={[{ required: false,  }]}>
+                        <Form.Item name="rl_desc" label="Role Listing Description" rules={[{ required: false,  }]}>
                             <TextArea
                                 placeholder="Controlled autosize"
                                 autoSize={{ minRows: 3}}
