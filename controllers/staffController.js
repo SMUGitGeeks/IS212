@@ -84,7 +84,7 @@ exports.createApplication = async (req, res) => {
     try {
         // Extract data from the request body
 
-        let {rl_id, staff_id, role_app_status} = req.body; // yet to add supporting doc
+        let {rl_id, staff_id, role_app_status, app_text} = req.body; // yet to add supporting doc
 
 
         // Validate the data (if needed)
@@ -92,12 +92,9 @@ exports.createApplication = async (req, res) => {
             return res.status(400).json({error: 'All fields are required'});
         }
 
-        app_ts = 'now()';
-
-
         // Insert the new role listing into the database
-        const sql = 'INSERT INTO application (rl_id, staff_id, role_app_status, app_ts) VALUES (?, ?, ?, ?)';
-        await connection.promise().query(sql, [rl_id, staff_id, role_app_status, app_ts]);
+        const sql = 'INSERT INTO application (rl_id, staff_id, role_app_status, app_ts, app_text) VALUES (?, ?, ?, NOW(), ?)';
+        await connection.promise().query(sql, [rl_id, staff_id, role_app_status, app_text]);
 
         // Send a success response
         res.status(201).json({message: 'Role listing created successfully'});
@@ -106,5 +103,25 @@ exports.createApplication = async (req, res) => {
         res.status(500).json({error: 'Server error'});
     }
 };
+
+
+exports.updateApplicationStatus = async (req, res) => {
+        // Extract data from the request body and parameters
+        const { role_app_status, app_text} = req.body;
+        const { rl_id, staff_id } = req.params;
+      
+        // Update the application table
+        const updateSql = "UPDATE sbrp.application SET role_app_status=?, app_text=? WHERE (rl_id = ?) and (staff_id = ?)";
+        connection.query(updateSql, [role_app_status, app_text, rl_id, staff_id], (err, result) => {
+          if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Failed to update role listing' });
+          }
+          // Send a response back to the client indicating success
+          res.status(200).json({ message: 'Role listing updated successfully' });
+        });
+      };
+
+
 
 

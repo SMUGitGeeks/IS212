@@ -8,12 +8,14 @@ import {
     ROLE_LISTINGS_ERROR,
     SORT_ROLE_LISTINGS_BY_DATE,
     SORT_ROLE_LISTINGS_BY_NAME,
-    SORT_ROLE_LISTINGS_BY_SKILL_MATCH
+    SORT_ROLE_LISTINGS_BY_SKILL_MATCH,
+    POST_ROLE_LISTING
 } from './types';
 import {
     ActionType,
     FilterRoleListingsByRoleIdPayloadType,
     GetRoleListingsByHRPayLoadType,
+    PostRoleListingPayloadType,
     SortPayloadType
 } from "../types";
 
@@ -78,12 +80,15 @@ export const getRoleListing = (id: number) => async (dispatch: (action: ActionTy
     try {
         const res = await axios.get(`/api/role_listing/details/${id}`);
         const res2 = await axios.get('/api/role/details');
+        
         for (let i = 0; i < res.data.length; i++) {
             for (let j = 0; j < res2.data.length; j++) {
                 if (res.data[i]["role_id"] === res2.data[j]["role_id"]) {
-                    res.data[i].role_name = res2.data[j].role_name;
-                    res.data[i].role_description = res2.data[j].role_description;
-                    res.data[i].role_status = res2.data[j].role_status;
+                    if (res2.data[j]["role_status"] === "active") {
+                        res.data[i].role_name = res2.data[j].role_name;
+                        res.data[i].role_description = res2.data[j].role_description;
+                        res.data[i].role_status = res2.data[j].role_status;
+                    }
                 }
             }
         }
@@ -160,6 +165,21 @@ export const getRoleListingsCreatedByHR = (payload: GetRoleListingsByHRPayLoadTy
     }
 }
 
-
-
-
+export const postRoleListing = (payload: PostRoleListingPayloadType) => async (dispatch: (action: ActionType) => void) => {
+    try {
+        console.log("postRL got clicked");
+        const {rl_id, role_id, rl_desc, rl_source, rl_open, rl_close, rl_creator, location, department} = payload;
+        console.log(payload);        
+        const res = await axios.post('/api/role_listing/', payload);
+        // dispatch({
+        //     type: POST_ROLE_LISTING,
+        //     payload: res.data
+        // });
+        
+    } catch (err: any) {
+        dispatch({
+            type: ROLE_LISTINGS_ERROR,
+            payload: {msg: err.response.statusText, status: err.response.status}
+        });
+    }
+}
