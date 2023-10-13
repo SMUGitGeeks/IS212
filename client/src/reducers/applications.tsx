@@ -1,10 +1,11 @@
-import {APPLICATIONS_ERROR, GET_APPLICATIONS_BY_STAFF_ID} from '../actions/types';
+import {APPLICATIONS_ERROR, GET_APPLICATIONS_BY_STAFF_ID, GET_APPLICATION_BY_STAFF_ID_AND_RL_ID} from '../actions/types';
 
 import {ActionType} from "../types";
 
 const initialState = {
     applications: [],
     application: null,
+    // isApplied: false,
     loading: true,
     error: {}
 }
@@ -19,6 +20,13 @@ export default function (state = initialState, action: ActionType) {
                 applications: payload,
                 loading: false
             };
+        case GET_APPLICATION_BY_STAFF_ID_AND_RL_ID:
+            const application = state.applications.filter((application: any) => application.rl_id === payload);
+            return {
+                ...state,
+                application: application,
+                loading: false
+            };
         case APPLICATIONS_ERROR:
             return {
                 ...state,
@@ -30,3 +38,6 @@ export default function (state = initialState, action: ActionType) {
             return state;
     }
 }
+
+
+
