@@ -88,7 +88,8 @@ const CreateRoleListing = ({
         });
     }
 
-    const newRLID = roleListing.roleListings.length + 1;
+    // const newRLID = roleListing.roleListings.length + 1;
+    // review in future according to RL table if can
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -115,12 +116,12 @@ const CreateRoleListing = ({
             okText: 'View Listing'
             ,
             onOk() {
-                navigate("/listingManage/" + newRLID)
+                navigate("/listingManage/" + fieldsValue['rl_id'])
             },
         });
         const rangeValue = fieldsValue['applicationPeriod'];
         const payload = {
-            rl_id: newRLID, 
+            rl_id: fieldsValue['rl_id'], 
             role_id: fieldsValue['roleName'], 
             rl_desc: fieldsValue['rl_desc'], 
             rl_source: fieldsValue['rl_source'], 
@@ -130,7 +131,7 @@ const CreateRoleListing = ({
             location: fieldsValue['location'], 
             department: fieldsValue['department'],
         }
-        // dispatch(postRoleListing(payload) as any);
+        dispatch(postRoleListing(payload) as any);
         console.log('Received values of form: ', payload);
     };
 
@@ -151,6 +152,9 @@ const CreateRoleListing = ({
                 size="large"
                 colon={false}
                 >
+                    <Form.Item name="rl_id" label="Role Listing ID" rules={[{ required: true, message: "Please input a location" }]}>
+                        <Input />
+                    </Form.Item>
                     <Form.Item name="roleName" label="Role name" rules={[{ required: true, message: "Please select a valid role" }]} >
                         <Select 
                             showSearch

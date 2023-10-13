@@ -47,7 +47,7 @@ exports.createRoleListing = async (req, res) => {
 
 
         // Validate the data (if needed)
-        if (!rl_id || !role_id || !rl_desc || rl_source || !rl_open || !rl_creator || location || department) {
+        if (!rl_id || !role_id || !rl_desc || !rl_source || !rl_open || !rl_creator || !location || !department) {
             return res.status(400).json({error: 'All fields are required'});
         }
 

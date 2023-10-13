@@ -56,3 +56,15 @@ export interface UploadApplicationPayloadType {
     rl_id: number;
     role_app_status: string;
 }
+
+export interface PostRoleListingPayloadType {
+    rl_id: number;
+    role_id: number;
+    rl_desc: string;
+    rl_source: number;
+    rl_open: string;
+    rl_close: string;
+    rl_creator: number;
+    location: string;
+    department: string;
+}

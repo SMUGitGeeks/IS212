@@ -15,6 +15,7 @@ import {
     ActionType,
     FilterRoleListingsByRoleIdPayloadType,
     GetRoleListingsByHRPayLoadType,
+    PostRoleListingPayloadType,
     SortPayloadType
 } from "../types";
 
@@ -164,13 +165,17 @@ export const getRoleListingsCreatedByHR = (payload: GetRoleListingsByHRPayLoadTy
     }
 }
 
-export const postRoleListing = (roleListing: any) => async (dispatch: (action: ActionType) => void) => {
+export const postRoleListing = (payload: PostRoleListingPayloadType) => async (dispatch: (action: ActionType) => void) => {
     try {
-        const res = await axios.post('/api/role_listing', roleListing);
-        dispatch({
-            type: POST_ROLE_LISTING,
-            payload: res.data
-        });
+        console.log("postRL got clicked");
+        const {rl_id, role_id, rl_desc, rl_source, rl_open, rl_close, rl_creator, location, department} = payload;
+        console.log(payload);        
+        const res = await axios.post('/api/role_listing/', payload);
+        // dispatch({
+        //     type: POST_ROLE_LISTING,
+        //     payload: res.data
+        // });
+        
     } catch (err: any) {
         dispatch({
             type: ROLE_LISTINGS_ERROR,
