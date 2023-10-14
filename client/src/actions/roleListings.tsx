@@ -79,6 +79,11 @@ export const getRoleListing = (id: number) => async (dispatch: (action: ActionTy
     try {
         const res = await axios.get(`/api/role_listing/details/${id}`);
         const res2 = await axios.get('/api/role/details');
+        // get updater name and update time
+        const res3 = await axios.get('/api/staff/details');
+        const res4 = await axios.get(`/api/role_listing/updater/${id}`);
+        let updater = [];
+        let update_time = [];
         
         for (let i = 0; i < res.data.length; i++) {
             for (let j = 0; j < res2.data.length; j++) {
@@ -89,6 +94,25 @@ export const getRoleListing = (id: number) => async (dispatch: (action: ActionTy
                 }
             }
         }
+        for (let j = 0; j < res4.data.length; j++) {
+            for (let i = 0; i < res.data.length; i++) {
+                if (res4.data[j]["rl_id"] === res.data[i]["rl_id"]) {
+                    res.data[i].rl_updater_id = res4.data[j]["rl_updater"];
+                    update_time.push(res4.data[j]["rl_ts_update"]);
+                    updater.push(res4.data[j]["rl_updater"]);
+                }
+            }
+        }
+        // only get the latest updater and update time
+        let latest_updater = updater[updater.length - 1];
+        let latest_update_time = update_time[update_time.length - 1];
+        for (let i = 0; i < res3.data.length; i++) {
+            if (latest_updater === res3.data[i]["staff_id"]) {
+                res.data[0].rl_updater = res3.data[i]["fname"] + " " + res3.data[i]["lname"];
+            }
+        }
+        res.data[0].update_time = latest_update_time;
+
 
         dispatch({
             type: GET_ROLE_LISTING,
