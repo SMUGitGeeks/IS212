@@ -2,9 +2,9 @@ import {Container} from "react-bootstrap";
 import type {PaginationProps, TableProps} from 'antd';
 import {Skeleton, Space, Table, Tag, Modal, Tooltip} from 'antd';
 import type {ColumnsType, FilterValue, SorterResult} from 'antd/es/table/interface';
-import {getApplicationsByStaffId} from "../../actions/applications";
+import {getApplicationsByStaffId, updateApplication} from "../../actions/applications";
 import React, {useEffect, useState} from "react";
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 import {GetApplicationsByStaffIdPayloadType} from "../../types";
 import {Link} from "react-router-dom";
@@ -33,10 +33,11 @@ const MyApplications = ({getApplicationsByStaffId, application: {applications, l
         if (user) {
             getApplicationsByStaffId(user);
         }
-    }, [getApplicationsByStaffId, user]);
+    }, [getApplicationsByStaffId, user, applications]);
 
     // Withdraw Modal ---------
     const { confirm } = Modal;
+    const dispatch = useDispatch();
 
     const showPromiseConfirm = (id:any) => {
         confirm({
@@ -46,9 +47,15 @@ const MyApplications = ({getApplicationsByStaffId, application: {applications, l
             okText: "Confirm Withdraw",
             okButtonProps: {danger: true},
             onOk() {
-                return new Promise((resolve, reject) => {
-                    setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
-                }).catch(() => console.log('Oops errors!'));
+                let payload = {
+                    "rl_id": id,
+                    "staff_id": user,
+                    "role_app_status": "withdrawn",
+                    // "app_text": textBody,
+                }
+                dispatch(updateApplication(payload) as any)
+                    .catch(() => console.log('Oops errors!'));
+                // dispatch(getApplicationsByStaffId(user) as any)
             },
             onCancel() {},
             width: '30rem'

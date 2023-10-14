@@ -11,6 +11,7 @@ import {Link, useParams} from "react-router-dom";
 import auth from "../../reducers/auth";
 import { getApplicationByStaffIdAndRLId, getApplicationsByStaffId, postApplication, updateApplication } from "../../actions/applications";
 import { application } from "express";
+import { isatty } from "tty";
 
 const {Title, Text} = Typography;
 
@@ -43,6 +44,8 @@ export const RoleDescription = ({
                                     getRoleSkillsByRoleId,
                                     staffSkill: {staffSkill},
                                     auth: {user, isHR},
+                                    // getApplicationsByStaffId,
+                                    getApplicationByStaffIdAndRLId,
                                     application: {applications, application,}
                                 }: any) => {
 
@@ -50,6 +53,7 @@ export const RoleDescription = ({
     useEffect(() => {
         getRoleListing(rl_id);
         getRoleSkillsByRoleId(rl_id);
+        getApplicationByStaffIdAndRLId(Number(rl_id))
     }, [getRoleListing]);
 
     // useEffect(() => {
@@ -57,23 +61,29 @@ export const RoleDescription = ({
     // }, [getApplicationsByStaffId]);
 
     useEffect(() => {
+        console.log(rl_id)
+        getApplicationByStaffIdAndRLId(Number(rl_id));
+    }, [applications]);
+
+
+    useEffect(() => {
         checkIfApplied();
     }, [application]);
 
     const dispatch = useDispatch();
 
-    console.log(application);
+    // console.log(application);
     
-    if (count < 1) {
-        count += 1;
+    // if (count < 1) {
+    //     count += 1;
 
 
-    dispatch(getApplicationsByStaffId(user) as any)
-            .then(() => {
-                  dispatch(getApplicationByStaffIdAndRLId(Number(rl_id)) as any)
+    // dispatch(getApplicationsByStaffId(user) as any)
+    //         .then(() => {
+    //               dispatch(getApplicationByStaffIdAndRLId(Number(rl_id)) as any)
                 
-              })
-            }
+    //           })
+    //         }
 
 
     const calculateSkillsMatch = () => {
@@ -101,21 +111,41 @@ export const RoleDescription = ({
     };
 
     // onclick function that uses postapplication action when button is clicked which sends rl_id, staff_id, status from both the role listing and the staff as payload
-
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    // let isWithdrawn = false;
+    const [isApplyModalOpen, setIsApplyModalOpen] = useState(false); 
+    const [buttonDisabled, setButtonDisabled] = useState(false); 
+    const [isWithdrawModalOpen, setisWithdrawModalOpen] = useState(false);
+    const [confirmLoading, setConfirmLoading] = useState(false);
     const [textBody, setTextBody] = useState("");
-    const [isApplied, setIsApplied] = useState(!(application == null || application.length === 0 || application[0].role_app_status === "withdrawn"));
+    const [isApplied, setIsApplied] = useState(!(application == null || application.length === 0 ));
     // console.log(isApplied)
+
+
     const checkIfApplied = () => {
-        if (application == null || application.length === 0 || application[0].role_app_status === "withdrawn") {
+        console.log("isApplied: " + isApplied)
+        if (application == null || application.length === 0) {
             setIsApplied(false);
         } else {
-            setIsApplied(true);
+            console.log("status is withdrawn: ")
+            console.log(application[0].role_app_status === "withdrawn")
+            if (application[0].role_app_status === "withdrawn") {
+                // isWithdrawn = true
+                console.log("button disabled: " + buttonDisabled)
+                setIsApplied(true);
+                setButtonDisabled(true)
+                console.log("button disabled (after): " + buttonDisabled)
+            } else {
+                setIsApplied(true);
+                setButtonDisabled(false)
+
+            }
         }
     }
 
+    console.log("outside check"+buttonDisabled)
+
     const showModal = () => {
-        setIsModalOpen(true);
+        setIsApplyModalOpen(true);
     };
 
 
@@ -134,24 +164,61 @@ export const RoleDescription = ({
             console.log(payload)
             dispatch(postApplication(payload) as any)
             dispatch(getApplicationsByStaffId(user) as any)
-            .then(() => {
-                  dispatch(getApplicationByStaffIdAndRLId(roleListing.rl_id) as any)
-                
-              })
+            // .then(() => {
+            //     dispatch(getApplicationByStaffIdAndRLId(roleListing.rl_id) as any)    
+            // })
             
-
-            setIsModalOpen(false);
-            
+            setConfirmLoading(true);
+            setTimeout(() => {
+                setIsApplyModalOpen(false);
+            setConfirmLoading(false);
+            }, 2000);
         }         
-
     };
 
+
     const handleCancel = () => {
-        setIsModalOpen(false);
+        setIsApplyModalOpen(false);
+    };
+
+    const handleWithdrawOk = () => {
+
+        if (application[0].role_app_status === "applied") {
+            let payload = {
+                "rl_id": roleListing.rl_id,
+                "staff_id": user,
+                "role_app_status": "withdrawn",
+                // "app_text": textBody,
+            }
+            dispatch(updateApplication(payload) as any)
+
+            dispatch(getApplicationsByStaffId(user) as any)
+            // .then(() => {
+            //     dispatch(getApplicationByStaffIdAndRLId(roleListing.rl_id) as any)    
+            // })
+            
+
+            setConfirmLoading(true);
+            setTimeout(() => {
+                setisWithdrawModalOpen(false);
+            setConfirmLoading(false);
+            }, 2000);
+
+            setButtonDisabled(true);
+            
+        }
+    };
+
+
+    const handleWithdrawCancel = () => {
+        setisWithdrawModalOpen(false);
     };
 
     const handleWithdraw = () => {
-        setIsApplied(false);
+        setisWithdrawModalOpen(true);
+
+        
+        // setIsApplied(false);
     }
 
     /* 
@@ -165,7 +232,10 @@ Show withdraw when:
 - Staff has applied for the role
     - getApplicationByStaffIdAndRLId returns an array with a status of "applied"
 */
-
+     useEffect(() => {
+        getApplicationsByStaffId(user);
+    }, [handleOk, handleWithdrawOk]);
+    
     const { TextArea } = Input;
 
     const onCharChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -190,18 +260,36 @@ Show withdraw when:
                     </Col>
                     <Col xs={24} sm={24} md={9} lg={7} xl={5}>
 
-                        {isApplied ? (
-                            <Button type="primary" size="large" icon={<SolutionOutlined />} onClick={handleWithdraw}>
+                        {/* {isApplied ? (
+                            <Button type="primary" size="large" icon={<SolutionOutlined />} onClick={handleWithdraw} disabled={buttonDisabled}>
                             Withdraw
                             </Button>
                         ) : (
                             <Button type="primary" size="large" icon={<SolutionOutlined />} onClick={showModal}>
                             Apply Now
                             </Button>
-                        )}
+                        )} */}
+                        
+
+                        {isApplied ? (
+                            buttonDisabled ? (
+                                <Button type="primary" size="large" icon={<SolutionOutlined />} disabled = {true}>
+                                Withdrawn
+                                </Button>
+                                ) : (
+                                <Button type="primary" size="large" icon={<SolutionOutlined />} onClick={handleWithdraw}>
+                                Withdraw
+                                </Button>
+                                )
+                            ) : (
+                            <Button type="primary" size="large" icon={<SolutionOutlined />} onClick={showModal}>
+                                Apply Now
+                            </Button>
+                            )
+                        }
 
 
-                        <Modal title="Role Application" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} okText="Submit">
+                        <Modal title="Role Application" open={isApplyModalOpen} confirmLoading={confirmLoading} onOk={handleOk} onCancel={handleCancel} okText="Submit">
                             <p>Why are you suitable for this role?</p>
                             <TextArea
                                 showCount
@@ -215,6 +303,15 @@ Show withdraw when:
                             <br/>
 
                         </Modal>
+
+                        <Modal title="Warning" open={isWithdrawModalOpen} confirmLoading={confirmLoading} onOk={handleWithdrawOk} onCancel={handleWithdrawCancel} okText="Confirm">
+                            <p>Are you sure you want to withdraw this application?</p>
+                            <p>Note: You will not be allowed to re-apply for this role.</p>
+
+                        </Modal>
+
+
+                        
                     </Col>
                 </Row>
 
@@ -283,7 +380,7 @@ RoleDescription.propTypes = {
     auth: PropTypes.object.isRequired,
     // getApplicationsByStaffId: PropTypes.func.isRequired,
     // postApplication: PropTypes.func.isRequired,
-    // getApplicationByStaffIdAndRLId: PropTypes.func.isRequired,
+    getApplicationByStaffIdAndRLId: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state: any) => ({
@@ -299,5 +396,5 @@ export default connect(mapStateToProps, {
     getRoleListing,
     // getApplicationsByStaffId,
     // postApplication,
-    // getApplicationByStaffIdAndRLId,
+    getApplicationByStaffIdAndRLId,
 })(RoleDescription);
