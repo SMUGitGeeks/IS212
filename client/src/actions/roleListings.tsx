@@ -15,8 +15,9 @@ import {
     ActionType,
     FilterRoleListingsByRoleIdPayloadType,
     GetRoleListingsByHRPayLoadType,
+    SortPayloadType,
+    UpdateRoleListingLoadType,
     PostRoleListingPayloadType,
-    SortPayloadType
 } from "../types";
 
 export const getRoleListings = (id: number) => async (dispatch: (action: ActionType) => void) => {
@@ -80,6 +81,9 @@ export const getRoleListing = (id: number) => async (dispatch: (action: ActionTy
     try {
         const res = await axios.get(`/api/role_listing/details/${id}`);
         const res2 = await axios.get('/api/role/details');
+        // get updater name and update time
+        const res3 = await axios.get('/api/staff/details');
+        const res4 = await axios.get(`/api/role_listing/updater/${id}`);
         
         for (let i = 0; i < res.data.length; i++) {
             for (let j = 0; j < res2.data.length; j++) {
@@ -88,6 +92,20 @@ export const getRoleListing = (id: number) => async (dispatch: (action: ActionTy
                         res.data[i].role_name = res2.data[j].role_name;
                         res.data[i].role_description = res2.data[j].role_description;
                         res.data[i].role_status = res2.data[j].role_status;
+                    }
+                }
+            }
+        }
+        for (let j = 0; j < res4.data.length; j++) {
+            for (let i = 0; i < res.data.length; i++) {
+                if (res4.data[j]["rl_id"] === res.data[i]["rl_id"]) {
+                    // will keeo overridding the previous updater name and time until the last one
+                    res.data[i].rl_updater_id = res4.data[j]["rl_updater"];
+                    res.data[i].update_time = res4.data[j]["rl_ts_update"];
+                    for (let k = 0; k < res3.data.length; k++) {
+                        if ( res.data[i].rl_updater_id  === res3.data[k]["staff_id"]) {
+                            res.data[i].rl_updater = res3.data[k]["fname"] + " " + res3.data[k]["lname"];
+                        }
                     }
                 }
             }
@@ -137,6 +155,7 @@ export const getRoleListingsCreatedByHR = (payload: GetRoleListingsByHRPayLoadTy
     try {
         const res = await axios.get('/api/role_listing/details')
         const res2 = await axios.get('/api/role/details');
+
         for (let i = 0; i < res.data.length; i++) {
             for (let j = 0; j < res2.data.length; j++) {
                 let today = new Date();
@@ -149,8 +168,13 @@ export const getRoleListingsCreatedByHR = (payload: GetRoleListingsByHRPayLoadTy
                     } else {
                         res.data[i].rl_status = "Open";
                     }
+                    console.log(res.data[i].rl_status)
+                } else if (res.data[i]["rl_creator"] !== payload){
+                    res.data.splice(i, 1);
+                    i--;
                 }
             }
+
         }
 
         dispatch({
@@ -164,6 +188,19 @@ export const getRoleListingsCreatedByHR = (payload: GetRoleListingsByHRPayLoadTy
         });
     }
 }
+
+export const updateRoleListing = (id: number, payload: UpdateRoleListingLoadType) => async (dispatch: (action: ActionType) => void) => {
+    try {
+        const res = await axios.put('/api/role_listing/' + id, payload)
+    } catch (err: any) {
+        dispatch({
+            type: ROLE_LISTINGS_ERROR,
+            payload: { msg: err.response.statusText, status: err.response.status }
+        });
+    }
+};
+
+
 
 export const postRoleListing = (payload: PostRoleListingPayloadType) => async (dispatch: (action: ActionType) => void) => {
     try {

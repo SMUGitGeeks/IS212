@@ -19,6 +19,8 @@ import HR from "./components/pages/HR";
 import RoleApplicants from './components/pages/RoleApplicants';
 import StaffDetail from './components/pages/StaffDetail';
 import RoleListingManager from './components/pages/RoleListingManager';
+import UpdateRoleListing from './components/pages/UpdateRoleListing';
+import ManageRolePage from './components/pages/ManageRolePage';
 import CreateRoleListing from './components/pages/CreateRoleListing';
 
 const {Header, Footer, Sider, Content} = Layout;
@@ -63,6 +65,8 @@ const App = ({getStaffSkillsByStaffId, getApplicationsByStaffId, auth: {user, is
                                         <Route path="/role/:roleListingId/applicants" element={<RoleApplicants/>}/>
                                         <Route path="/staff/:staffId" element={<StaffDetail/>}/>
                                         <Route path="/listingManage" element={<RoleListingManager/>}/>
+                                        <Route path="/listingManage/update/:rl_id" element={<UpdateRoleListing/>}/>
+                                        <Route path="/listingManage/:rl_id" element={<ManageRolePage/>}/>
                                         <Route path="/listingManage/create" element={<CreateRoleListing/>}/>
                                     </Routes>
                                 ) : (
@@ -75,6 +79,8 @@ const App = ({getStaffSkillsByStaffId, getApplicationsByStaffId, auth: {user, is
                                         <Route path="/role/:roleListingId/applicants" element={<Restricted/>}/>
                                         <Route path="/staff/:staffId" element={<Restricted/>}/>
                                         <Route path="/listingManage" element={<Restricted/>}/>
+                                        <Route path="/listingManage/update/:rl_id" element={<Restricted/>}/>
+                                        <Route path="/listingManage/:rl_id" element={<Restricted/>}/>
                                         <Route path="/listingManage/create" element={<Restricted/>}/>                                        
                                     </Routes>
                                 )}

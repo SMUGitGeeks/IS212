@@ -61,9 +61,9 @@ const RoleList = ({
                                         <div style={{fontStyle: "italic"}}>Skill Match</div>
                                         <Progress type="circle" size={60} percent={item.skill_match}
                                             // <Progress type="circle" size={80} percent={90}
-                                                  format={(percent) =>
-                                                      `${percent}%`
-                                                  }/>
+                                                format={(percent) =>
+                                                    `${percent}%`
+                                                }/>
                                     </Space>
                                 </>
                             }

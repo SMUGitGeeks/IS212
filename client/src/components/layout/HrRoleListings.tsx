@@ -12,6 +12,8 @@ import Icon, {
 } from '@ant-design/icons';
 import {getStaffListings} from "../../actions/staffListings";
 import type {CustomIconComponentProps} from '@ant-design/icons/lib/components/Icon';
+import {useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 
 const CreatorSvg = () => (
     <svg width="14" height="14" viewBox="0 3 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -45,6 +47,7 @@ const HrRoleListings = ({
     }, [getRoleListingsCreatedByHR, getStaffListings]);
 
     const [listingState, setListingState] = useState("all");
+    const navigate = useNavigate();
 
     const selectChange = (e: RadioChangeEvent) => {
         setListingState(e.target.value);
@@ -84,20 +87,23 @@ const HrRoleListings = ({
                         <List
                             itemLayout="vertical"
                             size="large"
-                            pagination={{
+                            pagination={ hrRoleListings.length > 10 ? {
                                 onChange: (page) => {
                                 },
-                                pageSize: 3,
-                            }}
+                                pageSize: 10,
+                            } : false}
                             dataSource={hrRoleListings}
                             renderItem={(item: any) => (
                                 item.rl_status === listingState || listingState === "all" ?
+                                    <Link to={`/listingManage/${item.rl_id}`}>
                                     <List.Item
                                         key={item.role_name}
                                         extra={
                                             <Space direction="vertical" size={30}>
                                                 <Tooltip placement="top" title='Edit'>
+                                                <span onClick={() => navigate("/listingManage/update/" + item.rl_id)}>
                                                     <FormOutlined style={{fontSize: 20}}/>
+                                                </span>
                                                 </Tooltip>
                                             </Space>
                                         }
@@ -113,19 +119,32 @@ const HrRoleListings = ({
                                             <div>
                                                 <CalendarOutlined/> {new Date(item.rl_open).toLocaleDateString()} - {new Date(item.rl_close).toLocaleDateString()}
                                             </div>
+                                        </Space>
+                                        <br /><br />
+                                        <Space direction="horizontal" wrap size={66}>
+                                            <div style={{display: 'flex', alignItems: 'center'}}>
+                                                <CreatorIcon/>
+                                                &nbsp;&nbsp;
+                                                <span>Created by: {staffListing.loading ? <LoadingOutlined/> :
+                                                    getHRName(item.rl_creator)}</span>
+                                            </div>
                                             <div>
-                                                <ClockCircleOutlined/> {new Date(item.rl_ts_create).toLocaleDateString()}
+                                                <ClockCircleOutlined /> Created on: {new Date(item.rl_ts_create).toLocaleDateString()}
                                             </div>
                                             <div style={{display: 'flex', alignItems: 'center'}}>
                                                 <CreatorIcon/>
-                                                &nbsp;
-                                                <span>Created by: {staffListing.loading ? <LoadingOutlined/> :
+                                                &nbsp;&nbsp;
+                                                <span>Last Updated by: {staffListing.loading ? <LoadingOutlined/> :
                                                     getHRName(item.rl_creator)}</span>
+                                            </div>
+                                            <div>
+                                                <ClockCircleOutlined /> Last Updated on: "insert"
                                             </div>
                                         </Space>
                                         <br/><br/>
                                         <div>{item.rl_desc}</div>
                                     </List.Item>
+                                    </Link>
                                     : <></>
                             )}
                         />
