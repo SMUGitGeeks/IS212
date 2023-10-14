@@ -107,12 +107,12 @@ exports.createApplication = async (req, res) => {
 
 exports.updateApplicationStatus = async (req, res) => {
         // Extract data from the request body and parameters
-        const { role_app_status, app_text} = req.body;
+        const { role_app_status} = req.body;
         const { rl_id, staff_id } = req.params;
       
         // Update the application table
-        const updateSql = "UPDATE sbrp.application SET role_app_status=?, app_text=? WHERE (rl_id = ?) and (staff_id = ?)";
-        connection.query(updateSql, [role_app_status, app_text, rl_id, staff_id], (err, result) => {
+        const updateSql = "UPDATE sbrp.application SET role_app_status=? WHERE (rl_id = ?) and (staff_id = ?)";
+        connection.query(updateSql, [role_app_status, rl_id, staff_id], (err, result) => {
           if (err) {
             console.error(err);
             return res.status(500).json({ error: 'Failed to update role listing' });

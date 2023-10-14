@@ -7,7 +7,8 @@ import {
     ROLE_LISTINGS_ERROR,
     SORT_ROLE_LISTINGS_BY_DATE,
     SORT_ROLE_LISTINGS_BY_NAME,
-    SORT_ROLE_LISTINGS_BY_SKILL_MATCH,
+    SORT_ROLE_LISTINGS_BY_SKILL_MATCH, 
+    POST_ROLE_LISTING
 } from '../actions/types';
 import {ActionType, RoleListingsType} from "../types";
 
@@ -96,6 +97,13 @@ export default function (state = initialState, action: ActionType) {
                 error: payload,
                 loading: false
             };
+        case POST_ROLE_LISTING:
+            return {
+                ...state,
+                roleListings: [...state.roleListings, payload],
+                rawRoleListings: [...state.rawRoleListings, payload],
+                loading: false
+            }
         default:
             return state;
     }

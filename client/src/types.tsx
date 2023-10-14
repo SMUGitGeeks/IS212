@@ -65,3 +65,15 @@ export interface UpdateRoleListingLoadType {
     rl_source: number,
     rl_updater: number,
 }
+
+export interface PostRoleListingPayloadType {
+    rl_id: number;
+    role_id: number;
+    rl_desc: string;
+    rl_source: number;
+    rl_open: string;
+    rl_close: string;
+    rl_creator: number;
+    location: string;
+    department: string;
+}
