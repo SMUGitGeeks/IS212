@@ -55,7 +55,7 @@ export default function (state = initialState, action: ActionType) {
                 ...state,
                 roleListings: sortedRoleListings,
                 rawRoleListings: sortedRoleListings,
-            }
+            };
         case FILTER_ROLE_LISTINGS_BY_ROLE_ID:
             // payload is an Array of role ids
             if (payload["roleIds"].length === 0) {
@@ -69,35 +69,34 @@ export default function (state = initialState, action: ActionType) {
                     ...state,
                     roleListings: filteredRoleListings,
                 }
-            }
+            };
         case SORT_ROLE_LISTINGS_BY_DATE:
             let sortedRoleListingsByDate = state.roleListings.sort((a: RoleListingsType, b: RoleListingsType) => (a.rl_open < b.rl_open) ? 1 : -1);
             return {
                 ...state,
                 roleListings: sortedRoleListingsByDate,
                 rawRoleListings: sortedRoleListingsByDate,
-            }
+            };
         case SORT_ROLE_LISTINGS_BY_SKILL_MATCH:
             let sortedRoleListingsBySkillMatch = state.roleListings.sort((a: RoleListingsType, b: RoleListingsType) => (a.skill_match < b.skill_match) ? 1 : -1);
             return {
                 ...state,
                 roleListings: sortedRoleListingsBySkillMatch,
                 rawRoleListings: sortedRoleListingsBySkillMatch,
-            }
+            };
         case GET_ROLE_LISTINGS_CREATED_BY_HR:
             return {
                 ...state,
                 hrRoleListings: payload,
                 hrRoleListing: payload[0],
                 loading: false
-            }
+            };
         case GET_ROLE_LISTINGS_CREATED_BY_HR_ERROR:
             return {
                 ...state,
                 error: payload,
                 loading: false
-            }
-
+            };
         case POST_ROLE_LISTING:
             return {
                 ...state,
