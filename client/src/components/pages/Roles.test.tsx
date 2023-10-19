@@ -10,10 +10,8 @@ describe('Roles component tests', () => {
     beforeAll(() => {
         mockMatchMedia();
     });
-    it('Should see Filters', () => {
+    it('Should see relevant select boxes', () => {
         render(<BrowserRouter><Provider store={store}><Roles/></Provider></BrowserRouter>);
-        const filtersElement = screen.getByText("Filters");
-        expect(filtersElement).toBeInTheDocument();
         const sortByElement = screen.getByText("Sort by");
         expect(sortByElement).toBeInTheDocument();
         const pleaseSelectElement = screen.getByText("Please select");

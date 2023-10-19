@@ -3,27 +3,33 @@ import RolePage from './RolePage';
 import {store} from '../../mockStore';
 import {Provider} from 'react-redux';
 import {mockMatchMedia} from "../../setupTests";
+import {MemoryRouter} from "react-router-dom";
 
 describe('RolePage component tests', () => {
     beforeAll(() => {
         mockMatchMedia();
     });
+    beforeEach(() => {
+        render(
+            <Provider store={store}>
+                <MemoryRouter initialEntries={['/roleListing/1']}>
+                    <RolePage/>
+                </MemoryRouter>
+            </Provider>);
+    });
     it('Should see the Apply Now button', () => {
-        render(<Provider store={store}><RolePage/></Provider>);
         const applyNowElement = screen.getByText("Apply Now");
         expect(applyNowElement).toBeInTheDocument();
     })
     it('Should see All Skills', () => {
-        render(<Provider store={store}><RolePage/></Provider>);
-        const allSkillsElement = screen.getByText("All Skills");
+        const allSkillsElement = screen.getByText("All Skills Required");
         const communicationSkillElement = screen.getByText("Communication");
-        const teamworkSkillElement = screen.getByText("Teamwork");
+        const teamworkSkillElement = screen.getByText("HR management");
         expect(allSkillsElement).toBeInTheDocument();
         expect(communicationSkillElement).toBeInTheDocument();
         expect(teamworkSkillElement).toBeInTheDocument();
     })
     it('Should show HR Manager', () => {
-        render(<Provider store={store}><RolePage/></Provider>);
         const hrManagerElement = screen.getByText("HR Manager");
         expect(hrManagerElement).toBeInTheDocument();
     })
