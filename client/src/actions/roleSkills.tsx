@@ -11,10 +11,12 @@ export const getRoleSkillsByRoleId = (payload: GetRoleSkillsByRoleIdPayloadType)
         const res3 = await axios.get('/api/skill/details');
         for (let i = 0; i < res2.data.length; i++) {
             for (let j = 0; j < res3.data.length; j++) {
-                // haven't check if skill is active
+                // Check if skill is active
                 if (res2.data[i]["skill_id"] === res3.data[j]["skill_id"]) {
-                    res2.data[i].skill_name = res3.data[j].skill_name;
-                    res2.data[i].skill_status = res3.data[j].skill_status;
+                    if (res3.data[j].skill_status === "active"){
+                        res2.data[i].skill_name = res3.data[j].skill_name;
+                        res2.data[i].skill_status = res3.data[j].skill_status;
+                    }
                 }
             }
         }
