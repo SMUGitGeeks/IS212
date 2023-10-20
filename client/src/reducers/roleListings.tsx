@@ -64,7 +64,7 @@ export default function (state = initialState, action: ActionType) {
                     roleListings: state.rawRoleListings
                 }
             } else {
-                let filteredRoleListings = state.rawRoleListings.filter((rawRoleListing: RoleListingsType) => payload["roleIds"].includes(rawRoleListing.role_id));
+            // payload is an Array of locations
                 return {
                     ...state,
                     roleListings: filteredRoleListings,
