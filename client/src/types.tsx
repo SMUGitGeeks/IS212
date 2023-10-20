@@ -12,6 +12,8 @@ export interface RoleListingsType {
     skill_match: number;
     location: string;
     department: string;
+    rl_updater_id: number;
+    update_time: string;
 }
 
 export interface ActionType {
