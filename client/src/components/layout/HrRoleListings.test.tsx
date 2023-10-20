@@ -1,8 +1,8 @@
-import {act, fireEvent, render, screen} from '@testing-library/react';
+import {render, screen} from '@testing-library/react';
 import {store} from '../../mockStore';
 import {Provider} from 'react-redux';
 import {mockMatchMedia} from "../../setupTests";
-import {BrowserRouter, MemoryRouter} from 'react-router-dom'
+import {BrowserRouter} from 'react-router-dom'
 import HrRoleListings from './HrRoleListings';
 import userEvent from '@testing-library/user-event';
 
@@ -47,8 +47,7 @@ describe('Role List component tests', () => {
         expect(window.location.pathname).toBe('/listingManage/update/1');
     });
 
-    it ("able to click edit icon and redirect to update page",() => {
-        screen.debug(undefined, Infinity);
+    it ("able to click edit icon and redirect to listing page",() => {
         const listItemElement = screen.getAllByTestId('one-listing')[0];
 
         userEvent.click(listItemElement)
