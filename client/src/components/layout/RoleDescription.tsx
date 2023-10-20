@@ -1,6 +1,6 @@
 import {Button, Col, Divider, Progress, Row, Space, Tag, Typography, Modal, Input,} from "antd";
 import {Container} from "react-bootstrap";
-import {AimOutlined, CheckCircleOutlined, ClockCircleOutlined, SolutionOutlined} from "@ant-design/icons";
+import {AimOutlined, CheckCircleOutlined, ClockCircleOutlined, SolutionOutlined, LoadingOutlined} from "@ant-design/icons";
 import {rowGutterStyle} from "../../App";
 import React, {useEffect, useState} from "react";
 import {getRoleSkillsByRoleId} from "../../actions/roleSkills";
@@ -56,67 +56,16 @@ export const RoleDescription = ({
         getApplicationByStaffIdAndRLId(Number(rl_id))
     }, [getRoleListing]);
 
-    // useEffect(() => {
-    //     getApplicationByStaffIdAndRLId(roleListing.rl_id);
-    // }, [getApplicationsByStaffId]);
-
     useEffect(() => {
         console.log(rl_id)
         getApplicationByStaffIdAndRLId(Number(rl_id));
     }, [applications]);
-
 
     useEffect(() => {
         checkIfApplied();
     }, [application]);
 
     const dispatch = useDispatch();
-
-    // console.log(application);
-    
-    // if (count < 1) {
-    //     count += 1;
-
-
-    // dispatch(getApplicationsByStaffId(user) as any)
-    //         .then(() => {
-    //               dispatch(getApplicationByStaffIdAndRLId(Number(rl_id)) as any)
-                
-    //           })
-    //         }
-
-
-    const calculateSkillsMatch = () => {
-        let matchedSkills = 0;
-        let numRoleSkills = 0;
-        let missingSkillNames = [] as any;
-        let requiredSkills = [] as any;
-        let staffskills = [] as any;
-
-        roleSkills.forEach((roleSkill: any) => {
-            if (roleSkill.skill_status === "active") {
-                numRoleSkills++;
-                requiredSkills.push(roleSkill.skill_name);
-            }
-        });
-
-        staffSkill.forEach((staffSkill: any) => {
-            if (staffSkill.ss_status === "active") {
-                staffskills.push(staffSkill.skill_name);
-            }
-        });
-        
-        requiredSkills.forEach((requiredSkill: any) => {
-            if (staffskills.includes(requiredSkill)) {
-                matchedSkills++;
-            } else {
-                missingSkillNames.push(requiredSkill);
-            }
-        });
-
-        let match = (matchedSkills / numRoleSkills) * 100;
-        return [match.toFixed(2), missingSkillNames];
-    };
 
     // onclick function that uses postapplication action when button is clicked which sends rl_id, staff_id, status from both the role listing and the staff as payload
     // let isWithdrawn = false;
@@ -240,7 +189,7 @@ Show withdraw when:
 - Staff has applied for the role
     - getApplicationByStaffIdAndRLId returns an array with a status of "applied"
 */
-     useEffect(() => {
+    useEffect(() => {
         getApplicationsByStaffId(user);
     }, [handleOk, handleWithdrawOk]);
     
@@ -250,10 +199,8 @@ Show withdraw when:
         setTextBody(e.target.value);
     };
 
-    const [matchPercentage, missingSkills] = calculateSkillsMatch();
-
-    return loading ? (
-        <h1>Loading...</h1>
+    return loading || !roleListing ? (
+        <h1><LoadingOutlined /> Loading...</h1>
     ) : (
         <Container>
             <Space direction="vertical" style={{display: "flex"}} size="large">
@@ -330,7 +277,7 @@ Show withdraw when:
                                 roleListing.rl_desc ?
                                     <>
                                         <Divider orientation="left" orientationMargin="0"
-                                                 style={{fontSize: 23}}>Details</Divider>
+                                                style={{fontSize: 23}}>Details</Divider>
                                         {roleListing.rl_desc}
                                     </> : <></>
                             }
@@ -354,10 +301,10 @@ Show withdraw when:
                             }
                             <Space direction="horizontal" align="center">
                                 <AimOutlined style={{fontSize: 25}}/>
-                                <p style={{fontSize: 26, margin: "0"}}>{matchPercentage}%</p>
+                                {/* <p style={{fontSize: 26, margin: "0"}}>{matchPercentage}%</p> */}
                                 <p style={{fontSize: 12, color: "grey", margin: "0"}}>Skills<br/>Matched</p>
                             </Space>
-                            <Progress percent={matchPercentage} showInfo={false}/>
+                            {/* <Progress percent={matchPercentage} showInfo={false}/> */}
                             <Divider orientation="left" orientationMargin="0">All Skills Required</Divider>
                             <Space size={[0, 8]} wrap>
                                 {roleSkills.map((skill: any) => (
@@ -366,12 +313,12 @@ Show withdraw when:
                             </Space>
 
                             <Title level={5}>Missing Skills</Title>
-                            <Space size={[0, 8]} wrap>
+                            {/* <Space size={[0, 8]} wrap>
                                 {missingSkills.map((skill: any) => (
                                     <Tag icon={tagIcon(skill.skill_status)}
-                                         color={color(skill.skill_status)}>{skill}</Tag>
+                                        color={color(skill.skill_status)}>{skill}</Tag>
                                 ))}
-                            </Space>
+                            </Space> */}
                         </Space>
                     </Col>
                 </Row>
