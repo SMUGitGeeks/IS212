@@ -88,24 +88,32 @@ export const RoleDescription = ({
 
     const calculateSkillsMatch = () => {
         let matchedSkills = 0;
-        let numRoleSkills = roleSkills.length;
+        let numRoleSkills = 0;
         let missingSkillNames = [] as any;
-        staffSkill.forEach((staffSkill: any) => {
-            roleSkills.forEach((roleSkill: any) => {
-                if (
-                    staffSkill.skill_id === roleSkill.skill_id &&
-                    (staffSkill.skill_status === "in-progress" || staffSkill.skill_status === "unverified")
-                ) {
-                    missingSkillNames.push([roleSkill.skill_name, roleSkill.skill_status]);
-                } else if (
-                    staffSkill.skill_id !== roleSkill.skill_id
-                ) {
-                    missingSkillNames.push([roleSkill.skill_name, "missing"]);
-                } else {
-                    matchedSkills++;
-                }
-            });
+        let requiredSkills = [] as any;
+        let staffskills = [] as any;
+
+        roleSkills.forEach((roleSkill: any) => {
+            if (roleSkill.skill_status === "active") {
+                numRoleSkills++;
+                requiredSkills.push(roleSkill.skill_name);
+            }
         });
+
+        staffSkill.forEach((staffSkill: any) => {
+            if (staffSkill.ss_status === "active") {
+                staffskills.push(staffSkill.skill_name);
+            }
+        });
+        
+        requiredSkills.forEach((requiredSkill: any) => {
+            if (staffskills.includes(requiredSkill)) {
+                matchedSkills++;
+            } else {
+                missingSkillNames.push(requiredSkill);
+            }
+        });
+
         let match = (matchedSkills / numRoleSkills) * 100;
         return [match.toFixed(2), missingSkillNames];
     };
@@ -361,7 +369,7 @@ Show withdraw when:
                             <Space size={[0, 8]} wrap>
                                 {missingSkills.map((skill: any) => (
                                     <Tag icon={tagIcon(skill.skill_status)}
-                                         color={color(skill.skill_status)}>{skill[0]}</Tag>
+                                         color={color(skill.skill_status)}>{skill}</Tag>
                                 ))}
                             </Space>
                         </Space>
