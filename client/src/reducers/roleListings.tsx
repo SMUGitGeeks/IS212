@@ -7,7 +7,8 @@ import {
     ROLE_LISTINGS_ERROR,
     SORT_ROLE_LISTINGS_BY_DATE,
     SORT_ROLE_LISTINGS_BY_NAME,
-    SORT_ROLE_LISTINGS_BY_SKILL_MATCH
+    SORT_ROLE_LISTINGS_BY_SKILL_MATCH,
+    POST_ROLE_LISTING,
 } from '../actions/types';
 import {ActionType, RoleListingsType} from "../types";
 
