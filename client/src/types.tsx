@@ -13,7 +13,7 @@ export interface RoleListingsType {
     location: string;
     department: string;
     rl_updater_id: number;
-    rl_ts_update: string;
+    update_time: string;
 }
 
 export interface ActionType {
