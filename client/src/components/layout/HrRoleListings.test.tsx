@@ -18,6 +18,7 @@ describe('Role List component tests', () => {
                 </BrowserRouter>
             </Provider>)
     });
+    
 
     it ("able to click All radio button",() => {
         userEvent.click(screen.getByText('All'))
@@ -40,7 +41,6 @@ describe('Role List component tests', () => {
     });
 
     it ("able to click edit icon and redirect to update page",() => {
-        screen.debug(undefined, Infinity);
         const editIconElement = screen.getAllByTestId('edit-icon-click')[0];
 
         userEvent.click(editIconElement)
@@ -119,7 +119,25 @@ describe('Role List component tests', () => {
         expect(creatorElement.compareDocumentPosition(engineeringManagerElement)).toBe(4);
     });
 
+    it ("HR Manager should display updator as John Doe on 13//10/2023", () => {
+        const updatorElement = screen.getAllByText('Last Updator:')[0];
+        const updatorDetailsElement = screen.queryAllByText('John Doe | 13/10/2023')[0];
+        const hrManagerElement = screen.getByText("HR Manager");
+        const engineeringManagerElement = screen.getAllByText("Engineering Manager")[0];
+
+        expect(updatorDetailsElement).toBeInTheDocument();
+        expect(updatorElement).toBeInTheDocument();
+        expect(hrManagerElement).toBeInTheDocument();
+        expect(engineeringManagerElement).toBeInTheDocument();
+        expect(updatorDetailsElement).not.toBe([])
+        
+        expect(hrManagerElement.compareDocumentPosition(updatorElement)).toBe(4);
+        expect(updatorDetailsElement.compareDocumentPosition(updatorElement)).toBe(2);
+        expect(updatorDetailsElement.compareDocumentPosition(engineeringManagerElement)).toBe(4);
+    });
+
     it ("Engineer Manager should display closed status", () => {
+        screen.debug(undefined, Infinity);
         const statusElement = screen.getAllByTestId('status')[3];
         const itTechnicianElement = screen.getByText("IT Technician");
         const financeStaffElement = screen.getByText("Finance Staff");
@@ -135,37 +153,23 @@ describe('Role List component tests', () => {
     it ("Engineer Manager should display creator as John Doe on 01/08/2023", () => {
         const creatorElement = screen.getAllByText('Creator:')[3];
         const creatorDetailsElement = screen.getByText('John Doe | 14/08/2023');
-        const updatorElement = screen.getAllByText('Last Updator:')[3];
         const itTechnicianElement = screen.getByText("IT Technician");
         const financeStaffElement = screen.getByText("Finance Staff");
         
         expect(creatorElement).toBeInTheDocument();
         expect(creatorDetailsElement).toBeInTheDocument();
-        expect(updatorElement).toBeInTheDocument();
         expect(itTechnicianElement).toBeInTheDocument();
         expect(financeStaffElement).toBeInTheDocument();
         
         expect(itTechnicianElement.compareDocumentPosition(creatorElement)).toBe(4);
-        expect(creatorElement.compareDocumentPosition(updatorElement)).toBe(4);
         expect(creatorElement.compareDocumentPosition(financeStaffElement)).toBe(4);
     });
 
-    it ("Engineer Manager should display updator as John Doe on 'date'", () => {
-        const creatorElement = screen.getAllByText('Creator:')[3];
-        const creatorDetailsElement = screen.getAllByText('John Doe | "date"')[3];
-        const updatorElement = screen.getAllByText('Last Updator:')[3];
-        const itTechnicianElement = screen.getByText("IT Technician");
-        const financeStaffElement = screen.getByText("Finance Staff");
+    it ("Engineer Manager should not display an Updator", () => {
+        const engineeringManagerListElement = screen.getAllByTestId('one-listing')[3];
 
-        expect(creatorElement).toBeInTheDocument();
-        expect(creatorDetailsElement).toBeInTheDocument();
-        expect(updatorElement).toBeInTheDocument();
-        expect(itTechnicianElement).toBeInTheDocument();
-        expect(financeStaffElement).toBeInTheDocument();
-        
-        expect(itTechnicianElement.compareDocumentPosition(creatorElement)).toBe(4);
-        expect(creatorElement.compareDocumentPosition(updatorElement)).toBe(4);
-        expect(creatorElement.compareDocumentPosition(financeStaffElement)).toBe(4);
+        expect(engineeringManagerListElement).toBeInTheDocument();
+        expect(engineeringManagerListElement).not.toHaveTextContent('Last Updator:');
     });
 
     it ("should display location as Thailand for HR Manager", () => {
