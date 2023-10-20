@@ -127,11 +127,13 @@ const HrRoleListings = ({
                                                 {staffListing.loading ? <LoadingOutlined/> :
                                                     <span> {getHRName(item.rl_creator)} | {new Date(item.rl_ts_create).toLocaleDateString('en-sg')} </span>}
                                             </span>
-                                            <span>
-                                                <strong>Last Updator: </strong>
-                                                {staffListing.loading ? <LoadingOutlined/> :
-                                                <> {getHRName(item.rl_creator)} | "date" </>}
-                                            </span>
+                                            {item.rl_updater_id == undefined ? <></> :
+                                                <span>
+                                                    <strong>Last Updator: </strong>
+                                                    {staffListing.loading ? <LoadingOutlined/> :
+                                                    <span> {getHRName(item.rl_updater_id)} | {new Date(item.update_time).toLocaleDateString('en-sg')} </span>}
+                                                </span>
+                                            }
                                         </Space>
                                         <br/><br/>
                                         <div>{item.rl_desc}</div>
