@@ -9,6 +9,7 @@ const router = express.Router();
 
 router.route("/details/").get(controllers.getRoleListings);
 router.route("/details/:id").get(controllers.getRoleListing);
+router.route("/updater").get(controllers.getRoleListingsUpdater);
 router.route("/updater/:id").get(controllers.getRoleListingUpdater);
 router.route("/applications/").get(controllers.getRoleListingApplications);
 router.route("/applications/:id").get(controllers.getRoleListingApplication);
