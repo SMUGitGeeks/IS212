@@ -25,7 +25,7 @@ import {
 // res4: get skill_id and ss_status from staff_id
 // res6: check skill status from skill_id
 
-export const calcSkillMatch = (rl_details: any, role_details: any, role_skills: any, staff_skills: any, skill_details: any) => {
+export const calcSkillMatch = (rl_details: any, role_details: any, role_skills: any, staff_skills: any, skill_details: any, updater_details: any) => {
     // get skill match percentage for each role listing
     console.log(rl_details)
 
@@ -63,6 +63,16 @@ export const calcSkillMatch = (rl_details: any, role_details: any, role_skills: 
                 rl_details[i].role_status = role_details[j].role_status;
             }
         }
+
+        for (let j = 0; j < updater_details.length; j++) {
+            for (let i = 0; i < rl_details.length; i++) {
+                if (updater_details[j]["rl_id"] === rl_details[i]["rl_id"]) {
+                    // will keeo overridding the previous updater name and time until the last one
+                    rl_details[i].rl_updater_id = updater_details[j]["rl_updater"];
+                    rl_details[i].update_time = updater_details[j]["rl_ts_update"];
+                }
+            }
+        }
     }
     return rl_details;
 }
@@ -76,6 +86,7 @@ export const getRoleListings = (id: number) => async (dispatch: (action: ActionT
         const res4 = await axios.get('/api/staff/skills/' + id);             // get skill_id and ss_status from staff_id
         const res5 = await axios.get('/api/role_listing/applications');
         const res6 = await axios.get('/api/skill/details');                  // check skill status from skill_id
+        const updaterRes = await axios.get('/api/role_listing/updater');           // get updater name and update time
 
         const date = new Date();
         
@@ -94,7 +105,8 @@ export const getRoleListings = (id: number) => async (dispatch: (action: ActionT
         const role_skills = res3.data;
         const staff_skills = res4.data;
         const skill_details = res6.data;
-        res.data = calcSkillMatch(rl_details, role_details, role_skills, staff_skills, skill_details);
+        const updater_details = updaterRes.data;
+        res.data = calcSkillMatch(rl_details, role_details, role_skills, staff_skills, skill_details, updater_details);
 
         // application count
         for (let i = 0; i < res.data.length; i++) {
