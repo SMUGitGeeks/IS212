@@ -2,8 +2,6 @@ import {
     FILTER_ROLE_LISTINGS_BY_ROLE_ID,
     GET_ROLE_LISTING,
     GET_ROLE_LISTINGS,
-    GET_ROLE_LISTINGS_CREATED_BY_HR,
-    GET_ROLE_LISTINGS_CREATED_BY_HR_ERROR,
     ROLE_LISTINGS_ERROR,
     SORT_ROLE_LISTINGS_BY_DATE,
     SORT_ROLE_LISTINGS_BY_NAME,
@@ -83,19 +81,6 @@ export default function (state = initialState, action: ActionType) {
                 ...state,
                 roleListings: sortedRoleListingsBySkillMatch,
                 rawRoleListings: sortedRoleListingsBySkillMatch,
-            };
-        case GET_ROLE_LISTINGS_CREATED_BY_HR:
-            return {
-                ...state,
-                hrRoleListings: payload,
-                hrRoleListing: payload[0],
-                loading: false
-            };
-        case GET_ROLE_LISTINGS_CREATED_BY_HR_ERROR:
-            return {
-                ...state,
-                error: payload,
-                loading: false
             };
         case POST_ROLE_LISTING:
             return {
