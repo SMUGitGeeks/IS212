@@ -10,6 +10,8 @@ export interface RoleListingsType {
     role_name: string;
     role_status: string;
     skill_match: number;
+    location: string;
+    department: string;
 }
 
 export interface ActionType {
