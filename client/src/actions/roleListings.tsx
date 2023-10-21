@@ -125,7 +125,7 @@ export const getRoleListings = (id: number) => async (dispatch: (action: ActionT
     } catch (err: any) {
         dispatch({
             type: ROLE_LISTINGS_ERROR,
-            payload: {msg: err.response.statusText, status: err.response.status}
+            payload: {action: "getRoleListings", msg: err.response.statusText, status: err.response.status}
         });
     }
 }
@@ -152,18 +152,13 @@ export const getRoleListing = (id: number) => async (dispatch: (action: ActionTy
 
         for (let j = 0; j < res2.data.length; j++) {
             if (res.data[0]["role_id"] === res2.data[j]["role_id"]) {
-                if (res2.data[j]["role_status"] === "active") {
-                    res.data[0].role_name = res2.data[j].role_name;
-                    res.data[0].role_description = res2.data[j].role_description;
-                    res.data[0].role_status = res2.data[j].role_status;
-                    output = res.data[0];
-                }
+                res.data[0].role_name = res2.data[j].role_name;
+                res.data[0].role_description = res2.data[j].role_description;
+                res.data[0].role_status = res2.data[j].role_status;
+                output = res.data[0];
             }
         }
 
-        if (output === null) {
-            throw new Error('Role listing not found') 
-        };
         // console.log(res.data)
         if (res4Data.length !== 0) {
             for (let j = 0; j < res4Data.length; j++) {
@@ -182,24 +177,16 @@ export const getRoleListing = (id: number) => async (dispatch: (action: ActionTy
             res.data.rl_updater = null;
             res.data.update_time = null;
         }
-        console.log(output);
 
         dispatch({
             type: GET_ROLE_LISTING,
             payload: output
         });
     } catch (err: any) {
-        if (err.message === 'Role listing not found') {
-            dispatch({
-                type: ROLE_LISTINGS_ERROR,
-                payload: {msg: err.message, status: 404}
-            });
-        } else {
-            dispatch({
-                type: ROLE_LISTINGS_ERROR,
-                payload: {msg: err.response.statusText, status: err.response.status}
-            });
-        }
+        dispatch({
+            type: ROLE_LISTINGS_ERROR,
+            payload: {action: "getRoleListing", msg: err.response.statusText, status: err.response.status}
+        });
     }
 }
 

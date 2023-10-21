@@ -27,7 +27,7 @@ const ManageRolePage = ({
         <Container>
             <Row gutter={rowGutterStyle} justify='center'>
                 <Col span={20}>
-                { error.status ? (
+                { error.action === "getRoleListing" ? (
                         <PageNoExist />
                     ) : !roleListing ? (
                         <h1><LoadingOutlined /> Loading...</h1>

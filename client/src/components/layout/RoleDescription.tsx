@@ -7,12 +7,12 @@ import {getRoleSkillsByRoleId} from "../../actions/roleSkills";
 import {getRoleListing} from "../../actions/roleListings";
 import {connect, useDispatch} from "react-redux";
 import PropTypes from "prop-types";
-import {Link, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import { getApplicationByStaffIdAndRLId, getApplicationsByStaffId, postApplication, updateApplication } from "../../actions/applications";
 import { getStaffSkillsByStaffId } from "../../actions/staffSkills";
 import PageNoExist from "./PageNoExist";
 
-const {Title, Text} = Typography;
+const {Title} = Typography;
 
 const color = (status: String) => {
     if (status === "active") {
@@ -198,13 +198,13 @@ Show withdraw when:
         let numNotMatched = 0;
         const staffSkillIds = staffSkill.map((skill: any) => skill["skill_id"])
 
-        roleSkills.map((roleSkill: any) => {
-            if (staffSkillIds.includes(roleSkill['skill_id']) && roleSkill['skill_status'] === 'active') {
-                missingSkills.push(roleSkill.skill_name);
+        for (let i = 0; i < roleSkills.length; i++) {
+            if (staffSkillIds.includes(roleSkills[i]['skill_id']) && roleSkills[i]['skill_status'] === 'active') {
+                missingSkills.push(roleSkills[i].skill_name);
             } else {
                 numNotMatched++;
             }
-        });
+        };
 
         return {
             missingSkills: missingSkills,
@@ -213,7 +213,7 @@ Show withdraw when:
     }
 
 
-    return error.status ? (
+    return error.action === "getRoleListing" ? (
         <PageNoExist />
     ) : !roleListing ? (
         <h1><LoadingOutlined /> Loading...</h1>
