@@ -1,14 +1,20 @@
 import {render, screen} from '@testing-library/react';
+import {filterRoleListingsByDepartment, filterRoleListingsByLocation, filterRoleListingsByRoleId} from '../../actions/roleListings';
+// import RoleList from './RoleList';
 import RoleSearchFilter from './RoleSearchFilter';
 import {store} from '../../mockStore';
 import {Provider} from 'react-redux';
 import {mockMatchMedia} from "../../setupTests";
-import {BrowserRouter} from "react-router-dom";
+import {BrowserRouter} from 'react-router-dom';
 
 
 describe('RoleSearchFilter component tests', () => {
-    beforeAll(() => {
+    beforeEach(() => {
         mockMatchMedia();
+    });
+    
+    afterEach(() => {
+        store.clearActions();
     });
     it('Should see search by role type', () => {
         render(<BrowserRouter><Provider store={store}><RoleSearchFilter/></Provider></BrowserRouter>);
@@ -26,4 +32,50 @@ describe('RoleSearchFilter component tests', () => {
         expect(SearchByDepartmentElement).toBeInTheDocument();
     });
 
+    it('FILTER_ROLE_LISTINGS_BY_DEPARTMENT action should be dispatched', () => {
+        render(<BrowserRouter><Provider store={store}><RoleSearchFilter/></Provider></BrowserRouter>);
+        const payload = { departments: ["IT"] };
+        const expectedAction = {
+        type: 'FILTER_ROLE_LISTINGS_BY_DEPARTMENT',
+        payload,
+        };
+
+        store.dispatch(filterRoleListingsByDepartment(payload) as any);
+
+        const actions = store.getActions();
+        // console.log(actions);
+        expect(actions).toEqual([expectedAction]);
+    });
+
+    it('FILTER_ROLE_LISTINGS_BY_LOCATION action should be dispatched', () => {
+        render(<BrowserRouter><Provider store={store}><RoleSearchFilter/></Provider></BrowserRouter>);
+        const payload = { locations: ["Singapore", "Thailand"] };
+        const expectedAction = {
+        type: 'FILTER_ROLE_LISTINGS_BY_LOCATION',
+        payload,
+        };
+
+        store.dispatch(filterRoleListingsByLocation(payload) as any);
+
+        const actions = store.getActions();
+        expect(actions).toEqual([expectedAction]);
+    });
+
+    it('FILTER_ROLE_LISTINGS_BY_ROLE_ID action should be dispatched', () => {
+        render(<BrowserRouter><Provider store={store}><RoleSearchFilter/></Provider></BrowserRouter>);
+        const payload = { roleIds: [1, 2, 3] };
+        const expectedAction = {
+        type: 'FILTER_ROLE_LISTINGS_BY_ROLE_ID',
+        payload,
+        };
+
+        store.dispatch(filterRoleListingsByRoleId(payload) as any);
+
+        const actions = store.getActions();
+        expect(actions).toEqual([expectedAction]);
+    });
+
+
 });
+
+
