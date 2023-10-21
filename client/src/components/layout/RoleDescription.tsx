@@ -8,10 +8,8 @@ import {getRoleListing} from "../../actions/roleListings";
 import {connect, useDispatch} from "react-redux";
 import PropTypes from "prop-types";
 import {Link, useParams} from "react-router-dom";
-import auth from "../../reducers/auth";
 import { getApplicationByStaffIdAndRLId, getApplicationsByStaffId, postApplication, updateApplication } from "../../actions/applications";
-import { application } from "express";
-import { isatty } from "tty";
+import { getStaffSkillsByStaffId } from "../../actions/staffSkills";
 
 const {Title, Text} = Typography;
 
@@ -35,16 +33,14 @@ const tagIcon = (status: String) => {
     }
 }
 
-var count = 0;
-
 export const RoleDescription = ({
                                     getRoleListing,
                                     roleListing: {roleListing, loading},
                                     roleSkill: {roleSkills},
                                     getRoleSkillsByRoleId,
+                                    getStaffSkillsByStaffId,
                                     staffSkill: {staffSkill},
                                     auth: {user, isHR},
-                                    // getApplicationsByStaffId,
                                     getApplicationByStaffIdAndRLId,
                                     application: {applications, application,}
                                 }: any) => {
@@ -57,7 +53,7 @@ export const RoleDescription = ({
     }, [getRoleListing]);
 
     useEffect(() => {
-        console.log(rl_id)
+        // console.log(rl_id)
         getApplicationByStaffIdAndRLId(Number(rl_id));
     }, [applications]);
 
@@ -75,22 +71,21 @@ export const RoleDescription = ({
     const [confirmLoading, setConfirmLoading] = useState(false);
     const [textBody, setTextBody] = useState("");
     const [isApplied, setIsApplied] = useState(!(application == null || application.length === 0 ));
-    // console.log(isApplied)
 
 
     const checkIfApplied = () => {
-        console.log("isApplied: " + isApplied)
+        // console.log("isApplied: " + isApplied)
         if (application == null || application.length === 0) {
             setIsApplied(false);
         } else {
-            console.log("status is withdrawn: ")
-            console.log(application[0].role_app_status === "withdrawn")
+            // console.log("status is withdrawn: ")
+            // console.log(application[0].role_app_status === "withdrawn")
             if (application[0].role_app_status === "withdrawn") {
                 // isWithdrawn = true
-                console.log("button disabled: " + buttonDisabled)
+                // console.log("button disabled: " + buttonDisabled)
                 setIsApplied(true);
                 setButtonDisabled(true)
-                console.log("button disabled (after): " + buttonDisabled)
+                // console.log("button disabled (after): " + buttonDisabled)
             } else {
                 setIsApplied(true);
                 setButtonDisabled(false)
@@ -99,7 +94,7 @@ export const RoleDescription = ({
         }
     }
 
-    console.log("outside check"+buttonDisabled)
+    // console.log("outside check"+buttonDisabled)
 
     const showModal = () => {
         setIsApplyModalOpen(true);
@@ -107,23 +102,19 @@ export const RoleDescription = ({
 
 
     const handleOk = () => {
-        console.log("clicked")
+        // console.log("clicked")
         // console.log(application)
 
         if (application == null || application.length === 0) {
-            // console.log("creating new application")
             let payload = {
                 "rl_id": roleListing.rl_id,
                 "staff_id": user,
                 "role_app_status": "applied",
                 "app_text": textBody,
             }
-            console.log(payload)
+            // console.log(payload)
             dispatch(postApplication(payload) as any)
             dispatch(getApplicationsByStaffId(user) as any)
-            // .then(() => {
-            //     dispatch(getApplicationByStaffIdAndRLId(roleListing.rl_id) as any)    
-            // })
             
             setConfirmLoading(true);
             setTimeout(() => {
@@ -148,11 +139,7 @@ export const RoleDescription = ({
                 // "app_text": textBody,
             }
             dispatch(updateApplication(payload) as any)
-
             dispatch(getApplicationsByStaffId(user) as any)
-            // .then(() => {
-            //     dispatch(getApplicationByStaffIdAndRLId(roleListing.rl_id) as any)    
-            // })
             
 
             setConfirmLoading(true);
@@ -198,6 +185,32 @@ Show withdraw when:
     const onCharChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setTextBody(e.target.value);
     };
+
+    const skillsInfo = () => {
+        if (roleSkills.length === 0 || staffSkill.length === 0) {
+            return {
+                missingSkills: [],
+                skill_match: 0
+            }
+        }
+        let missingSkills: string[] = [];
+        let numNotMatched = 0;
+        const staffSkillIds = staffSkill.map((skill: any) => skill["skill_id"])
+
+        roleSkills.map((roleSkill: any) => {
+            if (staffSkillIds.includes(roleSkill['skill_id']) && roleSkill['skill_status'] === 'active') {
+                missingSkills.push(roleSkill.skill_name);
+            } else {
+                numNotMatched++;
+            }
+        });
+
+        return {
+            missingSkills: missingSkills,
+            skill_match: Math.round((roleSkills.length - numNotMatched) / roleSkills.length * 100)
+        }
+    }
+
 
     return loading || !roleListing ? (
         <h1><LoadingOutlined /> Loading...</h1>
@@ -295,30 +308,30 @@ Show withdraw when:
                     <Col xs={24} sm={24} md={24} lg={0} style={{paddingTop: "10%"}}><Divider/></Col>
                     <Col xs={24} sm={24} md={24} lg={8} xl={6} xxl={5}>
                         <Space direction="vertical" style={{width: "100%"}}>
-                            {isHR ?
-                                <><Link to={"/role/" + roleListing.rl_id + "/applicants"}>View Applicants</Link>
-                                </> : <></>
-                            }
                             <Space direction="horizontal" align="center">
                                 <AimOutlined style={{fontSize: 25}}/>
-                                {/* <p style={{fontSize: 26, margin: "0"}}>{matchPercentage}%</p> */}
+                                <p style={{fontSize: 26, margin: "0"}}>{skillsInfo().skill_match}%</p>
                                 <p style={{fontSize: 12, color: "grey", margin: "0"}}>Skills<br/>Matched</p>
                             </Space>
-                            {/* <Progress percent={matchPercentage} showInfo={false}/> */}
+                            <Progress percent={skillsInfo().skill_match} showInfo={false}/>
                             <Divider orientation="left" orientationMargin="0">All Skills Required</Divider>
                             <Space size={[0, 8]} wrap>
                                 {roleSkills.map((skill: any) => (
                                     <Tag>{skill.skill_name}</Tag>
                                 ))}
                             </Space>
-
-                            <Title level={5}>Missing Skills</Title>
-                            {/* <Space size={[0, 8]} wrap>
-                                {missingSkills.map((skill: any) => (
-                                    <Tag icon={tagIcon(skill.skill_status)}
-                                        color={color(skill.skill_status)}>{skill}</Tag>
-                                ))}
-                            </Space> */}
+                            
+                            { skillsInfo().missingSkills.length === 0 ? <></> :
+                                <>
+                                <Title level={5}>Missing Skills</Title>
+                                <Space size={[0, 8]} wrap>
+                                    {skillsInfo().missingSkills.map((skill: any) => (
+                                        <Tag icon={tagIcon(skill.skill_status)}
+                                            color={color(skill.skill_status)}>{skill}</Tag>
+                                    ))}
+                                </Space>
+                                </>
+                            }
                         </Space>
                     </Col>
                 </Row>
@@ -336,6 +349,7 @@ RoleDescription.propTypes = {
     // getApplicationsByStaffId: PropTypes.func.isRequired,
     // postApplication: PropTypes.func.isRequired,
     getApplicationByStaffIdAndRLId: PropTypes.func.isRequired,
+    getStaffSkillsByStaffId: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state: any) => ({
@@ -352,4 +366,5 @@ export default connect(mapStateToProps, {
     // getApplicationsByStaffId,
     // postApplication,
     getApplicationByStaffIdAndRLId,
+    getStaffSkillsByStaffId,
 })(RoleDescription);

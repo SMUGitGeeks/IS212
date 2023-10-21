@@ -52,7 +52,8 @@ const RoleList = ({
                 }}
                 dataSource={roleListings}
                 renderItem={(item: any) => (
-                    <Link to={`/roleListing/${item.rl_id}`}>
+                    item.role_status === "active" ?
+                        <Link to={`/roleListing/${item.rl_id}`}>
                         <List.Item
                             key={item.role_name}
                             extra={
@@ -86,6 +87,7 @@ const RoleList = ({
                                 item.application_count + " applications submitted"}
                         </List.Item>
                     </Link>
+                    : <></>
                 )}
             />
 }

@@ -92,7 +92,6 @@ export const getRoleListings = (id: number) => async (dispatch: (action: ActionT
         
 
         for (let i = 0; i < res.data.length; i++) {
-           
             if (date > new Date(res.data[i]["rl_close"])) {
                 res.data[i].rl_status = "Closed";
             } else {
@@ -137,37 +136,53 @@ export const getRoleListing = (id: number) => async (dispatch: (action: ActionTy
         const res2 = await axios.get('/api/role/details');
         // get updater name and update time
         const res3 = await axios.get('/api/staff/details');
-        const res4 = await axios.get(`/api/role_listing/updater/${id}`);
 
-        for (let i = 0; i < res.data.length; i++) {
-            for (let j = 0; j < res2.data.length; j++) {
-                if (res.data[i]["role_id"] === res2.data[j]["role_id"]) {
-                    if (res2.data[j]["role_status"] === "active") {
-                        res.data[i].role_name = res2.data[j].role_name;
-                        res.data[i].role_description = res2.data[j].role_description;
-                        res.data[i].role_status = res2.data[j].role_status;
-                    }
+        const res4Data = await axios.get(`/api/role_listing/updater/${id}`)
+            .then((res: any) => {
+                return res.data;
+            })
+            .catch ((err: any) => {
+                if (err.response.status === 404) {
+                    return [];
+                }
+                throw err;
+            })
+
+        let output = null;
+
+        for (let j = 0; j < res2.data.length; j++) {
+            if (res.data[0]["role_id"] === res2.data[j]["role_id"]) {
+                if (res2.data[j]["role_status"] === "active") {
+                    res.data[0].role_name = res2.data[j].role_name;
+                    res.data[0].role_description = res2.data[j].role_description;
+                    res.data[0].role_status = res2.data[j].role_status;
+                    output = res.data[0];
                 }
             }
         }
-        for (let j = 0; j < res4.data.length; j++) {
-            for (let i = 0; i < res.data.length; i++) {
-                if (res4.data[j]["rl_id"] === res.data[i]["rl_id"]) {
+        // console.log(res.data)
+        if (res4Data.length !== 0) {
+            for (let j = 0; j < res4Data.length; j++) {
+                if (res4Data[j]["rl_id"] === output["rl_id"]) {
                     // will keeo overridding the previous updater name and time until the last one
-                    res.data[i].rl_updater_id = res4.data[j]["rl_updater"];
-                    res.data[i].update_time = res4.data[j]["rl_ts_update"];
+                    output.rl_updater_id = res4Data[j]["rl_updater"];
+                    output.update_time = res4Data[j]["rl_ts_update"];
                     for (let k = 0; k < res3.data.length; k++) {
-                        if (res.data[i].rl_updater_id === res3.data[k]["staff_id"]) {
-                            res.data[i].rl_updater = res3.data[k]["fname"] + " " + res3.data[k]["lname"];
+                        if (output.rl_updater_id === res3.data[k]["staff_id"]) {
+                            output.rl_updater = res3.data[k]["fname"] + " " + res3.data[k]["lname"];
                         }
                     }
                 }
             }
+        } else {
+            res.data.rl_updater = null;
+            res.data.update_time = null;
         }
+        console.log(output);
 
         dispatch({
             type: GET_ROLE_LISTING,
-            payload: res.data[0]
+            payload: output
         });
     } catch (err: any) {
         dispatch({
