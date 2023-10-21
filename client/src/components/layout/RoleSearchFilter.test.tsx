@@ -6,6 +6,7 @@ import {store} from '../../mockStore';
 import {Provider} from 'react-redux';
 import {mockMatchMedia} from "../../setupTests";
 import {BrowserRouter} from 'react-router-dom';
+import userEvent from '@testing-library/user-event';
 
 
 describe('RoleSearchFilter component tests', () => {
@@ -30,6 +31,14 @@ describe('RoleSearchFilter component tests', () => {
         render(<BrowserRouter><Provider store={store}><RoleSearchFilter/></Provider></BrowserRouter>);
         const SearchByDepartmentElement = screen.getByText("Search Department");
         expect(SearchByDepartmentElement).toBeInTheDocument();
+    });
+
+    it('Should see clear filter button and is clickable', () => {
+        render(<BrowserRouter><Provider store={store}><RoleSearchFilter/></Provider></BrowserRouter>);
+        const clearFilterElement = screen.getByText("Clear All Filters");
+        expect(clearFilterElement).toBeInTheDocument();
+        userEvent.click(clearFilterElement);
+        expect(clearFilterElement).toBeEnabled();
     });
 
     it('FILTER_ROLE_LISTINGS_BY_DEPARTMENT action should be dispatched', () => {
