@@ -10,6 +10,7 @@ import PropTypes from "prop-types";
 import {Link, useParams} from "react-router-dom";
 import { getApplicationByStaffIdAndRLId, getApplicationsByStaffId, postApplication, updateApplication } from "../../actions/applications";
 import { getStaffSkillsByStaffId } from "../../actions/staffSkills";
+import PageNoExist from "./PageNoExist";
 
 const {Title, Text} = Typography;
 
@@ -35,7 +36,7 @@ const tagIcon = (status: String) => {
 
 export const RoleDescription = ({
                                     getRoleListing,
-                                    roleListing: {roleListing, loading},
+                                    roleListing: {roleListing, loading, error},
                                     roleSkill: {roleSkills},
                                     getRoleSkillsByRoleId,
                                     getStaffSkillsByStaffId,
@@ -212,9 +213,11 @@ Show withdraw when:
     }
 
 
-    return loading || !roleListing ? (
+    return error.status ? (
+        <PageNoExist />
+    ) : !roleListing ? (
         <h1><LoadingOutlined /> Loading...</h1>
-    ) : (
+    ) :  (
         <Container>
             <Space direction="vertical" style={{display: "flex"}} size="large">
                 <Row gutter={rowGutterStyle} align="middle">

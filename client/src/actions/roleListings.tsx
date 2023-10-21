@@ -160,6 +160,10 @@ export const getRoleListing = (id: number) => async (dispatch: (action: ActionTy
                 }
             }
         }
+
+        if (output === null) {
+            throw new Error('Role listing not found') 
+        };
         // console.log(res.data)
         if (res4Data.length !== 0) {
             for (let j = 0; j < res4Data.length; j++) {
@@ -185,10 +189,17 @@ export const getRoleListing = (id: number) => async (dispatch: (action: ActionTy
             payload: output
         });
     } catch (err: any) {
-        dispatch({
-            type: ROLE_LISTINGS_ERROR,
-            payload: {msg: err.response.statusText, status: err.response.status}
-        });
+        if (err.message === 'Role listing not found') {
+            dispatch({
+                type: ROLE_LISTINGS_ERROR,
+                payload: {msg: err.message, status: 404}
+            });
+        } else {
+            dispatch({
+                type: ROLE_LISTINGS_ERROR,
+                payload: {msg: err.response.statusText, status: err.response.status}
+            });
+        }
     }
 }
 
