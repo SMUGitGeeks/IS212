@@ -10,7 +10,7 @@ import {CalendarOutlined, ClockCircleOutlined, EnvironmentOutlined} from '@ant-d
 const RoleList = ({
                     getRoleListings,
                     roleListing: {roleListings},
-                    auth: {user, isHR}
+                    auth: {user}
                 }: any) => {
     useEffect(() => {
         if (roleListings.length === 0) {
@@ -67,8 +67,6 @@ const RoleList = ({
                         </Space>
                         <br/><br/>
                         <div>{item.rl_desc}</div>
-                        {(isHR) &&
-                            item.application_count + " applications submitted"}
                     </List.Item>
                 </Link>
             )}

@@ -33,8 +33,8 @@ describe('Role List component tests', () => {
         jest.advanceTimersByTime(3000);
 
         await waitFor(() => {
-            const hrManagerElement = screen.getByText("HR Manager");
-            const engineeringManagerElement = screen.getByText("Engineering Manager");
+            const hrManagerElement = screen.getAllByText("HR Manager")[0];
+            const engineeringManagerElement = screen.getAllByText("Engineering Manager")[0];
 
             expect(hrManagerElement).toBeInTheDocument();
             expect(engineeringManagerElement).toBeInTheDocument();
