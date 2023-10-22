@@ -1,4 +1,4 @@
-import {Select, SelectProps, Space, Typography} from "antd";
+import {Select, SelectProps, Space, Typography, Button} from "antd";
 import {getRoles} from '../../actions/roles';
 import {
     filterRoleListingsByDepartment,
@@ -8,7 +8,7 @@ import {
 } from '../../actions/roleListings';
 import {connect, useDispatch} from "react-redux";
 import PropTypes from "prop-types";
-import {Fragment, useEffect} from "react";
+import {Fragment, useEffect, useState} from "react";
 import {SearchOutlined} from '@ant-design/icons';
 
 const {Title} = Typography;
@@ -127,15 +127,31 @@ const RoleSearchFilter = ({
             }
         }
     }
+    
+    const [roleType, setRoleType] = useState([] as any);
+    const [location, setLocation] = useState([] as any);
+    const [department, setDepartment] = useState([] as any);
 
     const handleRoleTypeChange = (roleIds: number[]) => {
         dispatch(filterRoleListingsByRoleId({roleIds}) as any);
+        setRoleType(roleIds);
     }
     const handleDepartmentChange = (departments: string[]) => {
         dispatch(filterRoleListingsByDepartment({departments}) as any);
+        setDepartment(departments);
     }
     const handleLocationChange = (locations: string[]) => {
         dispatch(filterRoleListingsByLocation({locations}) as any);
+        setLocation(locations);
+        
+    }
+
+
+    const onClick = () => {
+        handleRoleTypeChange([]);
+        handleDepartmentChange([]);
+        handleLocationChange([]);
+        console.log(document.getElementById("roleTypeSelect"))
     }
 
 
@@ -147,11 +163,12 @@ const RoleSearchFilter = ({
                     mode="multiple"
                     style={{width: '100%'}}
                     placeholder="Please select"
-                    defaultValue={[]}
                     onChange={handleRoleTypeChange}
                     options={roleTypes}
                     optionFilterProp={"label"}
                     suffixIcon={<SearchOutlined/>}
+                    allowClear
+                    value={roleType}
                 />
             </Space>
             <Space direction='vertical' size="small" style={{width: "100%"}}>
@@ -160,11 +177,12 @@ const RoleSearchFilter = ({
                     mode="multiple"
                     style={{width: '100%'}}
                     placeholder="Please select"
-                    defaultValue={[]}
                     onChange={handleLocationChange}
                     options={locations}
                     optionFilterProp={"label"}
                     suffixIcon={<SearchOutlined/>}
+                    allowClear
+                    value={location}
                 />
             </Space>
             <Space direction='vertical' size="small" style={{width: "100%"}}>
@@ -173,13 +191,20 @@ const RoleSearchFilter = ({
                     mode="multiple"
                     style={{width: '100%'}}
                     placeholder="Please select"
-                    defaultValue={[]}
                     onChange={handleDepartmentChange}
                     options={departments}
                     optionFilterProp={"label"}
                     suffixIcon={<SearchOutlined/>}
+                    allowClear
+                    value={department}
                 />
             </Space>
+            <br/>
+            <br/>
+            <br/>
+            <Button type="dashed" block onClick={onClick}>
+                Clear All Filters
+            </Button>
         </Fragment>
 
     );
