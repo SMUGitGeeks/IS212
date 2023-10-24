@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./client
+        working-directory: ./client/
 
     strategy:
       matrix:
