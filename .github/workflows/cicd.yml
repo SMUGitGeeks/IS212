@@ -41,7 +41,7 @@ jobs:
     name: Render Deployment
     runs-on: ubuntu-latest
     needs: [build]
-    environment: production
+    environment: Production
     steps:
       - name: Trigger deployment
         uses: sws2apps/render-deployment@v1.6.0
