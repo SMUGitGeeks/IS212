@@ -21,7 +21,7 @@ export const getStaffSkillsByStaffId = (payload: GetStaffSkillsByStaffIdPayloadT
     } catch (err: any) {
         dispatch({
             type: STAFF_SKILLS_ERROR,
-            payload: {msg: err.response.statusText, status: err.response.status}
+            payload: {msg: err.response?.statusText, status: err.response?.status}
         });
     }
 }

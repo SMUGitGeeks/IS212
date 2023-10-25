@@ -239,7 +239,7 @@ export const updateRoleListing = (id: number, payload: UpdateRoleListingLoadType
     } catch (err: any) {
         dispatch({
             type: ROLE_LISTINGS_ERROR,
-            payload: {msg: err.response.statusText, status: err.response.status}
+            payload: {msg: err.response?.statusText, status: err.response?.status}
         });
     }
 };
@@ -259,7 +259,7 @@ export const postRoleListing = (payload: PostRoleListingPayloadType) => async (d
     } catch (err: any) {
         dispatch({
             type: ROLE_LISTINGS_ERROR,
-            payload: {msg: err.response.statusText, status: err.response.status}
+            payload: {msg: err.response?.statusText, status: err.response?.status}
         });
     }
 }

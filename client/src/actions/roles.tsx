@@ -12,7 +12,7 @@ export const getRoles = () => async (dispatch: (action: ActionType) => void) => 
     } catch (err: any) {
         dispatch({
             type: ROLES_ERROR,
-            payload: {msg: err.response.statusText, status: err.response.status}
+            payload: {msg: err.response?.statusText, status: err.response?.status}
         });
     }
 }
