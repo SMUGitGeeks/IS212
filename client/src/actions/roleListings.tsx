@@ -1,23 +1,22 @@
 import axios from 'axios';
 import {
+    FILTER_ROLE_LISTINGS_BY_DEPARTMENT,
+    FILTER_ROLE_LISTINGS_BY_LOCATION,
     FILTER_ROLE_LISTINGS_BY_ROLE_ID,
     GET_ROLE_LISTING,
     GET_ROLE_LISTINGS,
-    GET_ROLE_LISTINGS_CREATED_BY_HR,
-    GET_ROLE_LISTINGS_CREATED_BY_HR_ERROR,
     ROLE_LISTINGS_ERROR,
     SORT_ROLE_LISTINGS_BY_DATE,
     SORT_ROLE_LISTINGS_BY_NAME,
-    SORT_ROLE_LISTINGS_BY_SKILL_MATCH,
-    POST_ROLE_LISTING
+    SORT_ROLE_LISTINGS_BY_SKILL_MATCH
 } from './types';
 import {
     ActionType,
     FilterRoleListingsByRoleIdPayloadType,
     GetRoleListingsByHRPayLoadType,
+    PostRoleListingPayloadType,
     SortPayloadType,
     UpdateRoleListingLoadType,
-    PostRoleListingPayloadType,
 } from "../types";
 
 // res: role listing info, get role_id
@@ -26,7 +25,7 @@ import {
 // res4: get skill_id and ss_status from staff_id
 // res6: check skill status from skill_id
 
-export const calcSkillMatch = (rl_details:any, role_details:any, role_skills:any, staff_skills:any, skill_details:any) =>  {
+export const calcSkillMatch = (rl_details: any, role_details: any, role_skills: any, staff_skills: any, skill_details: any, updater_details: any) => {
     // get skill match percentage for each role listing
     console.log(rl_details)
 
@@ -44,7 +43,7 @@ export const calcSkillMatch = (rl_details:any, role_details:any, role_skills:any
                             for (let l = 0; l < staff_skills.length; l++) {
                                 if (role_skills[j]["skill_id"] === staff_skills[l]["skill_id"]) {
                                     // check staff skill status
-                                    if (staff_skills[l]["ss_status"] === "active"){
+                                    if (staff_skills[l]["ss_status"] === "active") {
                                         skillMatch++;
                                     }
                                 }
@@ -56,7 +55,7 @@ export const calcSkillMatch = (rl_details:any, role_details:any, role_skills:any
             }
         }
         rl_details[i].skill_match = Math.round(skillMatch / skillCount * 100);
-        
+
         for (let j = 0; j < role_details.length; j++) {
             if (rl_details[i]["role_id"] === role_details[j]["role_id"]) {
                 rl_details[i].role_name = role_details[j].role_name;
@@ -64,9 +63,20 @@ export const calcSkillMatch = (rl_details:any, role_details:any, role_skills:any
                 rl_details[i].role_status = role_details[j].role_status;
             }
         }
+
+        for (let j = 0; j < updater_details.length; j++) {
+            for (let i = 0; i < rl_details.length; i++) {
+                if (updater_details[j]["rl_id"] === rl_details[i]["rl_id"]) {
+                    // will keeo overridding the previous updater name and time until the last one
+                    rl_details[i].rl_updater_id = updater_details[j]["rl_updater"];
+                    rl_details[i].update_time = updater_details[j]["rl_ts_update"];
+                }
+            }
+        }
     }
     return rl_details;
 }
+
 
 export const getRoleListings = (id: number) => async (dispatch: (action: ActionType) => void) => {
     try {
@@ -76,21 +86,28 @@ export const getRoleListings = (id: number) => async (dispatch: (action: ActionT
         const res4 = await axios.get('/api/staff/skills/' + id);             // get skill_id and ss_status from staff_id
         const res5 = await axios.get('/api/role_listing/applications');
         const res6 = await axios.get('/api/skill/details');                  // check skill status from skill_id
+        const updaterRes = await axios.get('/api/role_listing/updater');           // get updater name and update time
 
         const date = new Date();
+        
+
         for (let i = 0; i < res.data.length; i++) {
+           
             if (date > new Date(res.data[i]["rl_close"])) {
-                res.data.splice(i, 1);
-                i--;
+                res.data[i].rl_status = "Closed";
+            } else {
+                res.data[i].rl_status = "Open";
             }
         }
+
         const rl_details = res.data;
         const role_details = res2.data;
         const role_skills = res3.data;
         const staff_skills = res4.data;
         const skill_details = res6.data;
-        res.data = calcSkillMatch(rl_details, role_details, role_skills, staff_skills, skill_details);
-        
+        const updater_details = updaterRes.data;
+        res.data = calcSkillMatch(rl_details, role_details, role_skills, staff_skills, skill_details, updater_details);
+
         // application count
         for (let i = 0; i < res.data.length; i++) {
             let applicationCount = 0;
@@ -105,11 +122,11 @@ export const getRoleListings = (id: number) => async (dispatch: (action: ActionT
             type: GET_ROLE_LISTINGS,
             payload: res.data
         });
-    
+
     } catch (err: any) {
         dispatch({
             type: ROLE_LISTINGS_ERROR,
-            payload: {msg: err.response.statusText, status: err.response.status}
+            payload: {msg: err.response?.statusText, status: err.response?.status}
         });
     }
 }
@@ -121,7 +138,7 @@ export const getRoleListing = (id: number) => async (dispatch: (action: ActionTy
         // get updater name and update time
         const res3 = await axios.get('/api/staff/details');
         const res4 = await axios.get(`/api/role_listing/updater/${id}`);
-        
+
         for (let i = 0; i < res.data.length; i++) {
             for (let j = 0; j < res2.data.length; j++) {
                 if (res.data[i]["role_id"] === res2.data[j]["role_id"]) {
@@ -140,7 +157,7 @@ export const getRoleListing = (id: number) => async (dispatch: (action: ActionTy
                     res.data[i].rl_updater_id = res4.data[j]["rl_updater"];
                     res.data[i].update_time = res4.data[j]["rl_ts_update"];
                     for (let k = 0; k < res3.data.length; k++) {
-                        if ( res.data[i].rl_updater_id  === res3.data[k]["staff_id"]) {
+                        if (res.data[i].rl_updater_id === res3.data[k]["staff_id"]) {
                             res.data[i].rl_updater = res3.data[k]["fname"] + " " + res3.data[k]["lname"];
                         }
                     }
@@ -155,7 +172,7 @@ export const getRoleListing = (id: number) => async (dispatch: (action: ActionTy
     } catch (err: any) {
         dispatch({
             type: ROLE_LISTINGS_ERROR,
-            payload: {msg: err.response.statusText, status: err.response.status}
+            payload: {msg: err.response?.statusText, status: err.response?.status}
         });
     }
 }
@@ -174,6 +191,21 @@ export const filterRoleListingsByRoleId = (payload: FilterRoleListingsByRoleIdPa
     });
 }
 
+export const filterRoleListingsByDepartment = (payload: any) => async (dispatch: (action: ActionType) => void) => {
+    dispatch({
+        type: FILTER_ROLE_LISTINGS_BY_DEPARTMENT,
+        payload
+    });
+}
+
+export const filterRoleListingsByLocation = (payload: any) => async (dispatch: (action: ActionType) => void) => {
+    dispatch({
+        type: FILTER_ROLE_LISTINGS_BY_LOCATION,
+        payload
+    });
+}
+
+
 export const sortRoleListingsByDate = (payload: SortPayloadType) => async (dispatch: (action: ActionType) => void) => {
     dispatch({
         type: SORT_ROLE_LISTINGS_BY_DATE,
@@ -188,72 +220,33 @@ export const sortRoleListingsBySkillMatch = (payload: SortPayloadType) => async 
     });
 }
 
-export const getRoleListingsCreatedByHR = (payload: GetRoleListingsByHRPayLoadType) => async (dispatch: (action: ActionType) => void) => {
-    try {
-        const res = await axios.get('/api/role_listing/details')
-        const res2 = await axios.get('/api/role/details');
-
-        for (let i = 0; i < res.data.length; i++) {
-            for (let j = 0; j < res2.data.length; j++) {
-                let today = new Date();
-                if (res.data[i]["rl_creator"] === payload && res.data[i]["role_id"] === res2.data[j]["role_id"]) {
-                    res.data[i].role_name = res2.data[j].role_name;
-                    res.data[i].role_description = res2.data[j].role_description;
-                    res.data[i].role_status = res2.data[j].role_status;
-                    if (today > new Date(res.data[i]["rl_close"])) {
-                        res.data[i].rl_status = "Closed";
-                    } else {
-                        res.data[i].rl_status = "Open";
-                    }
-                    console.log(res.data[i].rl_status)
-                } else if (res.data[i]["rl_creator"] !== payload){
-                    res.data.splice(i, 1);
-                    i--;
-                }
-            }
-
-        }
-
-        dispatch({
-            type: GET_ROLE_LISTINGS_CREATED_BY_HR,
-            payload: res.data
-        });
-    } catch (err: any) {
-        dispatch({
-            type: GET_ROLE_LISTINGS_CREATED_BY_HR_ERROR,
-            payload: {msg: err.response.statusText, status: err.response.status}
-        });
-    }
-}
-
 export const updateRoleListing = (id: number, payload: UpdateRoleListingLoadType) => async (dispatch: (action: ActionType) => void) => {
     try {
         const res = await axios.put('/api/role_listing/' + id, payload)
     } catch (err: any) {
         dispatch({
             type: ROLE_LISTINGS_ERROR,
-            payload: { msg: err.response.statusText, status: err.response.status }
+            payload: {msg: err.response?.statusText, status: err.response?.status}
         });
     }
 };
-
 
 
 export const postRoleListing = (payload: PostRoleListingPayloadType) => async (dispatch: (action: ActionType) => void) => {
     try {
         console.log("postRL got clicked");
         const {rl_id, role_id, rl_desc, rl_source, rl_open, rl_close, rl_creator, location, department} = payload;
-        console.log(payload);        
+        console.log(payload);
         const res = await axios.post('/api/role_listing/', payload);
         // dispatch({
         //     type: POST_ROLE_LISTING,
         //     payload: res.data
         // });
-        
+
     } catch (err: any) {
         dispatch({
             type: ROLE_LISTINGS_ERROR,
-            payload: {msg: err.response.statusText, status: err.response.status}
+            payload: {msg: err.response?.statusText, status: err.response?.status}
         });
     }
 }

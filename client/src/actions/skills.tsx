@@ -12,7 +12,7 @@ export const getSkills = () => async (dispatch: (action: ActionType) => void) =>
     } catch (err: any) {
         dispatch({
             type: SKILLS_ERROR,
-            payload: {msg: err.response.statusText, status: err.response.status}
+            payload: {msg: err.response?.statusText, status: err.response?.status}
         });
     }
 }

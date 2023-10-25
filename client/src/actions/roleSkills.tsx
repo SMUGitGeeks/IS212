@@ -27,7 +27,7 @@ export const getRoleSkillsByRoleId = (payload: GetRoleSkillsByRoleIdPayloadType)
     } catch (err: any) {
         dispatch({
             type: ROLE_SKILLS_ERROR,
-            payload: {msg: err.response.statusText, status: err.response.status}
+            payload: {msg: err.response?.statusText, status: err.response?.status}
         });
     }
 }

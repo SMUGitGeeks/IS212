@@ -14,7 +14,7 @@ describe('Roles component tests', () => {
         render(<BrowserRouter><Provider store={store}><Roles/></Provider></BrowserRouter>);
         const sortByElement = screen.getByText("Sort by");
         expect(sortByElement).toBeInTheDocument();
-        const pleaseSelectElement = screen.getByText("Please select");
+        const pleaseSelectElement = screen.getAllByText("Please select")[0];
         expect(pleaseSelectElement).toBeInTheDocument();
     })
 

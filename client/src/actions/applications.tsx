@@ -32,7 +32,7 @@ export const getApplicationsByStaffId = (payload: GetApplicationsByStaffIdPayloa
     } catch (err: any) {
         dispatch({
             type: APPLICATIONS_ERROR,
-            payload: {msg: err.response.statusText, status: err.response.status}
+            payload: {msg: err.response?.statusText, status: err.response?.status}
         });
     }
 }
@@ -46,7 +46,7 @@ export const getApplicationByStaffIdAndRLId = (rl_id: number) => async (dispatch
     } catch (err: any) {
         dispatch({
             type: APPLICATIONS_ERROR,
-            payload: {msg: err.response.statusText, status: err.response.status}
+            payload: {msg: err.response?.statusText, status: err.response?.status}
         });
     }
 }
@@ -69,7 +69,7 @@ export const postApplication = (payload: PostApplicationPayloadType) => async (d
     } catch (err: any) {
         dispatch({
             type: APPLICATIONS_ERROR,
-            payload: {msg: err.response.statusText, status: err.response.status}
+            payload: {msg: err.response?.statusText, status: err.response?.status}
         });
     }
 
@@ -95,7 +95,7 @@ export const updateApplication = (payload: UploadApplicationPayloadType ) => asy
     } catch (err: any) {
         dispatch({
             type: APPLICATIONS_ERROR,
-            payload: {msg: err.response.statusText, status: err.response.status}
+            payload: {msg: err.response?.statusText, status: err.response?.status}
         });
     }
 
