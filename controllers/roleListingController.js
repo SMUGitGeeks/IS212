@@ -25,6 +25,16 @@ exports.getRoleListing = async (req, res) => {
     }
 }
 
+exports.getRoleListingsUpdater = async (req, res) => {
+    try {
+        const [rows, fields] = await connection.promise().query('SELECT * FROM role_listing_updater ');
+            res.json(rows);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send('Server error');
+    }
+}
+
 exports.getRoleListingUpdater = async (req, res) => {
     try {
         const [rows, fields] = await connection.promise().query('SELECT * FROM role_listing_updater WHERE rl_id = ?', [req.params.id]);

@@ -1,14 +1,14 @@
 import {
+    FILTER_ROLE_LISTINGS_BY_DEPARTMENT,
+    FILTER_ROLE_LISTINGS_BY_LOCATION,
     FILTER_ROLE_LISTINGS_BY_ROLE_ID,
     GET_ROLE_LISTING,
     GET_ROLE_LISTINGS,
-    GET_ROLE_LISTINGS_CREATED_BY_HR,
-    GET_ROLE_LISTINGS_CREATED_BY_HR_ERROR,
     ROLE_LISTINGS_ERROR,
     SORT_ROLE_LISTINGS_BY_DATE,
     SORT_ROLE_LISTINGS_BY_NAME,
-    SORT_ROLE_LISTINGS_BY_SKILL_MATCH, 
-    POST_ROLE_LISTING
+    SORT_ROLE_LISTINGS_BY_SKILL_MATCH,
+    POST_ROLE_LISTING,
 } from '../actions/types';
 import {ActionType, RoleListingsType} from "../types";
 
@@ -20,10 +20,41 @@ const initialState = {
     error: {},
     hrRoleListings: [],
     hrRoleListing: null,
+    filters: {"role": [], "location": [], "department": []}
+}
+
+export const handleFiltering = (rawRoleListings: any, filters: any) => {
+    let filteredRoleListings = rawRoleListings;
+    let roleOptions: number[] = filters["role"];
+    let locationOptions: string[] = filters["location"];
+    let departmentOptions: string[] = filters["department"];
+    if (roleOptions.length > 0) {
+        filteredRoleListings = filteredRoleListings.filter((filteredRoleListing: RoleListingsType) => roleOptions.includes(filteredRoleListing.role_id));
+    }
+    if (locationOptions.length > 0) {
+        filteredRoleListings = filteredRoleListings.filter((filteredRoleListing: RoleListingsType) => locationOptions.includes(filteredRoleListing.location));
+    }
+    if (departmentOptions.length > 0) {
+        filteredRoleListings = filteredRoleListings.filter((filteredRoleListing: RoleListingsType) => departmentOptions.includes(filteredRoleListing.department));
+    }
+    return filteredRoleListings;
 }
 
 export default function (state = initialState, action: ActionType) {
     const {type, payload} = action;
+    const aggregateFilters = (filter: string, options: []) => {
+        switch (filter) {
+            case "role":
+                state.filters["role"] = options;
+                break;
+            case "location":
+                state.filters["location"] = options;
+                break;
+            case "department":
+                state.filters["department"] = options;
+                break;
+        }
+    }
 
 
     switch (type) {
@@ -57,19 +88,26 @@ export default function (state = initialState, action: ActionType) {
                 rawRoleListings: sortedRoleListings,
             };
         case FILTER_ROLE_LISTINGS_BY_ROLE_ID:
-            // payload is an Array of role ids
-            if (payload["roleIds"].length === 0) {
-                return {
-                    ...state,
-                    roleListings: state.rawRoleListings
-                }
-            } else {
-                let filteredRoleListings = state.rawRoleListings.filter((rawRoleListing: RoleListingsType) => payload["roleIds"].includes(rawRoleListing.role_id));
-                return {
-                    ...state,
-                    roleListings: filteredRoleListings,
-                }
-            };
+            aggregateFilters("role", payload["roleIds"]);
+            let filteredRoleListingsByRoleId = handleFiltering(state.rawRoleListings, state.filters);
+            return {
+                ...state,
+                roleListings: filteredRoleListingsByRoleId,
+            }
+        case FILTER_ROLE_LISTINGS_BY_LOCATION:
+            aggregateFilters("location", payload["locations"]);
+            let filteredRoleListingsByLocation = handleFiltering(state.rawRoleListings, state.filters);
+            return {
+                ...state,
+                roleListings: filteredRoleListingsByLocation,
+            }
+        case FILTER_ROLE_LISTINGS_BY_DEPARTMENT:
+            aggregateFilters("department", payload["departments"]);
+            let filteredRoleListingsByDepartment = handleFiltering(state.rawRoleListings, state.filters);
+            return {
+                ...state,
+                roleListings: filteredRoleListingsByDepartment,
+            }
         case SORT_ROLE_LISTINGS_BY_DATE:
             let sortedRoleListingsByDate = state.roleListings.sort((a: RoleListingsType, b: RoleListingsType) => (a.rl_open < b.rl_open) ? 1 : -1);
             return {
@@ -83,19 +121,6 @@ export default function (state = initialState, action: ActionType) {
                 ...state,
                 roleListings: sortedRoleListingsBySkillMatch,
                 rawRoleListings: sortedRoleListingsBySkillMatch,
-            };
-        case GET_ROLE_LISTINGS_CREATED_BY_HR:
-            return {
-                ...state,
-                hrRoleListings: payload,
-                hrRoleListing: payload[0],
-                loading: false
-            };
-        case GET_ROLE_LISTINGS_CREATED_BY_HR_ERROR:
-            return {
-                ...state,
-                error: payload,
-                loading: false
             };
         case POST_ROLE_LISTING:
             return {

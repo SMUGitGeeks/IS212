@@ -12,9 +12,11 @@ describe('Role List component tests', () => {
     it('hr manager should be at the top followed by engineering manager', () => {
         render(<Provider store={store}><BrowserRouter><RoleList/></BrowserRouter></Provider>);
         const hrManagerElement = screen.getByText("HR Manager");
-        const engineeringManagerElement = screen.getByText("Engineering Manager");
+        const engineeringManagerElement = screen.getAllByText("Engineering Manager")[0];
         expect(hrManagerElement).toBeInTheDocument();
         expect(engineeringManagerElement).toBeInTheDocument();
         expect(hrManagerElement.compareDocumentPosition(engineeringManagerElement)).toBe(4);
     });
+
+    
 })
