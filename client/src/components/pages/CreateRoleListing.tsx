@@ -111,7 +111,7 @@ const CreateRoleListing = ({
     const onFinish = (fieldsValue: any) => {
         Modal.success({
             title: 'Saving Changes',
-            content: 'Role Listing has been successfully updated.'
+            content: 'Role Listing has been successfully created.'
             ,
             okText: 'View Listing'
             ,
@@ -152,7 +152,7 @@ const CreateRoleListing = ({
                 size="large"
                 colon={false}
                 >
-                    <Form.Item name="rl_id" label="Role Listing ID" rules={[{ required: true, message: "Please input a location" }]}>
+                    <Form.Item name="rl_id" label="Role Listing ID" rules={[{ required: true, message: "Please input a number" }]}>
                         <Input />
                     </Form.Item>
                     <Form.Item name="roleName" label="Role name" rules={[{ required: true, message: "Please select a valid role" }]} >
