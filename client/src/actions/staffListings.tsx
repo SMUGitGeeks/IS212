@@ -37,7 +37,7 @@ export const getStaffListings = () => async (dispatch: (action: ActionType) => v
     } catch (err: any) {
         dispatch({
             type: STAFF_LISTINGS_ERROR,
-            payload: {msg: err.response.statusText, status: err.response.status}
+            payload: {msg: err.response?.statusText, status: err.response?.status}
         });
 
     }
@@ -53,7 +53,7 @@ export const getStaffListing = (id: number) => async (dispatch: (action: ActionT
     } catch (err: any) {
         dispatch({
             type: STAFF_LISTINGS_ERROR,
-            payload: {msg: err.response.statusText, status: err.response.status}
+            payload: {msg: err.response?.statusText, status: err.response?.status}
         });
     }
 }
@@ -135,7 +135,7 @@ export const getStaffListingsByRLId = (payload: any) => async (dispatch: (action
     } catch (err: any) {
         dispatch({
             type: STAFF_LISTINGS_ERROR,
-            payload: {msg: err.response.statusText, status: err.response.status}
+            payload: {msg: err.response?.statusText, status: err.response?.status}
         });
     }
 }
@@ -149,7 +149,7 @@ export const getStaffListingByRLIdAndStaffId = (staffId: number) => async (dispa
     } catch (err: any) {
         dispatch({
             type: STAFF_LISTINGS_ERROR,
-            payload: {msg: err.response.statusText, status: err.response.status}
+            payload: {msg: err.response?.statusText, status: err.response?.status}
         });
     }
 }
