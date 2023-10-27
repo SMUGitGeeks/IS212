@@ -18,5 +18,9 @@ describe('Role List component tests', () => {
         expect(hrManagerElement.compareDocumentPosition(engineeringManagerElement)).toBe(4);
     });
 
-    
+    it("should only display 3 open and active listings", () => {
+        render(<Provider store={store}><BrowserRouter><RoleList/></BrowserRouter></Provider>);
+        const itemElements = screen.getAllByRole("listitem");
+        expect(itemElements.length).toBe(3);
+    });
 })
