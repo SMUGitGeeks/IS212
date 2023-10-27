@@ -52,7 +52,7 @@ const RoleList = ({
                 }}
                 dataSource={roleListings}
                 renderItem={(item: any) => (
-                    item.role_status === "active" ?
+                    item.role_status === "active" && item.rl_status == "Open"?
                         <Link to={`/roleListing/${item.rl_id}`}>
                         <List.Item
                             key={item.role_name}
@@ -68,6 +68,7 @@ const RoleList = ({
                                     </Space>
                                 </>
                             }
+                            data-testid="listing-item"
                         >
                             <List.Item.Meta
                                 title={item.role_name}
