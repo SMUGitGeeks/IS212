@@ -125,7 +125,7 @@ export const getRoleListings = (id: number) => async (dispatch: (action: ActionT
     } catch (err: any) {
         dispatch({
             type: ROLE_LISTINGS_ERROR,
-            payload: {action: "getRoleListings", msg: err.response.statusText, status: err.response.status}
+            payload: {action: "getRoleListings", msg: err.response?.statusText, status: err.response?.status}
         });
     }
 }
@@ -185,7 +185,7 @@ export const getRoleListing = (id: number) => async (dispatch: (action: ActionTy
     } catch (err: any) {
         dispatch({
             type: ROLE_LISTINGS_ERROR,
-            payload: {action: "getRoleListing", msg: err.response.statusText, status: err.response.status}
+            payload: {action: "getRoleListing", msg: err.response?.statusText, status: err.response?.status}
         });
     }
 }
