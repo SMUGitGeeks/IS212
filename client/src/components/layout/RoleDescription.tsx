@@ -205,8 +205,6 @@ Show withdraw when:
 
     return error.action === "getRoleListing" ? (
         <PageNoExist />
-    ) : !roleListing ? (
-        <h1><LoadingOutlined /> Loading...</h1>
     ) :  (
         <Container>
             <Space direction="vertical" style={{display: "flex"}} size="large">
@@ -221,10 +219,12 @@ Show withdraw when:
                         }}
                         active
                     >
-                        <div className="">
-                            <h1>{roleListing.role_name}</h1>
-                            <h3>Department: {roleListing.department}</h3>
-                        </div>
+                        {roleListing ? 
+                            <div className="">
+                                <h1>{roleListing.role_name}</h1>
+                                <h3>Department: {roleListing.department}</h3>
+                            </div> : <></>
+                        }
                     </Skeleton>
                     </Col>
                     <Col xs={24} sm={24} md={9} lg={7} xl={5}>
@@ -299,7 +299,7 @@ Show withdraw when:
                         >
                         <Space direction="vertical">
                             {
-                                roleListing.rl_desc ?
+                                roleListing && roleListing.rl_desc ?
                                     <>
                                         <Divider orientation="left" orientationMargin="0"
                                                 style={{fontSize: 23}}>Details</Divider>
@@ -308,7 +308,7 @@ Show withdraw when:
                             }
                             <p style={{padding: "2%"}}></p>
                             {
-                                roleListing.role_description ?
+                                roleListing && roleListing.role_description ?
                                     <>
                                         <Divider orientation="left" orientationMargin="0" style={{fontSize: 23}}>Role
                                             Description</Divider>
@@ -326,11 +326,11 @@ Show withdraw when:
                                 {!dataloaded ?
                                     <LoadingOutlined style={{fontSize: 25}} data-testid="loading-icon"/>
                                     :
-                                    <p style={{fontSize: 26, margin: "0"}}>{roleListing.skill_match}%</p>
+                                    <p style={{fontSize: 26, margin: "0"}}>{ roleListing ? roleListing.skill_match : 0}%</p>
                                 }
                                 <p style={{fontSize: 12, color: "grey", margin: "0"}}>Skills<br/>Matched</p>
                             </Space>
-                            <Progress percent={roleListing.skill_match} showInfo={false}/>
+                            <Progress percent={roleListing ? roleListing.skill_match : 0} showInfo={false}/>
                             <Divider orientation="left" orientationMargin="0">All Skills Required</Divider>
                             {!dataloaded ?
                                 <Skeleton.Input style={{width: "100%"}} active={true} size="small"/> :
