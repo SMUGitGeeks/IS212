@@ -159,24 +159,31 @@ export const getRoleListing = (id: number) => async (dispatch: (action: ActionTy
             }
         }
 
-        // console.log(res.data)
-        if (res4Data.length !== 0) {
-            for (let j = 0; j < res4Data.length; j++) {
-                if (res4Data[j]["rl_id"] === output["rl_id"]) {
-                    // will keeo overridding the previous updater name and time until the last one
-                    output.rl_updater_id = res4Data[j]["rl_updater"];
-                    output.update_time = res4Data[j]["rl_ts_update"];
-                    for (let k = 0; k < res3.data.length; k++) {
-                        if (output.rl_updater_id === res3.data[k]["staff_id"]) {
-                            output.rl_updater = res3.data[k]["fname"] + " " + res3.data[k]["lname"];
+        const res4 = await axios.get(`/api/role_listing/updater/${id}`)
+            .then((res) => {
+                for (let j = 0; j < res.data.length; j++) {
+                    for (let i = 0; i < res.data.length; i++) {
+                        if (res.data[j]["rl_id"] === res.data[i]["rl_id"]) {
+                            // will keeo overridding the previous updater name and time until the last one
+                            res.data[i].rl_updater_id = res.data[j]["rl_updater"];
+                            res.data[i].update_time = res.data[j]["rl_ts_update"];
+                            for (let k = 0; k < res3.data.length; k++) {
+                                if (res.data[i].rl_updater_id === res3.data[k]["staff_id"]) {
+                                    res.data[i].rl_updater = res3.data[k]["fname"] + " " + res3.data[k]["lname"];
+                                }
+                            }
                         }
                     }
                 }
-            }
-        } else {
-            res.data.rl_updater = null;
-            res.data.update_time = null;
-        }
+            })
+            .catch((err) => {
+                if (err.response?.status === 404) {
+                res.data.rl_updater = undefined;
+                res.data.update_time = undefined; 
+                } else {
+                    throw err;
+                }
+            });
 
         dispatch({
             type: GET_ROLE_LISTING,

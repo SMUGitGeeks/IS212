@@ -1,4 +1,4 @@
-import {Button, Col, Divider, Progress, Row, Space, Tag, Typography, Modal, Input,} from "antd";
+import {Button, Col, Divider, Progress, Row, Space, Tag, Typography, Modal, Input, Skeleton,} from "antd";
 import {Container} from "react-bootstrap";
 import {AimOutlined, CheckCircleOutlined, ClockCircleOutlined, SolutionOutlined, LoadingOutlined} from "@ant-design/icons";
 import {rowGutterStyle} from "../../App";
@@ -7,10 +7,10 @@ import {getRoleSkillsByRoleId} from "../../actions/roleSkills";
 import {getRoleListing} from "../../actions/roleListings";
 import {connect, useDispatch} from "react-redux";
 import PropTypes from "prop-types";
-import {useParams} from "react-router-dom";
 import { getApplicationByStaffIdAndRLId, getApplicationsByStaffId, postApplication, updateApplication } from "../../actions/applications";
 import { getStaffSkillsByStaffId } from "../../actions/staffSkills";
 import PageNoExist from "./PageNoExist";
+import { useParams} from "react-router-dom";
 
 const {Title} = Typography;
 
@@ -63,6 +63,12 @@ export const RoleDescription = ({
     }, [application]);
 
     const dispatch = useDispatch();
+
+    const [dataloaded, setDataLoaded] = useState(false);
+
+    setTimeout(() => {
+        setDataLoaded(true);
+    }, 2000);
 
     // onclick function that uses postapplication action when button is clicked which sends rl_id, staff_id, status from both the role listing and the staff as payload
     // let isWithdrawn = false;
@@ -187,31 +193,15 @@ Show withdraw when:
         setTextBody(e.target.value);
     };
 
-    const skillsInfo = () => {
-        if (roleSkills.length === 0 || staffSkill.length === 0) {
-            return {
-                missingSkills: [],
-                skill_match: 0
-            }
-        }
-        let missingSkills: string[] = [];
-        let numNotMatched = 0;
-        const staffSkillIds = staffSkill.map((skill: any) => skill["skill_id"])
-
-        for (let i = 0; i < roleSkills.length; i++) {
-            if (staffSkillIds.includes(roleSkills[i]['skill_id']) && roleSkills[i]['skill_status'] === 'active') {
-                missingSkills.push(roleSkills[i].skill_name);
-            } else {
-                numNotMatched++;
-            }
-        };
-
-        return {
-            missingSkills: missingSkills,
-            skill_match: Math.round((roleSkills.length - numNotMatched) / roleSkills.length * 100)
-        }
-    }
-
+    const missingSkills = 
+        roleSkills.length > 0 ? [] :
+        roleSkills.map((roleSkill: any) => {
+            staffSkill.map((skill: any) => {
+                if (roleSkill.skill_id !== skill.skill_id) {
+                    return(skill.skill_name);
+                }
+            })
+        });
 
     return error.action === "getRoleListing" ? (
         <PageNoExist />
@@ -222,12 +212,20 @@ Show withdraw when:
             <Space direction="vertical" style={{display: "flex"}} size="large">
                 <Row gutter={rowGutterStyle} align="middle">
                     <Col xs={24} sm={24} md={15} lg={17} xl={19}>
+                    <Skeleton 
+                        loading={!dataloaded}
+                        title={{width: "30%", style: {height: 40, marginBottom: 10}}}
+                        paragraph={{
+                            rows: 1,
+                            width: ["40%"],
+                        }}
+                        active
+                    >
                         <div className="">
                             <h1>{roleListing.role_name}</h1>
                             <h3>Department: {roleListing.department}</h3>
-                            <Space direction="horizontal" wrap>
-                            </Space>
                         </div>
+                    </Skeleton>
                     </Col>
                     <Col xs={24} sm={24} md={9} lg={7} xl={5}>
 
@@ -240,9 +238,11 @@ Show withdraw when:
                             Apply Now
                             </Button>
                         )} */}
-                        
-
-                        {isApplied ? (
+                            
+                        { !dataloaded ?
+                        <Skeleton.Button active size="large" style={{width: 130}}/>
+                        :
+                        isApplied ? (
                             buttonDisabled ? (
                                 <Button type="primary" size="large" icon={<SolutionOutlined />} disabled = {true}>
                                 Withdrawn
@@ -288,6 +288,15 @@ Show withdraw when:
 
                 <Row gutter={rowGutterStyle} justify="space-between">
                     <Col xs={24} sm={24} md={24} lg={15} xl={17}>
+                        <Skeleton 
+                            active
+                            loading={!dataloaded}
+                            title={false}
+                            paragraph={{
+                                rows: 9,
+                                width: ["100%", "100%", "100%", "100%", "0%", "100%", "100%", "100%", "100%"],
+                            }}
+                        >
                         <Space direction="vertical">
                             {
                                 roleListing.rl_desc ?
@@ -307,28 +316,36 @@ Show withdraw when:
                                     </> : <></>
                             }
                         </Space>
+                        </Skeleton>
                     </Col>
                     <Col xs={24} sm={24} md={24} lg={0} style={{paddingTop: "10%"}}><Divider/></Col>
                     <Col xs={24} sm={24} md={24} lg={8} xl={6} xxl={5}>
                         <Space direction="vertical" style={{width: "100%"}}>
                             <Space direction="horizontal" align="center">
                                 <AimOutlined style={{fontSize: 25}}/>
-                                <p style={{fontSize: 26, margin: "0"}}>{skillsInfo().skill_match}%</p>
+                                {!dataloaded ?
+                                    <LoadingOutlined style={{fontSize: 25}} data-testid="loading-icon"/>
+                                    :
+                                    <p style={{fontSize: 26, margin: "0"}}>{roleListing.skill_match}%</p>
+                                }
                                 <p style={{fontSize: 12, color: "grey", margin: "0"}}>Skills<br/>Matched</p>
                             </Space>
-                            <Progress percent={skillsInfo().skill_match} showInfo={false}/>
+                            <Progress percent={roleListing.skill_match} showInfo={false}/>
                             <Divider orientation="left" orientationMargin="0">All Skills Required</Divider>
-                            <Space size={[0, 8]} wrap>
-                                {roleSkills.map((skill: any) => (
-                                    <Tag>{skill.skill_name}</Tag>
-                                ))}
-                            </Space>
+                            {!dataloaded ?
+                                <Skeleton.Input style={{width: "100%"}} active={true} size="small"/> :
+                                <Space size={[0, 8]} wrap>
+                                    {roleSkills.map((skill: any) => (
+                                        <Tag>{skill.skill_name}</Tag>
+                                    ))}
+                                </Space>
+                            }
                             
-                            { skillsInfo().missingSkills.length === 0 ? <></> :
+                            { missingSkills.length === 0 ? <></> :
                                 <>
                                 <Title level={5}>Missing Skills</Title>
                                 <Space size={[0, 8]} wrap>
-                                    {skillsInfo().missingSkills.map((skill: any) => (
+                                    {missingSkills.map((skill: any) => (
                                         <Tag icon={tagIcon(skill.skill_status)}
                                             color={color(skill.skill_status)}>{skill}</Tag>
                                     ))}
