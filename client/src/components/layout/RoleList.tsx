@@ -16,13 +16,13 @@ const RoleList = ({
         if (roleListings.length === 0) {
             getRoleListings(user);
         }
-    }, [getRoleListings, roleListings]);
+    }, [getRoleListings]);
 
     const [dataloaded, setDataLoaded] = useState(false);
 
     setTimeout(() => {
         setDataLoaded(true);
-    }, 3000);
+    }, roleListings.length === 0 ? 3000 : 200);
 
     const date = new Date();
 
