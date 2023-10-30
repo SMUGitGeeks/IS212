@@ -30,10 +30,17 @@ export const getApplicationsByStaffId = (payload: GetApplicationsByStaffIdPayloa
             payload: res.data
         });
     } catch (err: any) {
-        dispatch({
-            type: APPLICATIONS_ERROR,
-            payload: {msg: err.response?.statusText, status: err.response?.status}
-        });
+        if (err.response?.status === 404) {
+            dispatch({
+                type: GET_APPLICATIONS_BY_STAFF_ID,
+                payload: []
+            });
+        } else {
+            dispatch({
+                type: APPLICATIONS_ERROR,
+                payload: {msg: err.response?.statusText, status: err.response?.status}
+            });
+        }
     }
 }
 
