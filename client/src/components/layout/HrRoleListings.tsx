@@ -16,7 +16,7 @@ import {Link} from "react-router-dom";
 
 const HrRoleListings = ({
                             getRoleListings,
-                            roleListing: {roleListings, loading},
+                            roleListing: {roleListings},
                             auth: {user}, getStaffListings,
                             staffListing
                         }: any) => {
@@ -26,6 +26,12 @@ const HrRoleListings = ({
             getStaffListings();
         }
     }, [getRoleListings, getStaffListings]);
+
+    const [dataloaded, setDataLoaded] = useState(false);
+
+    setTimeout(() => {
+        setDataLoaded(true);
+    }, roleListings.length !== 0 ? 500: 3000);
 
     const [listingState, setListingState] = useState("all");
     const navigate = useNavigate();
@@ -58,95 +64,92 @@ const HrRoleListings = ({
                 <Radio.Button value="Closed">Closed</Radio.Button>
             </Radio.Group>
             {
-                loading ? (
-                        <List
-                            id="list"
-                            itemLayout="vertical"
-                            size="large"
-                            pagination={{
-                                pageSize: 10,
-                            }}
-                            dataSource={Array.from({length: 8}).map((_, i) => i)}
-                            renderItem={(item: any) => (
+                dataloaded && roleListings.length !== 0 ? (
+                    <List
+                        itemLayout="vertical"
+                        size="large"
+                        pagination={ roleListings.length > 10 ? {
+                            onChange: (page) => {
+                            },
+                            pageSize: 10,
+                        } : false}
+                        dataSource={filteredListings}
+                        renderItem={(item: any) => (
                                 <List.Item
-                                    key={item}
+                                    key={item.role_name}
+                                    extra={
+                                        <Space direction="vertical" size={30}>
+                                            <Tooltip placement="top" title='Edit'>
+                                            <span onClick={() => navigate("/listingManage/update/" + item.rl_id)} data-testid="edit-icon-click">
+                                                <FormOutlined style={{fontSize: 20, cursor: "pointer"}}/>
+                                            </span>
+                                            </Tooltip>
+                                        </Space>
+                                    }
+                                    style={{cursor: "pointer"}}
                                 >
-                                    <Skeleton active title/>
-                                </List.Item>
-
-                            )}
-                        />
-                    ) :
-                    roleListings && roleListings.length !== 0 ? (
-                        <List
-                            itemLayout="vertical"
-                            size="large"
-                            pagination={ roleListings.length > 10 ? {
-                                onChange: (page) => {
-                                },
-                                pageSize: 10,
-                            } : false}
-                            dataSource={filteredListings}
-                            renderItem={(item: any) => (
-                                    <List.Item
-                                        key={item.role_name}
-                                        extra={
-                                            <Space direction="vertical" size={30}>
-                                                <Tooltip placement="top" title='Edit'>
-                                                <span onClick={() => navigate("/listingManage/update/" + item.rl_id)} data-testid="edit-icon-click">
-                                                    <FormOutlined style={{fontSize: 20, cursor: "pointer"}}/>
-                                                </span>
-                                                </Tooltip>
+                                    <Link to={`/listingManage/${item.rl_id}`} style={{textDecoration: "none", color: "black"}} data-testid="one-listing">
+                                    <List.Item.Meta
+                                        title={
+                                            <Space size={10}>
+                                            {item.role_name}
+                                            <Tag color={item.rl_status === "Open" ? "green" : "red"} data-testid="status">{item.rl_status}</Tag>
                                             </Space>
                                         }
-                                        style={{cursor: "pointer"}}
-                                    >
-                                        <Link to={`/listingManage/${item.rl_id}`} style={{textDecoration: "none", color: "black"}} data-testid="one-listing">
-                                        <List.Item.Meta
-                                            title={
-                                                <Space size={10}>
-                                                {item.role_name}
-                                                <Tag color={item.rl_status === "Open" ? "green" : "red"} data-testid="status">{item.rl_status}</Tag>
-                                                </Space>
-                                            }
-                                            description={
-                                                <Space direction="horizontal" wrap size={40}>
-                                                    <div><BankOutlined /> {item.department}</div>
+                                        description={
+                                            <Space direction="horizontal" wrap size={40}>
+                                                <div><BankOutlined /> {item.department}</div>
 
-                                                    <div><EnvironmentOutlined/> {item.location}</div>
-                                                    <div>
-                                                        <CalendarOutlined/> {new Date(item.rl_open).toLocaleDateString("en-SG")} - {new Date(item.rl_close).toLocaleDateString("en-SG")}
-                                                    </div>
-                                                </Space>
-                                            }
-                                        />
-                                        
-                                        <Space direction="horizontal" wrap size={66} style={{fontStyle: "italic"}}>
+                                                <div><EnvironmentOutlined/> {item.location}</div>
+                                                <div>
+                                                    <CalendarOutlined/> {new Date(item.rl_open).toLocaleDateString("en-SG")} - {new Date(item.rl_close).toLocaleDateString("en-SG")}
+                                                </div>
+                                            </Space>
+                                        }
+                                    />
+                                    
+                                    <Space direction="horizontal" wrap size={66} style={{fontStyle: "italic"}}>
+                                        <span>
+                                            <strong>Creator: </strong>
+                                            {staffListing.loading ? <LoadingOutlined/> :
+                                                <span> {getHRName(item.rl_creator)} | {new Date(item.rl_ts_create).toLocaleDateString('en-sg')} </span>}
+                                        </span>
+                                        {item.rl_updater_id == undefined ? <></> :
                                             <span>
-                                                <strong>Creator: </strong>
+                                                <strong>Last Updator: </strong>
                                                 {staffListing.loading ? <LoadingOutlined/> :
-                                                    <span> {getHRName(item.rl_creator)} | {new Date(item.rl_ts_create).toLocaleDateString('en-sg')} </span>}
+                                                <span> {getHRName(item.rl_updater_id)} | {new Date(item.update_time).toLocaleDateString('en-sg')} </span>}
                                             </span>
-                                            {item.rl_updater_id == undefined ? <></> :
-                                                <span>
-                                                    <strong>Last Updator: </strong>
-                                                    {staffListing.loading ? <LoadingOutlined/> :
-                                                    <span> {getHRName(item.rl_updater_id)} | {new Date(item.update_time).toLocaleDateString('en-sg')} </span>}
-                                                </span>
-                                            }
-                                        </Space>
-                                        <br/><br/>
-                                        <div>{item.rl_desc}</div>
-                                        </Link>
-                                    </List.Item>
-                            )}
-                            
-                        />
-                    ) : (
-                        <div>
-                            <Empty description="No role listings found"/>
-                        </div>
-                    )
+                                        }
+                                    </Space>
+                                    <br/><br/>
+                                    <div>{item.rl_desc}</div>
+                                    </Link>
+                                </List.Item>
+                        )}
+                        
+                    />
+                ) : dataloaded && roleListings.length === 0 ? (
+                    <div>
+                        <Empty description="No role listings found"/>
+                    </div>
+                ) : (
+                    <List
+                        id="list"
+                        itemLayout="vertical"
+                        size="large"
+                        pagination={false}
+                        dataSource={Array.from({length: 8}).map((_, i) => i)}
+                        renderItem={(item: any) => (
+                            <List.Item
+                                key={item}
+                            >
+                                <Skeleton active title/>
+                            </List.Item>
+                        )}
+                        data-testid="skeleton-list"
+                    />
+                )
             }
         </Space>
     );

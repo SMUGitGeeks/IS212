@@ -1,6 +1,6 @@
-import {Button, Col, Divider, Progress, Row, Space, Tag, Typography, Modal, Input,} from "antd";
+import {Button, Col, Divider, Progress, Row, Space, Tag, Typography, Modal, Input, Skeleton,} from "antd";
 import {Container} from "react-bootstrap";
-import {AimOutlined, CheckCircleOutlined, ClockCircleOutlined, SolutionOutlined} from "@ant-design/icons";
+import {AimOutlined, CheckCircleOutlined, ClockCircleOutlined, SolutionOutlined, LoadingOutlined} from "@ant-design/icons";
 import {rowGutterStyle} from "../../App";
 import React, {useEffect, useState} from "react";
 import {getRoleSkillsByRoleId} from "../../actions/roleSkills";
@@ -8,10 +8,7 @@ import {getRoleListing} from "../../actions/roleListings";
 import {connect, useDispatch} from "react-redux";
 import PropTypes from "prop-types";
 import {Link, useParams} from "react-router-dom";
-import auth from "../../reducers/auth";
 import { getApplicationByStaffIdAndRLId, getApplicationsByStaffId, postApplication, updateApplication } from "../../actions/applications";
-import { application } from "express";
-import { isatty } from "tty";
 
 const {Title, Text} = Typography;
 
@@ -35,8 +32,6 @@ const tagIcon = (status: String) => {
     }
 }
 
-var count = 0;
-
 export const RoleDescription = ({
                                     getRoleListing,
                                     roleListing: {roleListing, loading},
@@ -44,7 +39,6 @@ export const RoleDescription = ({
                                     getRoleSkillsByRoleId,
                                     staffSkill: {staffSkill},
                                     auth: {user, isHR},
-                                    // getApplicationsByStaffId,
                                     getApplicationByStaffIdAndRLId,
                                     application: {applications, application,}
                                 }: any) => {
@@ -55,10 +49,6 @@ export const RoleDescription = ({
         getRoleSkillsByRoleId(rl_id);
         getApplicationByStaffIdAndRLId(Number(rl_id))
     }, [getRoleListing]);
-
-    // useEffect(() => {
-    //     getApplicationByStaffIdAndRLId(roleListing.rl_id);
-    // }, [getApplicationsByStaffId]);
 
     useEffect(() => {
         console.log(rl_id)
@@ -72,51 +62,11 @@ export const RoleDescription = ({
 
     const dispatch = useDispatch();
 
-    // console.log(application);
-    
-    // if (count < 1) {
-    //     count += 1;
+    const [dataloaded, setDataLoaded] = useState(false);
 
-
-    // dispatch(getApplicationsByStaffId(user) as any)
-    //         .then(() => {
-    //               dispatch(getApplicationByStaffIdAndRLId(Number(rl_id)) as any)
-                
-    //           })
-    //         }
-
-
-    const calculateSkillsMatch = () => {
-        let matchedSkills = 0;
-        let numRoleSkills = 0;
-        let missingSkillNames = [] as any;
-        let requiredSkills = [] as any;
-        let staffskills = [] as any;
-
-        roleSkills.forEach((roleSkill: any) => {
-            if (roleSkill.skill_status === "active") {
-                numRoleSkills++;
-                requiredSkills.push(roleSkill.skill_name);
-            }
-        });
-
-        staffSkill.forEach((staffSkill: any) => {
-            if (staffSkill.ss_status === "active") {
-                staffskills.push(staffSkill.skill_name);
-            }
-        });
-        
-        requiredSkills.forEach((requiredSkill: any) => {
-            if (staffskills.includes(requiredSkill)) {
-                matchedSkills++;
-            } else {
-                missingSkillNames.push(requiredSkill);
-            }
-        });
-
-        let match = (matchedSkills / numRoleSkills) * 100;
-        return [match.toFixed(2), missingSkillNames];
-    };
+    setTimeout(() => {
+        setDataLoaded(true);
+    }, 2000);
 
     // onclick function that uses postapplication action when button is clicked which sends rl_id, staff_id, status from both the role listing and the staff as payload
     // let isWithdrawn = false;
@@ -126,7 +76,6 @@ export const RoleDescription = ({
     const [confirmLoading, setConfirmLoading] = useState(false);
     const [textBody, setTextBody] = useState("");
     const [isApplied, setIsApplied] = useState(!(application == null || application.length === 0 ));
-    // console.log(isApplied)
 
 
     const checkIfApplied = () => {
@@ -162,7 +111,6 @@ export const RoleDescription = ({
         // console.log(application)
 
         if (application == null || application.length === 0) {
-            // console.log("creating new application")
             let payload = {
                 "rl_id": roleListing.rl_id,
                 "staff_id": user,
@@ -172,9 +120,6 @@ export const RoleDescription = ({
             console.log(payload)
             dispatch(postApplication(payload) as any)
             dispatch(getApplicationsByStaffId(user) as any)
-            // .then(() => {
-            //     dispatch(getApplicationByStaffIdAndRLId(roleListing.rl_id) as any)    
-            // })
             
             setConfirmLoading(true);
             setTimeout(() => {
@@ -199,11 +144,7 @@ export const RoleDescription = ({
                 // "app_text": textBody,
             }
             dispatch(updateApplication(payload) as any)
-
             dispatch(getApplicationsByStaffId(user) as any)
-            // .then(() => {
-            //     dispatch(getApplicationByStaffIdAndRLId(roleListing.rl_id) as any)    
-            // })
             
 
             setConfirmLoading(true);
@@ -240,7 +181,7 @@ Show withdraw when:
 - Staff has applied for the role
     - getApplicationByStaffIdAndRLId returns an array with a status of "applied"
 */
-     useEffect(() => {
+    useEffect(() => {
         getApplicationsByStaffId(user);
     }, [handleOk, handleWithdrawOk]);
     
@@ -250,7 +191,15 @@ Show withdraw when:
         setTextBody(e.target.value);
     };
 
-    const [matchPercentage, missingSkills] = calculateSkillsMatch();
+    const missingSkills = 
+        roleSkills.length > 0 ? [] :
+        roleSkills.map((roleSkill: any) => {
+            staffSkill.map((skill: any) => {
+                if (roleSkill.skill_id !== skill.skill_id) {
+                    return(skill.skill_name);
+                }
+            })
+        });
 
     return loading ? (
         <h1>Loading...</h1>
@@ -259,12 +208,20 @@ Show withdraw when:
             <Space direction="vertical" style={{display: "flex"}} size="large">
                 <Row gutter={rowGutterStyle} align="middle">
                     <Col xs={24} sm={24} md={15} lg={17} xl={19}>
+                    <Skeleton 
+                        loading={!dataloaded}
+                        title={{width: "30%", style: {height: 40, marginBottom: 10}}}
+                        paragraph={{
+                            rows: 1,
+                            width: ["40%"],
+                        }}
+                        active
+                    >
                         <div className="">
                             <h1>{roleListing.role_name}</h1>
                             <h3>Department: {roleListing.department}</h3>
-                            <Space direction="horizontal" wrap>
-                            </Space>
                         </div>
+                    </Skeleton>
                     </Col>
                     <Col xs={24} sm={24} md={9} lg={7} xl={5}>
 
@@ -277,9 +234,11 @@ Show withdraw when:
                             Apply Now
                             </Button>
                         )} */}
-                        
-
-                        {isApplied ? (
+                            
+                        { !dataloaded ?
+                        <Skeleton.Button active size="large" style={{width: 130}}/>
+                        :
+                        isApplied ? (
                             buttonDisabled ? (
                                 <Button type="primary" size="large" icon={<SolutionOutlined />} disabled = {true}>
                                 Withdrawn
@@ -325,12 +284,21 @@ Show withdraw when:
 
                 <Row gutter={rowGutterStyle} justify="space-between">
                     <Col xs={24} sm={24} md={24} lg={15} xl={17}>
+                        <Skeleton 
+                            active
+                            loading={!dataloaded}
+                            title={false}
+                            paragraph={{
+                                rows: 9,
+                                width: ["100%", "100%", "100%", "100%", "0%", "100%", "100%", "100%", "100%"],
+                            }}
+                        >
                         <Space direction="vertical">
                             {
                                 roleListing.rl_desc ?
                                     <>
                                         <Divider orientation="left" orientationMargin="0"
-                                                 style={{fontSize: 23}}>Details</Divider>
+                                                style={{fontSize: 23}}>Details</Divider>
                                         {roleListing.rl_desc}
                                     </> : <></>
                             }
@@ -344,6 +312,7 @@ Show withdraw when:
                                     </> : <></>
                             }
                         </Space>
+                        </Skeleton>
                     </Col>
                     <Col xs={24} sm={24} md={24} lg={0} style={{paddingTop: "10%"}}><Divider/></Col>
                     <Col xs={24} sm={24} md={24} lg={8} xl={6} xxl={5}>
@@ -354,24 +323,35 @@ Show withdraw when:
                             }
                             <Space direction="horizontal" align="center">
                                 <AimOutlined style={{fontSize: 25}}/>
-                                <p style={{fontSize: 26, margin: "0"}}>{matchPercentage}%</p>
+                                {!dataloaded ?
+                                    <LoadingOutlined style={{fontSize: 25}} data-testid="loading-icon"/>
+                                    :
+                                    <p style={{fontSize: 26, margin: "0"}}>{roleListing.skill_match}%</p>
+                                }
                                 <p style={{fontSize: 12, color: "grey", margin: "0"}}>Skills<br/>Matched</p>
                             </Space>
-                            <Progress percent={matchPercentage} showInfo={false}/>
+                            <Progress percent={roleListing.skill_match} showInfo={false}/>
                             <Divider orientation="left" orientationMargin="0">All Skills Required</Divider>
-                            <Space size={[0, 8]} wrap>
-                                {roleSkills.map((skill: any) => (
-                                    <Tag>{skill.skill_name}</Tag>
-                                ))}
-                            </Space>
-
-                            <Title level={5}>Missing Skills</Title>
-                            <Space size={[0, 8]} wrap>
-                                {missingSkills.map((skill: any) => (
-                                    <Tag icon={tagIcon(skill.skill_status)}
-                                         color={color(skill.skill_status)}>{skill}</Tag>
-                                ))}
-                            </Space>
+                            {!dataloaded ?
+                                <Skeleton.Input style={{width: "100%"}} active={true} size="small"/> :
+                                <Space size={[0, 8]} wrap>
+                                    {roleSkills.map((skill: any) => (
+                                        <Tag>{skill.skill_name}</Tag>
+                                    ))}
+                                </Space>
+                            }
+                            
+                            { missingSkills.length === 0 ? <></> :
+                                <>
+                                <Title level={5}>Missing Skills</Title>
+                                <Space size={[0, 8]} wrap>
+                                    {missingSkills.map((skill: any) => (
+                                        <Tag icon={tagIcon(skill.skill_status)}
+                                            color={color(skill.skill_status)}>{skill}</Tag>
+                                    ))}
+                                </Space>
+                                </>
+                            }
                         </Space>
                     </Col>
                 </Row>
