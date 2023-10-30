@@ -31,7 +31,7 @@ const HrRoleListings = ({
 
     setTimeout(() => {
         setDataLoaded(true);
-    }, 3000);
+    }, roleListings.length !== 0 ? 500: 3000);
 
     const [listingState, setListingState] = useState("all");
     const navigate = useNavigate();
