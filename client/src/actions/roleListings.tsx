@@ -125,7 +125,7 @@ export const getRoleListings = (id: number) => async (dispatch: (action: ActionT
     } catch (err: any) {
         dispatch({
             type: ROLE_LISTINGS_ERROR,
-            payload: {action: "getRoleListings", msg: err.response?.statusText, status: err.response?.status}
+            payload: {action: "getRoleListings", msg: err.response?.statusText, status: err.response?.status, data: err.response?.data}
         });
     }
 }
@@ -136,17 +136,6 @@ export const getRoleListing = (id: number) => async (dispatch: (action: ActionTy
         const res2 = await axios.get('/api/role/details');
         // get updater name and update time
         const res3 = await axios.get('/api/staff/details');
-
-        const res4Data = await axios.get(`/api/role_listing/updater/${id}`)
-            .then((res: any) => {
-                return res.data;
-            })
-            .catch ((err: any) => {
-                if (err.response.status === 404) {
-                    return [];
-                }
-                throw err;
-            })
 
         let output = null;
 

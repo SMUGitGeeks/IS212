@@ -51,6 +51,9 @@ export const RoleDescription = ({
         getRoleListing(rl_id);
         getRoleSkillsByRoleId(rl_id);
         getApplicationByStaffIdAndRLId(Number(rl_id))
+        if (user) {
+            getStaffSkillsByStaffId(user);
+        }
     }, [getRoleListing]);
 
     useEffect(() => {
@@ -193,15 +196,31 @@ Show withdraw when:
         setTextBody(e.target.value);
     };
 
-    const missingSkills = 
-        roleSkills.length > 0 ? [] :
-        roleSkills.map((roleSkill: any) => {
-            staffSkill.map((skill: any) => {
-                if (roleSkill.skill_id !== skill.skill_id) {
-                    return(skill.skill_name);
-                }
-            })
-        });
+    // const [missingSkills, setMissingSkills] = useState([] as any);
+
+    // const missingSkills = () => {
+    //     let missingSkills = [];
+    //     for (let i = 0; i < roleSkills.length; i++) {
+    //         for (let j = 0; j < staffSkill.length; j++) {
+    //             if (roleSkills[i].skill_id === staffSkill[j].skill_id) {
+    //                 break;
+    //             } else if (j === staffSkill.length - 1) {
+    //                 missingSkills.push(roleSkills[i]);
+    //             }
+    //         }
+    //     }
+    //     console.log(missingSkills);
+    //     return missingSkills;
+    // };
+
+    const missingSkills = roleSkills.filter((roleSkill: any) => {
+        for (let i = 0; i < staffSkill.length; i++) {
+            if (roleSkill.skill_id === staffSkill[i].skill_id) {
+                return false;
+            }
+        }
+        return true;
+    });
 
     return error.action === "getRoleListing" ? (
         <PageNoExist />
@@ -326,11 +345,11 @@ Show withdraw when:
                                 {!dataloaded ?
                                     <LoadingOutlined style={{fontSize: 25}} data-testid="loading-icon"/>
                                     :
-                                    <p style={{fontSize: 26, margin: "0"}}>{ roleListing ? roleListing.skill_match : 0}%</p>
+                                    <p style={{fontSize: 26, margin: "0"}}>{ dataloaded ? roleListing.skill_match : 0}%</p>
                                 }
                                 <p style={{fontSize: 12, color: "grey", margin: "0"}}>Skills<br/>Matched</p>
                             </Space>
-                            <Progress percent={roleListing ? roleListing.skill_match : 0} showInfo={false}/>
+                            <Progress percent={dataloaded ? roleListing.skill_match : 0} showInfo={false}/>
                             <Divider orientation="left" orientationMargin="0">All Skills Required</Divider>
                             {!dataloaded ?
                                 <Skeleton.Input style={{width: "100%"}} active={true} size="small"/> :
@@ -341,13 +360,14 @@ Show withdraw when:
                                 </Space>
                             }
                             
-                            { missingSkills.length === 0 ? <></> :
+                            { !dataloaded || missingSkills.length === 0 ? <></> :
                                 <>
                                 <Title level={5}>Missing Skills</Title>
                                 <Space size={[0, 8]} wrap>
-                                    {missingSkills.map((skill: any) => (
-                                        <Tag icon={tagIcon(skill.skill_status)}
-                                            color={color(skill.skill_status)}>{skill}</Tag>
+                                    { missingSkills.length === 0 ? <></> :
+                                        missingSkills.map((skill: any) => (
+                                        <Tag icon={tagIcon(skill.ss_status)}
+                                            color={color(skill.ss_status)}>{skill.skill_name}</Tag>
                                     ))}
                                 </Space>
                                 </>
