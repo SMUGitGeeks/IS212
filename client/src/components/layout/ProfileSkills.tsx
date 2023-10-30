@@ -38,14 +38,20 @@ const ProfileSkills = ({getStaffSkillsByStaffId, staffSkill: {staffSkill, loadin
         }
     }
 
+    const filteredSkills = staffSkill ? staffSkill.filter(
+        (skill: any) => skill.skill_status === "active"
+    ).filter(
+        (skill: any) => skill.ss_status === skillState || skillState === "all"
+    ) : true;
+
     return (
         <Card>
             <Space size={20} direction="vertical" style={{width: "100%"}}>
                 <h2 style={{marginTop: 0}}>My Skills</h2>
-                <Radio.Group value={skillState} buttonStyle="solid" onChange={selectChange}>
+                <Radio.Group value={skillState} buttonStyle="solid" onChange={selectChange} style={{userSelect: 'none' }}>
                     <Radio.Button value="all">All</Radio.Button>
                     <Radio.Button value="active">Active</Radio.Button>
-                    <Radio.Button value="progress">In Progress</Radio.Button>
+                    <Radio.Button value="in-progress">In Progress</Radio.Button>
                     <Radio.Button value="unverified">Unverified</Radio.Button>
                 </Radio.Group>
                 <div></div>
@@ -53,18 +59,19 @@ const ProfileSkills = ({getStaffSkillsByStaffId, staffSkill: {staffSkill, loadin
                     <div style={{textAlign: "center", paddingTop: "10vh", paddingBottom: "10vh"}}>
                         <Spin/>
                     </div>
-                    :
-                    staffSkill.map((skill: any) => (
-                        skill.skill_status === skillState || skillState === "all" ?
-                            <Tag style={{padding: 10}} color={color(skill.skill_status)}
-                                 icon={tagIcon(skill.skill_status)} key={skill.skill_id}>
+                    : filteredSkills.length !== 0 ?
+                    <Space direction="horizontal" size={10}>
+                        {filteredSkills.map((skill: any) => (
+                            <Tag style={{padding: 10}} color={color(skill.ss_status)}
+                                icon={tagIcon(skill.ss_status)} key={skill.skill_id}>
                                 {skill.skill_name}
                             </Tag>
-                            :
-                            <div>
-                                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/>
-                            </div>
-                    ))
+                        ))}
+                    </Space>
+                    :
+                    <div>
+                        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/>
+                    </div>
                 }
             </Space>
         </Card>

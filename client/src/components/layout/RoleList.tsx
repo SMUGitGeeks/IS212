@@ -37,6 +37,7 @@ const RoleList = ({
             }}
             dataSource={roleListings}
             renderItem={(item: any) => (
+                item.role_status === "active" && item.rl_status == "Open"? 
                 <Link to={`/roleListing/${item.rl_id}`}>
                     <List.Item
                         key={item.role_name}
@@ -52,6 +53,7 @@ const RoleList = ({
                                 </Space>
                             </>
                         }
+                        data-testid="role-listing"
                     >
                         <List.Item.Meta
                             title={item.role_name}
@@ -68,7 +70,7 @@ const RoleList = ({
                         <br/><br/>
                         <div>{item.rl_desc}</div>
                     </List.Item>
-                </Link>
+                </Link> : <></>
             )}
         /> 
         : dataloaded && roleListings.length === 0 ?

@@ -92,7 +92,6 @@ export const getRoleListings = (id: number) => async (dispatch: (action: ActionT
         
 
         for (let i = 0; i < res.data.length; i++) {
-           
             if (date > new Date(res.data[i]["rl_close"])) {
                 res.data[i].rl_status = "Closed";
             } else {
@@ -126,7 +125,7 @@ export const getRoleListings = (id: number) => async (dispatch: (action: ActionT
     } catch (err: any) {
         dispatch({
             type: ROLE_LISTINGS_ERROR,
-            payload: {msg: err.response?.statusText, status: err.response?.status}
+            payload: {action: "getRoleListings", msg: err.response?.statusText, status: err.response?.status, data: err.response?.data}
         });
     }
 }
@@ -138,15 +137,14 @@ export const getRoleListing = (id: number) => async (dispatch: (action: ActionTy
         // get updater name and update time
         const res3 = await axios.get('/api/staff/details');
 
-        for (let i = 0; i < res.data.length; i++) {
-            for (let j = 0; j < res2.data.length; j++) {
-                if (res.data[i]["role_id"] === res2.data[j]["role_id"]) {
-                    if (res2.data[j]["role_status"] === "active") {
-                        res.data[i].role_name = res2.data[j].role_name;
-                        res.data[i].role_description = res2.data[j].role_description;
-                        res.data[i].role_status = res2.data[j].role_status;
-                    }
-                }
+        let output = null;
+
+        for (let j = 0; j < res2.data.length; j++) {
+            if (res.data[0]["role_id"] === res2.data[j]["role_id"]) {
+                res.data[0].role_name = res2.data[j].role_name;
+                res.data[0].role_description = res2.data[j].role_description;
+                res.data[0].role_status = res2.data[j].role_status;
+                output = res.data[0];
             }
         }
 
@@ -178,12 +176,12 @@ export const getRoleListing = (id: number) => async (dispatch: (action: ActionTy
 
         dispatch({
             type: GET_ROLE_LISTING,
-            payload: res.data[0]
+            payload: output
         });
     } catch (err: any) {
         dispatch({
             type: ROLE_LISTINGS_ERROR,
-            payload: {action: "getrolelisting", msg: err.response?.statusText, status: err.response?.status}
+            payload: {action: "getRoleListing", msg: err.response?.statusText, status: err.response?.status}
         });
     }
 }
