@@ -79,14 +79,15 @@ const HrRoleListings = ({
                         renderItem={(item: any) => (
                                 <List.Item
                                     key={item.role_name}
-                                    extra={
+                                    extra={ item.role_status === "active" ?
                                         <Space direction="vertical" size={30}>
                                             <Tooltip placement="top" title='Edit'>
                                             <span onClick={() => navigate("/listingManage/update/" + item.rl_id)} data-testid="edit-icon-click">
                                                 <FormOutlined style={{fontSize: 20, cursor: "pointer"}}/>
                                             </span>
                                             </Tooltip>
-                                        </Space>
+                                        </Space>  :
+                                        <></>
                                     }
                                     style={{cursor: "pointer"}}
                                 >
@@ -95,7 +96,13 @@ const HrRoleListings = ({
                                         title={
                                             <Space size={10}>
                                             {item.role_name}
-                                            <Tag color={item.rl_status === "Open" ? "green" : "red"} data-testid="status">{item.rl_status}</Tag>
+                                                <Space size={3} wrap>
+                                                    <Tag color={item.rl_status === "Open" ? "green" : "red"} data-testid="status">{item.rl_status}</Tag>
+                                                    { item.role_status !== "active" ?
+                                                        <Tag data-testid="status">Inactive</Tag> :
+                                                        <></>
+                                                    }
+                                                </Space>
                                             </Space>
                                         }
                                         description={
@@ -116,7 +123,7 @@ const HrRoleListings = ({
                                             {staffListing.loading ? <LoadingOutlined/> :
                                                 <span> {getHRName(item.rl_creator)} | {new Date(item.rl_ts_create).toLocaleDateString('en-sg')} </span>}
                                         </span>
-                                        {item.rl_updater_id == undefined ? <></> :
+                                        {item.rl_updater_id === undefined ? <></> :
                                             <span>
                                                 <strong>Last Updator: </strong>
                                                 {staffListing.loading ? <LoadingOutlined/> :
