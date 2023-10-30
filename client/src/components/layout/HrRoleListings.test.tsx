@@ -6,7 +6,7 @@ import {BrowserRouter} from 'react-router-dom'
 import HrRoleListings from './HrRoleListings';
 import userEvent from '@testing-library/user-event';
 
-describe('Role List component tests', () => {
+describe('Hr Role Listings component tests', () => {
     beforeAll(() => {
         mockMatchMedia();
     });
@@ -137,7 +137,7 @@ describe('Role List component tests', () => {
     });
 
     it ("Engineer Manager should display closed status", () => {
-        screen.debug(undefined, Infinity);
+        // screen.debug(undefined, Infinity);
         const statusElement = screen.getAllByTestId('status')[3];
         const itTechnicianElement = screen.getByText("IT Technician");
         const financeStaffElement = screen.getByText("Finance Staff");

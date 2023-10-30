@@ -112,7 +112,7 @@ const HrRoleListings = ({
                                                 <Space size={3} wrap>
                                                     <Tag color={item.rl_status === "Open" ? "green" : "red"} data-testid="status">{item.rl_status}</Tag>
                                                     { item.role_status !== "active" ?
-                                                        <Tag data-testid="status">Inactive</Tag> :
+                                                        <Tag>Inactive</Tag> :
                                                         <></>
                                                     }
                                                 </Space>

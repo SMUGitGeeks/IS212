@@ -23,8 +23,8 @@ describe('RolePage component tests', () => {
     })
     it('Should see All Skills', () => {
         const allSkillsElement = screen.getByText("All Skills Required");
-        const communicationSkillElement = screen.getByText("Communication");
-        const teamworkSkillElement = screen.getByText("HR management");
+        const communicationSkillElement = screen.getAllByText("Communication")[0];
+        const teamworkSkillElement = screen.getAllByText("HR management")[0];
         expect(allSkillsElement).toBeInTheDocument();
         expect(communicationSkillElement).toBeInTheDocument();
         expect(teamworkSkillElement).toBeInTheDocument();
