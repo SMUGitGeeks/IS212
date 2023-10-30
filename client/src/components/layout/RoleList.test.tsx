@@ -42,9 +42,14 @@ describe('Role List component tests', () => {
         });
     });
 
-    it("should only display 3 open and active listings", () => {
-        render(<Provider store={store}><BrowserRouter><RoleList/></BrowserRouter></Provider>);
-        const itemElements = screen.getAllByRole("listitem");
-        expect(itemElements.length).toBe(3);
+    it("should only display 3 open and active listings", async () => {
+        jest.advanceTimersByTime(3000);
+
+        await waitFor(() => {
+            screen.debug(undefined, Infinity);
+            render(<Provider store={store}><BrowserRouter><RoleList/></BrowserRouter></Provider>);
+            const itemElements = screen.getAllByTestId("role-listing");
+            expect(itemElements.length).toBe(3);
+        });
     });
 })

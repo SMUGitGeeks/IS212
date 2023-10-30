@@ -53,6 +53,7 @@ const RoleList = ({
                                 </Space>
                             </>
                         }
+                        data-testid="role-listing"
                     >
                         <List.Item.Meta
                             title={item.role_name}
