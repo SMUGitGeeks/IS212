@@ -27,10 +27,6 @@ const Sidebar = ({logout, auth: {isHR}}: any) => {
 
     if (isHR) {
         items.push({
-            label: (<Link to={"/hr"}>{"HR"}</Link>),
-            key: '/hr',
-        });
-        items.push({
             label: (<Link to={"/listingManage"}>{"Role Listing Management"}</Link>),
             key: 'listingManage',
             icon: <AuditOutlined/>,
