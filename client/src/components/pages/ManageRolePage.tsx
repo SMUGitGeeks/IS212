@@ -70,7 +70,7 @@ const ManageRolePage = ({
                                     <Col xs={24} sm={24} md={24} lg={0} style={{paddingTop: "10%"}}><Divider/></Col>
                                     <Col xs={24} sm={24} md={24} lg={8} xl={6} xxl={5}>
                                         {/* <Space direction="vertical" style={{width: "100%"}}> */}
-                                            <Link to={"/role/" + roleListing.rl_id + "/applicants"}>View Applicants</Link>
+                                            <Link to={"/roleListing/" + roleListing.rl_id + "/applicants"}>View Applicants</Link>
                                         {/* </Space> */}
                                     </Col>
                                 </Row>

@@ -62,7 +62,7 @@ const App = ({getStaffSkillsByStaffId, getApplicationsByStaffId, auth: {user, is
                                         <Route path="/roleListing/:rl_id" element={<RolePage/>}/>
                                         <Route path="/profile" element={<Profile/>}/>
                                         <Route path="/hr" element={<HR/>}/>
-                                        <Route path="/role/:roleListingId/applicants" element={<RoleApplicants/>}/>
+                                        <Route path="/roleListing/:roleListingId/applicants" element={<RoleApplicants/>}/>
                                         <Route path="/staff/:staffId" element={<StaffDetail/>}/>
                                         <Route path="/listingManage" element={<RoleListingManager/>}/>
                                         <Route path="/listingManage/update/:rl_id" element={<UpdateRoleListing/>}/>
@@ -76,7 +76,7 @@ const App = ({getStaffSkillsByStaffId, getApplicationsByStaffId, auth: {user, is
                                         <Route path="/roleListing/:rl_id" element={<RolePage/>}/>
                                         <Route path="/profile" element={<Profile/>}/>
                                         <Route path="/hr" element={<Restricted/>}/>
-                                        <Route path="/role/:roleListingId/applicants" element={<Restricted/>}/>
+                                        <Route path="/roleListing/:roleListingId/applicants" element={<Restricted/>}/>
                                         <Route path="/staff/:staffId" element={<Restricted/>}/>
                                         <Route path="/listingManage" element={<Restricted/>}/>
                                         <Route path="/listingManage/update/:rl_id" element={<Restricted/>}/>
