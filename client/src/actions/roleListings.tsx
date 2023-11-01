@@ -92,7 +92,6 @@ export const getRoleListings = (id: number) => async (dispatch: (action: ActionT
         
 
         for (let i = 0; i < res.data.length; i++) {
-           
             if (date > new Date(res.data[i]["rl_close"])) {
                 res.data[i].rl_status = "Closed";
             } else {
@@ -126,7 +125,7 @@ export const getRoleListings = (id: number) => async (dispatch: (action: ActionT
     } catch (err: any) {
         dispatch({
             type: ROLE_LISTINGS_ERROR,
-            payload: {msg: err.response?.statusText, status: err.response?.status}
+            payload: {action: "getRoleListings", msg: err.response?.statusText, status: err.response?.status, data: err.response?.data}
         });
     }
 }
@@ -137,42 +136,52 @@ export const getRoleListing = (id: number) => async (dispatch: (action: ActionTy
         const res2 = await axios.get('/api/role/details');
         // get updater name and update time
         const res3 = await axios.get('/api/staff/details');
-        const res4 = await axios.get(`/api/role_listing/updater/${id}`);
 
-        for (let i = 0; i < res.data.length; i++) {
-            for (let j = 0; j < res2.data.length; j++) {
-                if (res.data[i]["role_id"] === res2.data[j]["role_id"]) {
-                    if (res2.data[j]["role_status"] === "active") {
-                        res.data[i].role_name = res2.data[j].role_name;
-                        res.data[i].role_description = res2.data[j].role_description;
-                        res.data[i].role_status = res2.data[j].role_status;
-                    }
-                }
+        let output = null;
+
+        for (let j = 0; j < res2.data.length; j++) {
+            if (res.data[0]["role_id"] === res2.data[j]["role_id"]) {
+                res.data[0].role_name = res2.data[j].role_name;
+                res.data[0].role_description = res2.data[j].role_description;
+                res.data[0].role_status = res2.data[j].role_status;
+                output = res.data[0];
             }
         }
-        for (let j = 0; j < res4.data.length; j++) {
-            for (let i = 0; i < res.data.length; i++) {
-                if (res4.data[j]["rl_id"] === res.data[i]["rl_id"]) {
-                    // will keeo overridding the previous updater name and time until the last one
-                    res.data[i].rl_updater_id = res4.data[j]["rl_updater"];
-                    res.data[i].update_time = res4.data[j]["rl_ts_update"];
-                    for (let k = 0; k < res3.data.length; k++) {
-                        if (res.data[i].rl_updater_id === res3.data[k]["staff_id"]) {
-                            res.data[i].rl_updater = res3.data[k]["fname"] + " " + res3.data[k]["lname"];
+
+        const res4 = await axios.get(`/api/role_listing/updater/${id}`)
+            .then((res) => {
+                for (let j = 0; j < res.data.length; j++) {
+                    for (let i = 0; i < res.data.length; i++) {
+                        if (res.data[j]["rl_id"] === res.data[i]["rl_id"]) {
+                            // will keeo overridding the previous updater name and time until the last one
+                            res.data[i].rl_updater_id = res.data[j]["rl_updater"];
+                            res.data[i].update_time = res.data[j]["rl_ts_update"];
+                            for (let k = 0; k < res3.data.length; k++) {
+                                if (res.data[i].rl_updater_id === res3.data[k]["staff_id"]) {
+                                    res.data[i].rl_updater = res3.data[k]["fname"] + " " + res3.data[k]["lname"];
+                                }
+                            }
                         }
                     }
                 }
-            }
-        }
+            })
+            .catch((err) => {
+                if (err.response?.status === 404) {
+                res.data.rl_updater = undefined;
+                res.data.update_time = undefined; 
+                } else {
+                    throw err;
+                }
+            });
 
         dispatch({
             type: GET_ROLE_LISTING,
-            payload: res.data[0]
+            payload: output
         });
     } catch (err: any) {
         dispatch({
             type: ROLE_LISTINGS_ERROR,
-            payload: {msg: err.response?.statusText, status: err.response?.status}
+            payload: {action: "getRoleListing", msg: err.response?.statusText, status: err.response?.status}
         });
     }
 }

@@ -5,7 +5,7 @@ import {mockMatchMedia} from "../../setupTests";
 import {BrowserRouter} from 'react-router-dom'
 import RoleListingManager from './RoleListingManager';
 
-describe('Role List component tests', () => {
+describe('Role List Manager component tests', () => {
     beforeAll(() => {
         mockMatchMedia();
     });

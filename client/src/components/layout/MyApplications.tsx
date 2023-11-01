@@ -33,11 +33,17 @@ const MyApplications = ({getApplicationsByStaffId, application: {applications, l
         if (user) {
             getApplicationsByStaffId(user);
         }
-    }, [getApplicationsByStaffId, user, applications]);
+    }, [getApplicationsByStaffId]);
 
     // Withdraw Modal ---------
     const { confirm } = Modal;
     const dispatch = useDispatch();
+
+    const [dataloaded, setDataLoaded] = useState(false);
+
+    setTimeout(() => {
+        setDataLoaded(true);
+    }, applications.length !== 0 ? 500: 3000);
 
     const showPromiseConfirm = (id:any) => {
         confirm({
@@ -68,7 +74,7 @@ const MyApplications = ({getApplicationsByStaffId, application: {applications, l
             title: 'Role Name',
             dataIndex: 'role_name',
             render: (role_name: any) =>
-                <Skeleton active style={{width: "100%"}} paragraph={{width: "100%", rows: 1}} title={false} loading={loading}> 
+                <Skeleton active style={{width: "100%"}} paragraph={{width: "100%", rows: 1}} title={false} loading={!dataloaded}> 
                     {role_name}
                 </Skeleton>
             ,
@@ -81,7 +87,7 @@ const MyApplications = ({getApplicationsByStaffId, application: {applications, l
             title: 'Date Applied',
             dataIndex: 'app_ts',
             render: (date: any) =>
-                <Skeleton active style={{width: "100%"}} paragraph={{width: "100%", rows: 1}} title={false} loading={loading}> 
+                <Skeleton active style={{width: "100%"}} paragraph={{width: "100%", rows: 1}} title={false} loading={!dataloaded}> 
                     {new Date(date).toLocaleDateString()}
                 </Skeleton>
             ,
@@ -99,7 +105,7 @@ const MyApplications = ({getApplicationsByStaffId, application: {applications, l
             ],
             dataIndex: 'role_app_status',
             render: (record: any) =>
-                <Skeleton active style={{width: "100%"}} paragraph={{width: "100%", rows: 1}} title={false} loading={loading}> 
+                <Skeleton active style={{width: "100%"}} paragraph={{width: "100%", rows: 1}} title={false} loading={!dataloaded}> 
                     <Tag color={record === "applied" ? 'green' : "red"}>
                         {record === "applied" ? 'Applied' : "Withdrawn"}
                     </Tag>
@@ -112,7 +118,7 @@ const MyApplications = ({getApplicationsByStaffId, application: {applications, l
             title: 'Actions',
             // dataIndex: 'rl_id',
             render: (record: any) => 
-                <Skeleton active style={{width: "100%"}} paragraph={{width: "100%", rows: 1}} title={false} loading={loading}> 
+                <Skeleton active style={{width: "100%"}} paragraph={{width: "100%", rows: 1}} title={false} loading={!dataloaded}> 
                     <Space size={10}>
                         {
                             record.role_app_status === "applied" ? 
@@ -144,7 +150,7 @@ const MyApplications = ({getApplicationsByStaffId, application: {applications, l
             <Table 
                 columns={columns} 
                 dataSource={
-                    loading ?
+                    !dataloaded ?
                         Array.from({length: 3}).map((_, i) => {
                             return {
                                 key: i,
