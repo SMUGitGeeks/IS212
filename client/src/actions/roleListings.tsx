@@ -25,56 +25,37 @@ import {
 // res4: get skill_id and ss_status from staff_id
 // res6: check skill status from skill_id
 
-export const calcSkillMatch = (rl_details: any, role_details: any, role_skills: any, staff_skills: any, skill_details: any, updater_details: any) => {
-    // get skill match percentage for each role listing
-    console.log(rl_details)
-
-    for (let i = 0; i < rl_details.length; i++) {
-        let skillMatch = 0;
-        let skillCount = 0;
-        for (let j = 0; j < role_skills.length; j++) {
-            // get role id
-            if (rl_details[i]["role_id"] === role_skills[j]["role_id"]) {
-                // check role skill status
-                for (let k = 0; k < skill_details.length; k++) {
-                    if (role_skills[j]["skill_id"] === skill_details[k]["skill_id"]) {
-                        if (skill_details[k]["skill_status"] === "active") {
-                            skillCount++;
-                            for (let l = 0; l < staff_skills.length; l++) {
-                                if (role_skills[j]["skill_id"] === staff_skills[l]["skill_id"]) {
-                                    // check staff skill status
-                                    if (staff_skills[l]["ss_status"] === "active") {
-                                        skillMatch++;
-                                    }
+export const calcSkillMatch = (rl_details: any, role_skills: any, staff_skills: any, skill_details: any) => {
+    // input is 1 rl's detail, all role skills, 1 staff's skills, all skill details
+    let final = 0;
+    let skillMatch = 0;
+    let skillCount = 0;
+    for (let i = 0; i < role_skills.length; i++) {
+        // get role skills
+        if (rl_details.role_id === role_skills[i]["role_id"]) {
+            // check role skill status
+            for (let j = 0; j < skill_details.length; j++) {
+                if (role_skills[i]["skill_id"] === skill_details[j]["skill_id"]) {
+                    if (skill_details[j]["skill_status"] === "active") {
+                        skillCount++;
+                        // iterate through 1 staff's skills
+                        for (let k = 0; k < staff_skills.length; k++) {
+                            if (role_skills[i]["skill_id"] === staff_skills[k]["skill_id"]) {
+                                // check staff skill status
+                                if (staff_skills[k]["ss_status"] === "active") {
+                                    skillMatch++;
                                 }
                             }
-
                         }
+
                     }
                 }
             }
         }
-        rl_details[i].skill_match = Math.round(skillMatch / skillCount * 100);
-
-        for (let j = 0; j < role_details.length; j++) {
-            if (rl_details[i]["role_id"] === role_details[j]["role_id"]) {
-                rl_details[i].role_name = role_details[j].role_name;
-                rl_details[i].role_description = role_details[j].role_description;
-                rl_details[i].role_status = role_details[j].role_status;
-            }
-        }
-
-        for (let j = 0; j < updater_details.length; j++) {
-            for (let i = 0; i < rl_details.length; i++) {
-                if (updater_details[j]["rl_id"] === rl_details[i]["rl_id"]) {
-                    // will keeo overridding the previous updater name and time until the last one
-                    rl_details[i].rl_updater_id = updater_details[j]["rl_updater"];
-                    rl_details[i].update_time = updater_details[j]["rl_ts_update"];
-                }
-            }
-        }
     }
-    return rl_details;
+    // round to nearest whole numnber
+    final = Math.round((skillMatch / skillCount) * 100);
+    return final;
 }
 
 
@@ -90,22 +71,43 @@ export const getRoleListings = (id: number) => async (dispatch: (action: ActionT
 
         const date = new Date();
         
-
+        // add role list start and end date to res.data
         for (let i = 0; i < res.data.length; i++) {
             if (date > new Date(res.data[i]["rl_close"])) {
                 res.data[i].rl_status = "Closed";
             } else {
                 res.data[i].rl_status = "Open";
             }
+            // add role name, description, and role status to res.data
+            for (let j = 0; j < res2.data.length; j++) {
+                if (res.data[i]["role_id"] === res2.data[j]["role_id"]) {
+                    res.data[i].role_name = res2.data[j].role_name;
+                    res.data[i].role_description = res2.data[j].role_description;
+                    res.data[i].role_status = res2.data[j].role_status;
+                }
+            }
+        }
+        // add updater id, and update time to res.data
+        for (let j = 0; j < updaterRes.data.length; j++) {
+            for (let i = 0; i < res.data.length; i++) {
+                if (updaterRes.data[j]["rl_id"] === res.data[i]["rl_id"]) {
+                    // will keep overridding the previous updater name and time until the last one
+                    res.data[i].rl_updater_id = updaterRes.data[j]["rl_updater"];
+                    res.data[i].update_time = updaterRes.data[j]["rl_ts_update"];
+                }
+            }
         }
 
-        const rl_details = res.data;
-        const role_details = res2.data;
+        // const rl_details = res.data;
         const role_skills = res3.data;
         const staff_skills = res4.data;
         const skill_details = res6.data;
-        const updater_details = updaterRes.data;
-        res.data = calcSkillMatch(rl_details, role_details, role_skills, staff_skills, skill_details, updater_details);
+
+        // add skillmatch to res.data
+        for (let i = 0; i < res.data.length; i++) {
+            res.data[i].skill_match = calcSkillMatch(res.data[i], role_skills, staff_skills, skill_details);
+        }
+
 
         // application count
         for (let i = 0; i < res.data.length; i++) {
@@ -129,6 +131,7 @@ export const getRoleListings = (id: number) => async (dispatch: (action: ActionT
         });
     }
 }
+    
 
 export const getRoleListing = (id: number) => async (dispatch: (action: ActionType) => void) => {
     try {
