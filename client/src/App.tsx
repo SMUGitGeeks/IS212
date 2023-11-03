@@ -15,7 +15,6 @@ import {getStaffSkillsByStaffId} from "./actions/staffSkills";
 import {getApplicationsByStaffId} from "./actions/applications";
 import Profile from './components/pages/Profile';
 import Restricted from "./components/pages/Restricted";
-import HR from "./components/pages/HR";
 import RoleApplicants from './components/pages/RoleApplicants';
 import StaffDetail from './components/pages/StaffDetail';
 import RoleListingManager from './components/pages/RoleListingManager';
@@ -61,8 +60,7 @@ const App = ({getStaffSkillsByStaffId, getApplicationsByStaffId, auth: {user, is
                                         <Route path="/roleListing" element={<RoleListing/>}/>
                                         <Route path="/roleListing/:rl_id" element={<RolePage/>}/>
                                         <Route path="/profile" element={<Profile/>}/>
-                                        <Route path="/hr" element={<HR/>}/>
-                                        <Route path="/role/:roleListingId/applicants" element={<RoleApplicants/>}/>
+                                        <Route path="/roleListing/:roleListingId/applicants" element={<RoleApplicants/>}/>
                                         <Route path="/staff/:staffId" element={<StaffDetail/>}/>
                                         <Route path="/listingManage" element={<RoleListingManager/>}/>
                                         <Route path="/listingManage/update/:rl_id" element={<UpdateRoleListing/>}/>
@@ -75,8 +73,7 @@ const App = ({getStaffSkillsByStaffId, getApplicationsByStaffId, auth: {user, is
                                         <Route path="/roleListing" element={<RoleListing/>}/>
                                         <Route path="/roleListing/:rl_id" element={<RolePage/>}/>
                                         <Route path="/profile" element={<Profile/>}/>
-                                        <Route path="/hr" element={<Restricted/>}/>
-                                        <Route path="/role/:roleListingId/applicants" element={<Restricted/>}/>
+                                        <Route path="/roleListing/:roleListingId/applicants" element={<Restricted/>}/>
                                         <Route path="/staff/:staffId" element={<Restricted/>}/>
                                         <Route path="/listingManage" element={<Restricted/>}/>
                                         <Route path="/listingManage/update/:rl_id" element={<Restricted/>}/>
