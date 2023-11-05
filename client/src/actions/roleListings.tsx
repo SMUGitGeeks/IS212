@@ -19,11 +19,11 @@ import {
     UpdateRoleListingLoadType,
 } from "../types";
 
-// res: role listing info, get role_id
-// res2: role details from rold_id
-// res3: get skill_id from role_id
-// res4: get skill_id and ss_status from staff_id
-// res6: check skill status from skill_id
+// list_of_all_role_listing_details: role listing info, get role_id
+// list_of_all_role_details: role details from rold_id
+// list_of_skills_of_roles: get skill_id from role_id
+// list_of_skills_by_staff_id: get skill_id and ss_status from staff_id
+// list_of_skills_details: check skill status from skill_id
 
 export const calcSkillMatch = (rl_details: any, role_skills: any, staff_skills: any, skill_details: any) => {
     // input is 1 rl's detail, all role skills, 1 staff's skills, all skill details
@@ -61,67 +61,67 @@ export const calcSkillMatch = (rl_details: any, role_skills: any, staff_skills: 
 
 export const getRoleListings = (id: number) => async (dispatch: (action: ActionType) => void) => {
     try {
-        let res = await axios.get('/api/role_listing/details')             // role listing info, get role_id
-        const res2 = await axios.get('/api/role/details');                   // role details from rold_id
-        const res3 = await axios.get('/api/role/skills');                    // get skill_id from role_id
-        const res4 = await axios.get('/api/staff/skills/' + id);             // get skill_id and ss_status from staff_id
-        const res5 = await axios.get('/api/role_listing/applications');
-        const res6 = await axios.get('/api/skill/details');                  // check skill status from skill_id
-        const updaterRes = await axios.get('/api/role_listing/updater');           // get updater name and update time
+        let list_of_all_role_listing_details = await axios.get('/api/role_listing/details')             // role listing info, get role_id
+        const list_of_all_role_details = await axios.get('/api/role/details');                   // role details from rold_id
+        const list_of_skills_of_roles = await axios.get('/api/role/skills');                    // get skill_id from role_id
+        const list_of_skills_by_staff_id = await axios.get('/api/staff/skills/' + id);             // get skill_id and ss_status from staff_id
+        const list_of_applications_details = await axios.get('/api/role_listing/applications');
+        const list_of_skills_details = await axios.get('/api/skill/details');                  // check skill status from skill_id
+        const list_of_all_role_listing_updaters = await axios.get('/api/role_listing/updater');           // get updater name and update time
 
         const date = new Date();
         
-        // add role list start and end date to res.data
-        for (let i = 0; i < res.data.length; i++) {
-            if (date > new Date(res.data[i]["rl_close"])) {
-                res.data[i].rl_status = "Closed";
+        // add role list start and end date to list_of_all_role_listing_details.data
+        for (let i = 0; i < list_of_all_role_listing_details.data.length; i++) {
+            if (date > new Date(list_of_all_role_listing_details.data[i]["rl_close"])) {
+                list_of_all_role_listing_details.data[i].rl_status = "Closed";
             } else {
-                res.data[i].rl_status = "Open";
+                list_of_all_role_listing_details.data[i].rl_status = "Open";
             }
-            // add role name, description, and role status to res.data
-            for (let j = 0; j < res2.data.length; j++) {
-                if (res.data[i]["role_id"] === res2.data[j]["role_id"]) {
-                    res.data[i].role_name = res2.data[j].role_name;
-                    res.data[i].role_description = res2.data[j].role_description;
-                    res.data[i].role_status = res2.data[j].role_status;
+            // add role name, description, and role status to list_of_all_role_listing_details.data
+            for (let j = 0; j < list_of_all_role_details.data.length; j++) {
+                if (list_of_all_role_listing_details.data[i]["role_id"] === list_of_all_role_details.data[j]["role_id"]) {
+                    list_of_all_role_listing_details.data[i].role_name = list_of_all_role_details.data[j].role_name;
+                    list_of_all_role_listing_details.data[i].role_description = list_of_all_role_details.data[j].role_description;
+                    list_of_all_role_listing_details.data[i].role_status = list_of_all_role_details.data[j].role_status;
                 }
             }
         }
-        // add updater id, and update time to res.data
-        for (let j = 0; j < updaterRes.data.length; j++) {
-            for (let i = 0; i < res.data.length; i++) {
-                if (updaterRes.data[j]["rl_id"] === res.data[i]["rl_id"]) {
+        // add updater id, and update time to list_of_all_role_listing_details.data
+        for (let j = 0; j < list_of_all_role_listing_updaters.data.length; j++) {
+            for (let i = 0; i < list_of_all_role_listing_details.data.length; i++) {
+                if (list_of_all_role_listing_updaters.data[j]["rl_id"] === list_of_all_role_listing_details.data[i]["rl_id"]) {
                     // will keep overridding the previous updater name and time until the last one
-                    res.data[i].rl_updater_id = updaterRes.data[j]["rl_updater"];
-                    res.data[i].update_time = updaterRes.data[j]["rl_ts_update"];
+                    list_of_all_role_listing_details.data[i].rl_updater_id = list_of_all_role_listing_updaters.data[j]["rl_updater"];
+                    list_of_all_role_listing_details.data[i].update_time = list_of_all_role_listing_updaters.data[j]["rl_ts_update"];
                 }
             }
         }
 
-        // const rl_details = res.data;
-        const role_skills = res3.data;
-        const staff_skills = res4.data;
-        const skill_details = res6.data;
+        // const rl_details = list_of_all_role_listing_details.data;
+        const role_skills = list_of_skills_of_roles.data;
+        const staff_skills = list_of_skills_by_staff_id.data;
+        const skill_details = list_of_skills_details.data;
 
-        // add skillmatch to res.data
-        for (let i = 0; i < res.data.length; i++) {
-            res.data[i].skill_match = calcSkillMatch(res.data[i], role_skills, staff_skills, skill_details);
+        // add skillmatch to list_of_all_role_listing_details.data
+        for (let i = 0; i < list_of_all_role_listing_details.data.length; i++) {
+            list_of_all_role_listing_details.data[i].skill_match = calcSkillMatch(list_of_all_role_listing_details.data[i], role_skills, staff_skills, skill_details);
         }
 
 
         // application count
-        for (let i = 0; i < res.data.length; i++) {
+        for (let i = 0; i < list_of_all_role_listing_details.data.length; i++) {
             let applicationCount = 0;
-            for (let j = 0; j < res5.data.length; j++) {
-                if (res.data[i]["rl_id"] === res5.data[j]["rl_id"]) {
+            for (let j = 0; j < list_of_applications_details.data.length; j++) {
+                if (list_of_all_role_listing_details.data[i]["rl_id"] === list_of_applications_details.data[j]["rl_id"]) {
                     applicationCount++;
                 }
             }
-            res.data[i].application_count = applicationCount;
+            list_of_all_role_listing_details.data[i].application_count = applicationCount;
         }
         dispatch({
             type: GET_ROLE_LISTINGS,
-            payload: res.data
+            payload: list_of_all_role_listing_details.data
         });
 
     } catch (err: any) {
@@ -135,33 +135,33 @@ export const getRoleListings = (id: number) => async (dispatch: (action: ActionT
 
 export const getRoleListing = (id: number) => async (dispatch: (action: ActionType) => void) => {
     try {
-        const res = await axios.get(`/api/role_listing/details/${id}`);
-        const res2 = await axios.get('/api/role/details');
+        const list_of_role_listing_details_by_id = await axios.get(`/api/role_listing/details/${id}`);
+        const list_of_all_role_details = await axios.get('/api/role/details');
         // get updater name and update time
-        const res3 = await axios.get('/api/staff/details');
+        const list_of_staffs_details = await axios.get('/api/staff/details');
 
         let output = null;
 
-        for (let j = 0; j < res2.data.length; j++) {
-            if (res.data[0]["role_id"] === res2.data[j]["role_id"]) {
-                res.data[0].role_name = res2.data[j].role_name;
-                res.data[0].role_description = res2.data[j].role_description;
-                res.data[0].role_status = res2.data[j].role_status;
-                output = res.data[0];
+        for (let j = 0; j < list_of_all_role_details.data.length; j++) {
+            if (list_of_role_listing_details_by_id.data[0]["role_id"] === list_of_all_role_details.data[j]["role_id"]) {
+                list_of_role_listing_details_by_id.data[0].role_name = list_of_all_role_details.data[j].role_name;
+                list_of_role_listing_details_by_id.data[0].role_description = list_of_all_role_details.data[j].role_description;
+                list_of_role_listing_details_by_id.data[0].role_status = list_of_all_role_details.data[j].role_status;
+                output = list_of_role_listing_details_by_id.data[0];
             }
         }
 
-        const res4 = await axios.get(`/api/role_listing/updater/${id}`)
-            .then((res) => {
-                for (let j = 0; j < res.data.length; j++) {
-                    for (let i = 0; i < res.data.length; i++) {
-                        if (res.data[j]["rl_id"] === res.data[i]["rl_id"]) {
-                            // will keeo overridding the previous updater name and time until the last one
-                            res.data[i].rl_updater_id = res.data[j]["rl_updater"];
-                            res.data[i].update_time = res.data[j]["rl_ts_update"];
-                            for (let k = 0; k < res3.data.length; k++) {
-                                if (res.data[i].rl_updater_id === res3.data[k]["staff_id"]) {
-                                    res.data[i].rl_updater = res3.data[k]["fname"] + " " + res3.data[k]["lname"];
+        const role_listing_updater_by_id = await axios.get(`/api/role_listing/updater/${id}`)
+            .then((list_of_role_listing_details_by_id) => {
+                for (let j = 0; j < list_of_role_listing_details_by_id.data.length; j++) {
+                    for (let i = 0; i < list_of_role_listing_details_by_id.data.length; i++) {
+                        if (list_of_role_listing_details_by_id.data[j]["rl_id"] === list_of_role_listing_details_by_id.data[i]["rl_id"]) {
+                            // will keep overridding the previous updater name and time until the last one
+                            list_of_role_listing_details_by_id.data[i].rl_updater_id = list_of_role_listing_details_by_id.data[j]["rl_updater"];
+                            list_of_role_listing_details_by_id.data[i].update_time = list_of_role_listing_details_by_id.data[j]["rl_ts_update"];
+                            for (let k = 0; k < list_of_staffs_details.data.length; k++) {
+                                if (list_of_role_listing_details_by_id.data[i].rl_updater_id === list_of_staffs_details.data[k]["staff_id"]) {
+                                    list_of_role_listing_details_by_id.data[i].rl_updater = list_of_staffs_details.data[k]["fname"] + " " + list_of_staffs_details.data[k]["lname"];
                                 }
                             }
                         }
@@ -170,8 +170,8 @@ export const getRoleListing = (id: number) => async (dispatch: (action: ActionTy
             })
             .catch((err) => {
                 if (err.response?.status === 404) {
-                res.data.rl_updater = undefined;
-                res.data.update_time = undefined; 
+                    list_of_role_listing_details_by_id.data.rl_updater = undefined;
+                    list_of_role_listing_details_by_id.data.update_time = undefined; 
                 } else {
                     throw err;
                 }
@@ -234,7 +234,7 @@ export const sortRoleListingsBySkillMatch = (payload: SortPayloadType) => async 
 
 export const updateRoleListing = (id: number, payload: UpdateRoleListingLoadType) => async (dispatch: (action: ActionType) => void) => {
     try {
-        const res = await axios.put('/api/role_listing/' + id, payload)
+        const role_listing_update_by_id = await axios.put('/api/role_listing/' + id, payload)
     } catch (err: any) {
         dispatch({
             type: ROLE_LISTINGS_ERROR,
@@ -249,7 +249,7 @@ export const postRoleListing = (payload: PostRoleListingPayloadType) => async (d
         console.log("postRL got clicked");
         const {rl_id, role_id, rl_desc, rl_source, rl_open, rl_close, rl_creator, location, department} = payload;
         console.log(payload);
-        const res = await axios.post('/api/role_listing/', payload);
+        const list_of_all_role_listing_details = await axios.post('/api/role_listing/', payload);
         // dispatch({
         //     type: POST_ROLE_LISTING,
         //     payload: res.data

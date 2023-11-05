@@ -4,19 +4,19 @@ import {ActionType, GetStaffSkillsByStaffIdPayloadType} from "../types";
 
 export const getStaffSkillsByStaffId = (payload: GetStaffSkillsByStaffIdPayloadType) => async (dispatch: (action: ActionType) => void) => {
     try {
-        const res = await axios.get('/api/staff/skills/' + payload)
-        const res2 = await axios.get('/api/skill/details');
-        for (let i = 0; i < res.data.length; i++) {
-            for (let j = 0; j < res2.data.length; j++) {
-                if (res.data[i]["skill_id"] === res2.data[j]["skill_id"]) {
-                    res.data[i].skill_name = res2.data[j].skill_name;
-                    res.data[i].skill_status = res2.data[j].skill_status;
+        const list_of_skills_by_staff_id = await axios.get('/api/staff/skills/' + payload)
+        const list_of_skills_details = await axios.get('/api/skill/details');
+        for (let i = 0; i < list_of_skills_by_staff_id.data.length; i++) {
+            for (let j = 0; j < list_of_skills_details.data.length; j++) {
+                if (list_of_skills_by_staff_id.data[i]["skill_id"] === list_of_skills_details.data[j]["skill_id"]) {
+                    list_of_skills_by_staff_id.data[i].skill_name = list_of_skills_details.data[j].skill_name;
+                    list_of_skills_by_staff_id.data[i].skill_status = list_of_skills_details.data[j].skill_status;
                 }
             }
         }
         dispatch({
             type: GET_STAFF_SKILLS_BY_STAFF_ID,
-            payload: res.data
+            payload: list_of_skills_by_staff_id.data
         });
     } catch (err: any) {
         dispatch({

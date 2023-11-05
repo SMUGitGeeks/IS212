@@ -15,16 +15,16 @@ import {ActionType, SortPayloadType} from "../types";
 
 export const getStaffListings = () => async (dispatch: (action: ActionType) => void) => {
     try {
-        const res = await axios.get('/api/staff/details')
-        const res2 = await axios.get('/api/staff/skills')
-        const res3 = await axios.get('/api/skill/details');
-        for (let i = 0; i < res.data.length; i++) {
-            res.data[i].skills = [];
-            for (let j = 0; j < res2.data.length; j++) {
-                if (res.data[i]["staff_id"] === res2.data[j]["staff_id"]) {
-                    for (let k = 0; k < res3.data.length; k++) {
-                        if (res2.data[j]["skill_id"] === res3.data[k]["skill_id"]) {
-                            res.data[i].skills.push(res3.data[k]);
+        const list_of_staffs_details = await axios.get('/api/staff/details')
+        const list_of_skills_of_staffs = await axios.get('/api/staff/skills')
+        const list_of_skills_details = await axios.get('/api/skill/details');
+        for (let i = 0; i < list_of_staffs_details.data.length; i++) {
+            list_of_staffs_details.data[i].skills = [];
+            for (let j = 0; j < list_of_skills_of_staffs.data.length; j++) {
+                if (list_of_staffs_details.data[i]["staff_id"] === list_of_skills_of_staffs.data[j]["staff_id"]) {
+                    for (let k = 0; k < list_of_skills_details.data.length; k++) {
+                        if (list_of_skills_of_staffs.data[j]["skill_id"] === list_of_skills_details.data[k]["skill_id"]) {
+                            list_of_staffs_details.data[i].skills.push(list_of_skills_details.data[k]);
                         }
                     }
                 }
@@ -32,7 +32,7 @@ export const getStaffListings = () => async (dispatch: (action: ActionType) => v
         }
         dispatch({
             type: GET_STAFF_LISTINGS,
-            payload: res.data
+            payload: list_of_staffs_details.data
         });
     } catch (err: any) {
         dispatch({
@@ -45,10 +45,10 @@ export const getStaffListings = () => async (dispatch: (action: ActionType) => v
 
 export const getStaffListing = (id: number) => async (dispatch: (action: ActionType) => void) => {
     try {
-        const res = await axios.get(`/api/staff/details/${id}`);
+        const list_of_staff_details_by_staff_id = await axios.get(`/api/staff/details/${id}`);
         dispatch({
             type: GET_STAFF_LISTING,
-            payload: res.data[0]
+            payload: list_of_staff_details_by_staff_id.data[0]
         });
     } catch (err: any) {
         dispatch({
@@ -88,49 +88,49 @@ export const filterStaffListingsBySkillId = (payload: any) => async (dispatch: (
 
 export const getStaffListingsByRLId = (payload: any) => async (dispatch: (action: ActionType) => void) => {
     try {
-        const res = await axios.get('/api/role_listing/details')
-        const res2 = await axios.get('/api/staff/details');
-        const res3 = await axios.get('/api/role/skills');
-        const res4 = await axios.get('/api/staff/skills');
-        const res5 = await axios.get('/api/role_listing/applications/' + payload)
-        if (res5.data.length === 0) {
+        const list_of_all_role_listing_details = await axios.get('/api/role_listing/details')
+        const list_of_staffs_details = await axios.get('/api/staff/details');
+        const list_of_skills_of_roles = await axios.get('/api/role/skills');
+        const list_of_skills_of_staffs = await axios.get('/api/staff/skills');
+        const list_of_applications_by_role_listing_id = await axios.get('/api/role_listing/applications/' + payload)
+        if (list_of_applications_by_role_listing_id.data.length === 0) {
         }
-        for (let i = 0; i < res5.data.length; i++) {
-            for (let j = 0; j < res.data.length; j++) {
-                if (res5.data[i]["rl_id"] === res.data[j]["rl_id"]) {
-                    res5.data[i].role_id = res.data[j].role_id;
+        for (let i = 0; i < list_of_applications_by_role_listing_id.data.length; i++) {
+            for (let j = 0; j < list_of_all_role_listing_details.data.length; j++) {
+                if (list_of_applications_by_role_listing_id.data[i]["rl_id"] === list_of_all_role_listing_details.data[j]["rl_id"]) {
+                    list_of_applications_by_role_listing_id.data[i].role_id = list_of_all_role_listing_details.data[j].role_id;
                 }
             }
-            for (let j = 0; j < res2.data.length; j++) {
-                if (res5.data[i]["staff_id"] === res2.data[j]["staff_id"]) {
-                    res5.data[i].fname = res2.data[j].fname;
-                    res5.data[i].lname = res2.data[j].lname;
-                    res5.data[i].dept = res2.data[j].dept;
-                    res5.data[i].email = res2.data[j].email;
-                    res5.data[i].phone = res2.data[j].phone;
-                    res5.data[i].biz_address = res2.data[j].biz_address;
-                    res5.data[i].sys_role = res2.data[j].sys_role;
+            for (let j = 0; j < list_of_staffs_details.data.length; j++) {
+                if (list_of_applications_by_role_listing_id.data[i]["staff_id"] === list_of_staffs_details.data[j]["staff_id"]) {
+                    list_of_applications_by_role_listing_id.data[i].fname = list_of_staffs_details.data[j].fname;
+                    list_of_applications_by_role_listing_id.data[i].lname = list_of_staffs_details.data[j].lname;
+                    list_of_applications_by_role_listing_id.data[i].dept = list_of_staffs_details.data[j].dept;
+                    list_of_applications_by_role_listing_id.data[i].email = list_of_staffs_details.data[j].email;
+                    list_of_applications_by_role_listing_id.data[i].phone = list_of_staffs_details.data[j].phone;
+                    list_of_applications_by_role_listing_id.data[i].biz_address = list_of_staffs_details.data[j].biz_address;
+                    list_of_applications_by_role_listing_id.data[i].sys_role = list_of_staffs_details.data[j].sys_role;
                 }
             }
             let skillMatch = 0;
             let skillCount = 0;
             let rl_skill_list = [];
-            for (let j = 0; j < res3.data.length; j++) {
-                if (res5.data[i]["role_id"] === res3.data[j]["role_id"]) {
+            for (let j = 0; j < list_of_skills_of_roles.data.length; j++) {
+                if (list_of_applications_by_role_listing_id.data[i]["role_id"] === list_of_skills_of_roles.data[j]["role_id"]) {
                     skillCount++;
-                    rl_skill_list.push(res3.data[j]["skill_id"]);
+                    rl_skill_list.push(list_of_skills_of_roles.data[j]["skill_id"]);
                 }
             }
-            for (let k = 0; k < res4.data.length; k++) {
-                if (rl_skill_list.includes(res4.data[k]["skill_id"]) && (res4.data[k]["staff_id"] === res5.data[i]["staff_id"]) && (res4.data[k]["ss_status"] === "active")) {
+            for (let k = 0; k < list_of_skills_of_staffs.data.length; k++) {
+                if (rl_skill_list.includes(list_of_skills_of_staffs.data[k]["skill_id"]) && (list_of_skills_of_staffs.data[k]["staff_id"] === list_of_applications_by_role_listing_id.data[i]["staff_id"]) && (list_of_skills_of_staffs.data[k]["ss_status"] === "active")) {
                     skillMatch++;
                 }
             }
-            res5.data[i].skill_match = Math.round(skillMatch / skillCount * 100);
+            list_of_applications_by_role_listing_id.data[i].skill_match = Math.round(skillMatch / skillCount * 100);
         }
         dispatch({
             type: GET_STAFF_LISTINGS_BY_RL_ID,
-            payload: res5.data
+            payload: list_of_applications_by_role_listing_id.data
         });
     } catch (err: any) {
         dispatch({
