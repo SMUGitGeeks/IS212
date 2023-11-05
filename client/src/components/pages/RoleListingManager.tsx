@@ -189,7 +189,12 @@ const RoleListingManager = ({
                                                             </span>
                                                         }
                                                     </Space>
-                                                    <br/><br/>
+                                                        <br/>
+                                                        <span>
+                                                            <strong>Applicants: </strong>
+                                                            <span> {item.application_count} </span>
+                                                        </span>
+                                                        <br/><br/>
                                                     <div>{item.rl_desc}</div>
                                                     </Link>
                                                 </List.Item>
