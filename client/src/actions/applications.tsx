@@ -22,6 +22,14 @@ export const getApplicationsByStaffId = (payload: GetApplicationsByStaffIdPayloa
             for (let j = 0; j < list_of_all_role_listing_details.data.length; j++) {
                 if (list_of_applications_by_staff_id.data[i]["rl_id"] === list_of_all_role_listing_details.data[j]["rl_id"]) {
                     list_of_applications_by_staff_id.data[i].role_name = list_of_all_role_listing_details.data[j].role_name;
+                    list_of_applications_by_staff_id.data[i].rl_status = list_of_all_role_listing_details.data[j].rl_status;
+                    const date = new Date();
+                    if (date > new Date(list_of_all_role_listing_details.data[i]["rl_close"])) {
+                        list_of_applications_by_staff_id.data[i].rl_status = "Closed";
+                    } else {
+                        list_of_applications_by_staff_id.data[i].rl_status = "Open";
+                    }
+                    // a
                 }
             }
         }
