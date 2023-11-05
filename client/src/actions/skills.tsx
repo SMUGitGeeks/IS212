@@ -4,10 +4,10 @@ import {ActionType} from "../types";
 
 export const getSkills = () => async (dispatch: (action: ActionType) => void) => {
     try {
-        const res = await axios.get('/api/skill/details')
+        const list_of_all_role_details = await axios.get('/api/skill/details')
         dispatch({
             type: GET_SKILLS,
-            payload: res.data
+            payload: list_of_all_role_details.data
         });
     } catch (err: any) {
         dispatch({

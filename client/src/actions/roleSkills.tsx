@@ -5,20 +5,20 @@ import {ActionType, GetRoleSkillsByRoleIdPayloadType} from '../types';
 
 export const getRoleSkillsByRoleId = (payload: GetRoleSkillsByRoleIdPayloadType) => async (dispatch: (action: ActionType) => void) => {
     try {
-        const res = await axios.get('/api/role_listing/details/' + payload)
-        const role_id = res.data[0]["role_id"];
-        const res2 = await axios.get('/api/role/skill/' + role_id);
-        const res3 = await axios.get('/api/skill/details');
+        const list_of_role_listing_details_by_id = await axios.get('/api/role_listing/details/' + payload)
+        const role_id = list_of_role_listing_details_by_id.data[0]["role_id"];
+        const list_of_skills_by_role_id = await axios.get('/api/role/skill/' + role_id);
+        const list_of_all_role_details = await axios.get('/api/skill/details');
 
         const output = [];
-        for (let i = 0; i < res2.data.length; i++) {
-            for (let j = 0; j < res3.data.length; j++) {
+        for (let i = 0; i < list_of_skills_by_role_id.data.length; i++) {
+            for (let j = 0; j < list_of_all_role_details.data.length; j++) {
                 // Check if skill is active
-                if (res2.data[i]["skill_id"] === res3.data[j]["skill_id"]) {
-                    if (res3.data[j].skill_status === "active"){
-                        res2.data[i].skill_name = res3.data[j].skill_name;
-                        res2.data[i].skill_status = res3.data[j].skill_status;
-                        output.push(res2.data[i]);
+                if (list_of_skills_by_role_id.data[i]["skill_id"] === list_of_all_role_details.data[j]["skill_id"]) {
+                    if (list_of_all_role_details.data[j].skill_status === "active"){
+                        list_of_skills_by_role_id.data[i].skill_name = list_of_all_role_details.data[j].skill_name;
+                        list_of_skills_by_role_id.data[i].skill_status = list_of_all_role_details.data[j].skill_status;
+                        output.push(list_of_skills_by_role_id.data[i]);
                     }
                 }
             }

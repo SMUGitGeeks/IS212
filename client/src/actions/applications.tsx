@@ -4,30 +4,30 @@ import {ActionType, GetApplicationsByStaffIdPayloadType, PostApplicationPayloadT
 
 export const getApplicationsByStaffId = (payload: GetApplicationsByStaffIdPayloadType) => async (dispatch: (action: ActionType) => void) => {
     try {
-        const res = await axios.get('/api/staff/application/' + payload)
-        if (res.data.length === 0) {
+        const list_of_applications_by_staff_id = await axios.get('/api/staff/application/' + payload)
+        if (list_of_applications_by_staff_id.data.length === 0) {
         }
-        for (let i = 0; i < res.data.length; i++) {
-            const res2 = await axios.get('/api/role_listing/details')
-            const res3 = await axios.get('/api/role/details');
-            for (let i = 0; i < res2.data.length; i++) {
-                for (let j = 0; j < res3.data.length; j++) {
-                    if (res2.data[i]["role_id"] === res3.data[j]["role_id"]) {
-                        res2.data[i].role_name = res3.data[j].role_name;
-                        res2.data[i].role_description = res3.data[j].role_description;
-                        res2.data[i].role_status = res3.data[j].role_status;
+        for (let i = 0; i < list_of_applications_by_staff_id.data.length; i++) {
+            const list_of_all_role_listing_details = await axios.get('/api/role_listing/details')
+            const list_of_all_role_details = await axios.get('/api/role/details');
+            for (let i = 0; i < list_of_all_role_listing_details.data.length; i++) {
+                for (let j = 0; j < list_of_all_role_details.data.length; j++) {
+                    if (list_of_all_role_listing_details.data[i]["role_id"] === list_of_all_role_details.data[j]["role_id"]) {
+                        list_of_all_role_listing_details.data[i].role_name = list_of_all_role_details.data[j].role_name;
+                        list_of_all_role_listing_details.data[i].role_description = list_of_all_role_details.data[j].role_description;
+                        list_of_all_role_listing_details.data[i].role_status = list_of_all_role_details.data[j].role_status;
                     }
                 }
             }
-            for (let j = 0; j < res2.data.length; j++) {
-                if (res.data[i]["rl_id"] === res2.data[j]["rl_id"]) {
-                    res.data[i].role_name = res2.data[j].role_name;
+            for (let j = 0; j < list_of_all_role_listing_details.data.length; j++) {
+                if (list_of_applications_by_staff_id.data[i]["rl_id"] === list_of_all_role_listing_details.data[j]["rl_id"]) {
+                    list_of_applications_by_staff_id.data[i].role_name = list_of_all_role_listing_details.data[j].role_name;
                 }
             }
         }
         dispatch({
             type: GET_APPLICATIONS_BY_STAFF_ID,
-            payload: res.data
+            payload: list_of_applications_by_staff_id.data
         });
     } catch (err: any) {
         if (err.response?.status === 404) {
@@ -70,7 +70,7 @@ export const postApplication = (payload: PostApplicationPayloadType) => async (d
         // "role_app_status": "applied"
         // }
         console.log(payload)
-        const res = await axios.post('/api/staff/application/', payload)
+        const list_of_applications_by_staff_id = await axios.post('/api/staff/application/', payload)
 
         
     } catch (err: any) {
@@ -96,7 +96,7 @@ export const updateApplication = (payload: UploadApplicationPayloadType ) => asy
         const {rl_id, staff_id} = payload;
         console.log("role_id: "+ rl_id)
         console.log("staff_id: "+ staff_id)
-        const res = await axios.put(`/api/staff/application/${rl_id}/${staff_id}`, payload)
+        const list_of_applications_by_staff_id = await axios.put(`/api/staff/application/${rl_id}/${staff_id}`, payload)
 
         
     } catch (err: any) {
