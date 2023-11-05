@@ -125,7 +125,7 @@ const Home = ({
                 <Skeleton active style={{width: "100%"}} paragraph={{width: "100%", rows: 1}} title={false} loading={!dataloaded}> 
                     <Space size={10}>
                         {
-                            record.role_app_status === "applied" ? 
+                            record.role_app_status === "applied" && record.rl_status != "Closed"?
                                 <Tooltip placement="top" title="Withdraw" >
                                     <span onClick={() => showPromiseConfirm(record.rl_id)}>
                                         <WithdrawIcon style={{fontSize: 18}}/>
