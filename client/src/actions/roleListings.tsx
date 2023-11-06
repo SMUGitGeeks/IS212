@@ -137,49 +137,75 @@ export const getRoleListing = (id: number) => async (dispatch: (action: ActionTy
     try {
         const list_of_role_listing_details_by_id = await axios.get(`/api/role_listing/details/${id}`);
         const list_of_all_role_details = await axios.get('/api/role/details');
+        const list_of_applications_details = await axios.get('/api/role_listing/applications');
         // get updater name and update time
         const list_of_staffs_details = await axios.get('/api/staff/details');
 
-        let output = null;
+        let applicationCount = 0;
+        // let output = null;
 
         for (let j = 0; j < list_of_all_role_details.data.length; j++) {
             if (list_of_role_listing_details_by_id.data[0]["role_id"] === list_of_all_role_details.data[j]["role_id"]) {
                 list_of_role_listing_details_by_id.data[0].role_name = list_of_all_role_details.data[j].role_name;
                 list_of_role_listing_details_by_id.data[0].role_description = list_of_all_role_details.data[j].role_description;
                 list_of_role_listing_details_by_id.data[0].role_status = list_of_all_role_details.data[j].role_status;
-                output = list_of_role_listing_details_by_id.data[0];
+                // output = list_of_role_listing_details_by_id.data[0];
             }
         }
 
-        const role_listing_updater_by_id = await axios.get(`/api/role_listing/updater/${id}`)
-            .then((list_of_role_listing_details_by_id) => {
+        for (let k = 0; k < list_of_applications_details.data.length; k++) {
+            if (list_of_role_listing_details_by_id.data[0]["rl_id"] === list_of_applications_details.data[k]["rl_id"]) {
+                applicationCount++;
+            }
+        }
+        list_of_role_listing_details_by_id.data[0].application_count = applicationCount;
+
+        for (let k = 0; k < list_of_staffs_details.data.length; k++) {
+            if (list_of_role_listing_details_by_id.data[0]["rl_source"] === list_of_staffs_details.data[k]["staff_id"]) {
+                list_of_role_listing_details_by_id.data[0].source_name = list_of_staffs_details.data[k]["fname"] + " " + list_of_staffs_details.data[k]["lname"];
+            }
+            if (list_of_role_listing_details_by_id.data[0]["rl_creator"] === list_of_staffs_details.data[k]["staff_id"]) {
+                list_of_role_listing_details_by_id.data[0].creator_name = list_of_staffs_details.data[k]["fname"] + " " + list_of_staffs_details.data[k]["lname"];
+            }
+        }
+
+        let update_records: any = [];
+        await axios.get(`/api/role_listing/updater/${id}`)
+            .then((list_of_all_updater_details) => {
+                // const list_of_all_updater_details = res.data;
+                console.log(list_of_all_updater_details.data);
                 for (let j = 0; j < list_of_role_listing_details_by_id.data.length; j++) {
-                    for (let i = 0; i < list_of_role_listing_details_by_id.data.length; i++) {
-                        if (list_of_role_listing_details_by_id.data[j]["rl_id"] === list_of_role_listing_details_by_id.data[i]["rl_id"]) {
-                            // will keep overridding the previous updater name and time until the last one
-                            list_of_role_listing_details_by_id.data[i].rl_updater_id = list_of_role_listing_details_by_id.data[j]["rl_updater"];
-                            list_of_role_listing_details_by_id.data[i].update_time = list_of_role_listing_details_by_id.data[j]["rl_ts_update"];
-                            for (let k = 0; k < list_of_staffs_details.data.length; k++) {
-                                if (list_of_role_listing_details_by_id.data[i].rl_updater_id === list_of_staffs_details.data[k]["staff_id"]) {
-                                    list_of_role_listing_details_by_id.data[i].rl_updater = list_of_staffs_details.data[k]["fname"] + " " + list_of_staffs_details.data[k]["lname"];
-                                }
+                    for (let i = 0; i < list_of_all_updater_details.data.length; i++) {
+                        for (let k = 0; k < list_of_staffs_details.data.length; k++) {
+                            if (list_of_all_updater_details.data[j]["rl_updater"] === list_of_staffs_details.data[k]["staff_id"]) {
+                                // list_of_role_listing_details_by_id.data[i].rl_updater = list_of_staffs_details.data[k]["fname"] + " " + list_of_staffs_details.data[k]["lname"];
+                                update_records.push({
+                                    rl_updater_id: list_of_all_updater_details.data[j]["rl_updater"],
+                                    rl_updater_name: list_of_staffs_details.data[k]["fname"] + " " + list_of_staffs_details.data[k]["lname"],
+                                    update_time: list_of_all_updater_details.data[j]["rl_ts_update"]
+                                
+                                });
                             }
                         }
                     }
                 }
+                list_of_role_listing_details_by_id.data[0].update_records = update_records;
             })
             .catch((err) => {
                 if (err.response?.status === 404) {
-                    list_of_role_listing_details_by_id.data.rl_updater = undefined;
-                    list_of_role_listing_details_by_id.data.update_time = undefined; 
+                    list_of_role_listing_details_by_id.data[0].rl_updater = undefined;
+                    list_of_role_listing_details_by_id.data[0].update_time = undefined; 
                 } else {
+                    console.log(err);
                     throw err;
                 }
             });
 
+            
+
         dispatch({
             type: GET_ROLE_LISTING,
-            payload: output
+            payload: list_of_role_listing_details_by_id.data[0]
         });
     } catch (err: any) {
         dispatch({
