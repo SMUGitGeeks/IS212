@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Col, Row, Select, SelectProps, Empty, List, Radio, RadioChangeEvent, Skeleton, Space, Tag, Tooltip} from "antd";
+import {Col, Row, Select, SelectProps, Empty, List, Radio, RadioChangeEvent, Skeleton, Space, Tag, Tooltip, Button} from "antd";
 import {Container} from "react-bootstrap";
 import {connect, useDispatch} from "react-redux";
 import PropTypes from "prop-types";
@@ -13,6 +13,7 @@ import {
     LoadingOutlined,
     BankOutlined,
     SearchOutlined,
+    PlusOutlined,
 } from '@ant-design/icons';
 import {getStaffListings} from "../../actions/staffListings";
 import {useNavigate} from "react-router-dom";
@@ -97,7 +98,7 @@ const RoleListingManager = ({
             <Space direction="vertical" size={40} style={{width: "100%"}}>
                 <div></div>
                 <Row gutter={rowGutterStyle} justify='center'>
-                    <Col span={22}>
+                    <Col xs={22} sm={22} md={22} lg={22} xl={17} xxl={18}>
                         <Select
                             mode="multiple"
                             showSearch
@@ -111,6 +112,12 @@ const RoleListingManager = ({
                             size="large"
                             allowClear
                         />
+                    </Col>
+                    <Col xs={22} sm={22} md={22} lg={22} xl={0} xxl={0} style={{margin: 8}}></Col>
+                    <Col xs={22} sm={22} md={22} lg={22} xl={5} xxl={4}>
+                        <Link to="/listingManage/create" style={{textDecoration: "none"}}  data-testid="createButton">
+                            <Button type="default" size="large" style={{width: "100%"}}><PlusOutlined />Create New Listing</Button>
+                        </Link>
                     </Col>
                 </Row>
                 <Row gutter={rowGutterStyle} justify='center'>
