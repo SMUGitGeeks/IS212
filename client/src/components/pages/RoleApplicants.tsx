@@ -52,7 +52,7 @@ const RoleApplicants = ({
 
     setTimeout(() => {
         setDataLoaded(true);
-    }, 2000);
+    }, 3000);
 
     return (
         <Container>

@@ -12,11 +12,11 @@ import {CheckCircleOutlined, ClockCircleOutlined, LoadingOutlined} from '@ant-de
 const {Title, Text} = Typography;
 
 const StaffDetail = ({
-                         getStaffSkillsByStaffId,
-                         staffSkill: {staffSkill, loading},
-                         getStaffListing,
-                         staffListing
-                     }: any) => {
+                        getStaffSkillsByStaffId,
+                        staffSkill: {staffSkill, loading},
+                        getStaffListing,
+                        staffListing
+                    }: any) => {
 
     const {staffId} = useParams();
 
@@ -50,6 +50,12 @@ const StaffDetail = ({
             return <></>;
         }
     }
+
+    const [dataloaded, setDataLoaded] = useState(false);
+
+    setTimeout(() => {
+        setDataLoaded(true);
+    }, 2000);
 
     const items: DescriptionsProps['items'] = [
         {
@@ -108,47 +114,51 @@ const StaffDetail = ({
 
     return (
         <Container>
-            <Space direction="vertical" size={20}>
-                <Title level={2}>{staffListing.staffListing === null ?
-                    <LoadingOutlined/> : staffListing.staffListing.fname + " " + staffListing.staffListing.lname}</Title>
-                <Card>
-                    <Title level={3} style={{marginTop: 0, marginBottom: 30}}>Staff Details</Title>
-                    <Descriptions layout="vertical" items={items}/>
-                </Card>
-                <Card>
-                    <Title level={3} style={{marginTop: 0, marginBottom: 30}}>Skills</Title>
-                    <Space size={20} direction="vertical" style={{width: "100%"}}>
-                        <Radio.Group value={skillState} buttonStyle="solid" onChange={selectChange}>
-                            <Radio.Button value="all">All</Radio.Button>
-                            <Radio.Button value="active">Active</Radio.Button>
-                            <Radio.Button value="in-progress">In Progress</Radio.Button>
-                            <Radio.Button value="unverified">Unverified</Radio.Button>
-                        </Radio.Group>
-                        <div></div>
+            { !dataloaded ? (
+                    <h1><LoadingOutlined /> Loading...</h1>
+                ) :
+                <Space direction="vertical" size={20}>
+                    <Title level={2}>{staffListing.staffListing === null ?
+                        <LoadingOutlined/> : staffListing.staffListing.fname + " " + staffListing.staffListing.lname}</Title>
+                    <Card>
+                        <Title level={3} style={{marginTop: 0, marginBottom: 30}}>Staff Details</Title>
+                        <Descriptions layout="vertical" items={items}/>
+                    </Card>
+                    <Card>
+                        <Title level={3} style={{marginTop: 0, marginBottom: 30}}>Skills</Title>
+                        <Space size={20} direction="vertical" style={{width: "100%"}}>
+                            <Radio.Group value={skillState} buttonStyle="solid" onChange={selectChange}>
+                                <Radio.Button value="all">All</Radio.Button>
+                                <Radio.Button value="active">Active</Radio.Button>
+                                <Radio.Button value="in-progress">In Progress</Radio.Button>
+                                <Radio.Button value="unverified">Unverified</Radio.Button>
+                            </Radio.Group>
+                            <div></div>
 
-                        {loading ?
-                            <div>
-                                <LoadingOutlined/>
-                                Loading...
-                            </div>
-                            : numStaffSkillTypes(staffSkill)[skillState] === 0 ?
-                                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/> :
-                                <Space direction='horizontal' wrap style={{width: '100%'}}> {
-                                    staffSkill.map((skill: any) => (
-                                        (skill.ss_status === skillState || skillState === "all") && skill.skill_status === 'active' ?
-                                            <Tag style={{padding: 10}} color={color(skill.skill_status)}
-                                                 icon={tagIcon(skill.skill_status)} key={skill.skill_id}>
-                                                {skill.skill_name}
-                                            </Tag>
+                            {loading ?
+                                <div>
+                                    <LoadingOutlined/>
+                                    Loading...
+                                </div>
+                                : numStaffSkillTypes(staffSkill)[skillState] === 0 ?
+                                    <Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/> :
+                                    <Space direction='horizontal' wrap style={{width: '100%'}}> {
+                                        staffSkill.map((skill: any) => (
+                                            (skill.ss_status === skillState || skillState === "all") && skill.skill_status === 'active' ?
+                                                <Tag style={{padding: 10}} color={color(skill.skill_status)}
+                                                    icon={tagIcon(skill.skill_status)} key={skill.skill_id}>
+                                                    {skill.skill_name}
+                                                </Tag>
 
-                                            :
-                                            <></>
-                                    ))
-                                } </Space>
-                        }
-                    </Space>
-                </Card>
-            </Space>
+                                                :
+                                                <></>
+                                        ))
+                                    } </Space>
+                            }
+                        </Space>
+                    </Card>
+                </Space>
+            }
         </Container>
     )
 }

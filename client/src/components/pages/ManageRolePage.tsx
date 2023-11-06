@@ -125,7 +125,7 @@ const ManageRolePage = ({
         <Container>
             <Row gutter={rowGutterStyle} justify='center'>
                 <Col span={20}>
-                { error.action === "getRoleListing" ? (
+                { !dataloaded && roleListing === null ? (
                         <PageNoExist />
                     ) : !dataloaded ? (
                         <h1><LoadingOutlined /> Loading...</h1>
@@ -175,7 +175,7 @@ const ManageRolePage = ({
                                         {/* <Space direction="vertical" style={{width: "100%"}}> */}
                                         {/* </Space> */}
                                         <Space direction="vertical" style={{width: "100%"}}>
-                                            <Link to={"/roleListing/" + roleListing.rl_id + "/applicants"}>
+                                            <Link to={"/listingManage/" + roleListing.rl_id + "/applicants"}>
                                                 <Button type="default" size="large" block>View Applicants <RightOutlined /></Button>
                                             </Link>
                                             
