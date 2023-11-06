@@ -12,6 +12,7 @@ import {
     STAFF_LISTINGS_ERROR,
 } from './types';
 import {ActionType, SortPayloadType} from "../types";
+import { calcSkillMatch } from './roleListings';
 
 export const getStaffListings = () => async (dispatch: (action: ActionType) => void) => {
     try {
@@ -92,9 +93,10 @@ export const getStaffListingsByRLId = (payload: any) => async (dispatch: (action
         const list_of_staffs_details = await axios.get('/api/staff/details');
         const list_of_skills_of_roles = await axios.get('/api/role/skills');
         const list_of_skills_of_staffs = await axios.get('/api/staff/skills');
+        const list_of_skills_details = await axios.get('/api/skill/details');  
         const list_of_applications_by_role_listing_id = await axios.get('/api/role_listing/applications/' + payload)
-        if (list_of_applications_by_role_listing_id.data.length === 0) {
-        }
+        // if (list_of_applications_by_role_listing_id.data.length === 0) {
+        // }
         for (let i = 0; i < list_of_applications_by_role_listing_id.data.length; i++) {
             for (let j = 0; j < list_of_all_role_listing_details.data.length; j++) {
                 if (list_of_applications_by_role_listing_id.data[i]["rl_id"] === list_of_all_role_listing_details.data[j]["rl_id"]) {
@@ -112,21 +114,16 @@ export const getStaffListingsByRLId = (payload: any) => async (dispatch: (action
                     list_of_applications_by_role_listing_id.data[i].sys_role = list_of_staffs_details.data[j].sys_role;
                 }
             }
-            let skillMatch = 0;
-            let skillCount = 0;
-            let rl_skill_list = [];
-            for (let j = 0; j < list_of_skills_of_roles.data.length; j++) {
-                if (list_of_applications_by_role_listing_id.data[i]["role_id"] === list_of_skills_of_roles.data[j]["role_id"]) {
-                    skillCount++;
-                    rl_skill_list.push(list_of_skills_of_roles.data[j]["skill_id"]);
-                }
-            }
+
+            let staff_skill_list = [];
             for (let k = 0; k < list_of_skills_of_staffs.data.length; k++) {
-                if (rl_skill_list.includes(list_of_skills_of_staffs.data[k]["skill_id"]) && (list_of_skills_of_staffs.data[k]["staff_id"] === list_of_applications_by_role_listing_id.data[i]["staff_id"]) && (list_of_skills_of_staffs.data[k]["ss_status"] === "active")) {
-                    skillMatch++;
+                if (list_of_skills_of_staffs.data[k]["staff_id"] === list_of_applications_by_role_listing_id.data[i]["staff_id"]) {
+                    staff_skill_list.push(list_of_skills_of_staffs.data[k]);
                 }
             }
-            list_of_applications_by_role_listing_id.data[i].skill_match = Math.round(skillMatch / skillCount * 100);
+            
+            const percentage_match = calcSkillMatch(list_of_applications_by_role_listing_id.data[i], list_of_skills_of_roles.data, staff_skill_list, list_of_skills_details.data)
+            list_of_applications_by_role_listing_id.data[i].skill_match = percentage_match;
         }
         dispatch({
             type: GET_STAFF_LISTINGS_BY_RL_ID,

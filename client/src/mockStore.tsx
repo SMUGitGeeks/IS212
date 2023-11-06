@@ -524,7 +524,72 @@ export const store = mockStore({
                 ]
             }
         ],
-        staffListingsByRLId: [],
+        staffListingsByRLId: [
+            {
+                rl_id: 2,
+                staff_id: 2,
+                role_app_status: 'applied',
+                app_ts: '2023-09-10T03:45:00.000Z',
+                app_text: 'interesting job requirement',
+                role_id: 2,
+                fname: 'Jane',
+                lname: 'Smith',
+                dept: 'Engineering',
+                email: 'jane@example.com',
+                phone: '987-654-3210',
+                biz_address: '456 Elm St',
+                sys_role: 'manager',
+                skill_match: 33
+              },
+              {
+                rl_id: 2,
+                staff_id: 3,
+                role_app_status: 'withdrawn',
+                app_ts: '2023-09-07T06:30:00.000Z',
+                app_text: null,
+                role_id: 2,
+                fname: 'Alice',
+                lname: 'Johnson',
+                dept: 'Engineering',
+                email: 'alice@example.com',
+                phone: '555-123-4567',
+                biz_address: '456 Elm St',
+                sys_role: 'staff',
+                skill_match: 33
+              },
+              {
+                rl_id: 2,
+                staff_id: 4,
+                role_app_status: 'applied',
+                app_ts: '2023-09-07T06:30:00.000Z',
+                app_text: 'blah blah blah',
+                role_id: 2,
+                fname: 'Sarah',
+                lname: 'Wilson',
+                dept: 'Engineering',
+                email: 'sarah.wilson@example.com',
+                phone: '555-444-5555',
+                biz_address: '456 Elm St',
+                sys_role: 'staff',
+                skill_match: 0
+              },
+              {
+                rl_id: 2,
+                staff_id: 8,
+                role_app_status: 'applied',
+                app_ts: '2023-09-07T06:30:00.000Z',
+                app_text: 'this is all text and it should work even though it is long, make sure it is displayed properly',
+                role_id: 2,
+                fname: 'Ava',
+                lname: 'Brown',
+                dept: 'IT',
+                email: 'ava.brown@example.com',
+                phone: '555-222-4444',
+                biz_address: '444 Pine St',
+                sys_role: 'staff',
+                skill_match: 0
+              }
+        ],
         rawStaffListings: [
             {
                 staff_id: 1,
