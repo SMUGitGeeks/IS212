@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link, useParams} from 'react-router-dom';
 import PropTypes from "prop-types";
 import {connect, useDispatch} from 'react-redux';
@@ -8,9 +8,10 @@ import {
     sortStaffListingsBySkillMatch
 } from '../../actions/staffListings';
 import {Container} from 'react-bootstrap';
-import {Empty, List, Select, Skeleton, Space} from 'antd';
+import {Empty, List, Progress, Select, Skeleton, Space, Tag} from 'antd';
 import {getRoleListing} from '../../actions/roleListings';
 import {getRoleSkillsByRoleId} from '../../actions/roleSkills';
+import {AuditOutlined} from '@ant-design/icons';
 
 interface filterOption {
     value: string;
@@ -19,18 +20,6 @@ interface filterOption {
 
 // Sort Example:
 const sortOptions: filterOption[] = [
-    {
-        value: 'asc',
-        label: 'A-Z'
-    },
-    {
-        value: 'desc',
-        label: 'Z-A'
-    },
-    {
-        value: 'recent',
-        label: 'Most Recent'
-    },
     {
         value: 'skillmatch',
         label: 'Skill Match'
@@ -59,6 +48,12 @@ const RoleApplicants = ({
         }
     }
 
+    const [dataloaded, setDataLoaded] = useState(false);
+
+    setTimeout(() => {
+        setDataLoaded(true);
+    }, 2000);
+
     return (
         <Container>
             <Space direction='vertical' style={{width: '100%'}}>
@@ -66,11 +61,12 @@ const RoleApplicants = ({
                     style={{width: 200}}
                     placeholder="Sort by"
                     optionFilterProp="children"
+                    defaultValue={"skillmatch"}
                     filterOption={true}
                     options={sortOptions}
                     onChange={onChange}
                 />
-                {loading ?
+                {!dataloaded ?
                     <List
                         itemLayout="vertical"
                         size="large"
@@ -81,13 +77,14 @@ const RoleApplicants = ({
                         renderItem={(item: any) => (
                             <List.Item
                                 key={item}
+                                data-testid="skeleton-list"
                             >
                                 <Skeleton active title/>
                             </List.Item>
 
                         )}
                     />
-                    : staffListingsByRLId.length === 0 && !loading ?
+                    : staffListingsByRLId.length === 0 ?
                         <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description='No Applicants'/>
                         :
                         <List
@@ -103,13 +100,42 @@ const RoleApplicants = ({
                                 <Link to={`/staff/${item.staff_id}`}>
                                     <List.Item
                                         key={item.role_name}
+                                        data-testid="staff-listing"
+                                        extra={
+                                            <>
+                                                <Space direction='vertical'>
+                                                    <div style={{fontStyle: "italic"}}>Skill Match</div>
+                                                    <Progress type="circle" size={60} percent={item.skill_match} data-testid="skill-match"
+                                                        // <Progress type="circle" size={80} percent={90}
+                                                            format={(percent) =>
+                                                                `${percent}%`
+                                                            }/>
+                                                </Space>
+                                            </>
+                                        }
                                     >
                                         <List.Item.Meta
-                                            title={item.fname + " " + item.lname}
-                                            description={item.dept}
+                                            title={
+                                                <Space size={10}>
+                                                    {item.fname + " " + item.lname}
+                                                    <Tag color={item.role_app_status === "applied" ? "green" : "red"}>
+                                                        {item.role_app_status === "applied" ? "Applied" : "Withdrawn"}
+                                                    </Tag>
+                                                </Space>
+                                            }
+                                            description={
+                                                <Space size={30}>
+                                                    <Space size={2}>
+                                                        <AuditOutlined />
+                                                        {new Date(item.app_ts).toLocaleDateString("en-SG")}
+                                                    </Space>
+                                                    {item.dept}
+                                                </Space>
+                                            }
                                         />
-                                        {item.skill_match + "% Match"}
-                                        <br/>
+                                        {item.app_text ? item.app_text : 
+                                            <div style={{fontStyle: "italic"}}>No application text</div>
+                                        }
                                     </List.Item>
                                 </Link>
                             )}
