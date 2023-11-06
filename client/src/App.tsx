@@ -21,13 +21,14 @@ import RoleListingManager from './components/pages/RoleListingManager';
 import UpdateRoleListing from './components/pages/UpdateRoleListing';
 import ManageRolePage from './components/pages/ManageRolePage';
 import CreateRoleListing from './components/pages/CreateRoleListing';
+import {CopyrightOutlined} from '@ant-design/icons';
 
 const {Header, Footer, Sider, Content} = Layout;
 
 const footerStyle: React.CSSProperties = {
     textAlign: 'center',
-    color: '#fff',
-    backgroundColor: '#7dbcea',
+    color: 'grey',
+    // backgroundColor: '#7dbcea',
 };
 
 const rowGutterStyle = {xs: 8, sm: 16, md: 24, lg: 32};
@@ -60,7 +61,7 @@ const App = ({getStaffSkillsByStaffId, getApplicationsByStaffId, auth: {user, is
                                         <Route path="/roleListing" element={<RoleListing/>}/>
                                         <Route path="/roleListing/:rl_id" element={<RolePage/>}/>
                                         <Route path="/profile" element={<Profile/>}/>
-                                        <Route path="/roleListing/:roleListingId/applicants" element={<RoleApplicants/>}/>
+                                        <Route path="/listingManage/:roleListingId/applicants" element={<RoleApplicants/>}/>
                                         <Route path="/staff/:staffId" element={<StaffDetail/>}/>
                                         <Route path="/listingManage" element={<RoleListingManager/>}/>
                                         <Route path="/listingManage/update/:rl_id" element={<UpdateRoleListing/>}/>
@@ -73,7 +74,7 @@ const App = ({getStaffSkillsByStaffId, getApplicationsByStaffId, auth: {user, is
                                         <Route path="/roleListing" element={<RoleListing/>}/>
                                         <Route path="/roleListing/:rl_id" element={<RolePage/>}/>
                                         <Route path="/profile" element={<Profile/>}/>
-                                        <Route path="/roleListing/:roleListingId/applicants" element={<Restricted/>}/>
+                                        <Route path="/listingManage/:roleListingId/applicants" element={<Restricted/>}/>
                                         <Route path="/staff/:staffId" element={<Restricted/>}/>
                                         <Route path="/listingManage" element={<Restricted/>}/>
                                         <Route path="/listingManage/update/:rl_id" element={<Restricted/>}/>
@@ -82,7 +83,10 @@ const App = ({getStaffSkillsByStaffId, getApplicationsByStaffId, auth: {user, is
                                     </Routes>
                                 )}
                             </Content>
-                            <Footer style={footerStyle}>Footer</Footer>
+                            <Footer style={footerStyle}>
+                                <CopyrightOutlined />
+                                2023-{new Date().getFullYear()} | All Rights Reserved | SBRP
+                            </Footer>
                         </Layout>
                     </Layout>
                 </Fragment>
