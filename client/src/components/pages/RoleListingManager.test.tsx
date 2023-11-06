@@ -67,6 +67,16 @@ describe('Role Listings component tests', () => {
             expect( screen.getByText('IT Technician')).toBeInTheDocument();
         });
     });
+
+    it ("able to click create button and redirect to create page", async () => {
+        waitFor(() => {
+            const createButtonElement = screen.getByTestId('createButton');
+            expect(createButtonElement).toBeInTheDocument();
+
+            userEvent.click(createButtonElement)
+            expect( window.location.pathname).toBe('/listingManage/create');
+        });
+    });
     
     it ("able to click edit icon and redirect to update page", async () => {
         waitFor(() => {
