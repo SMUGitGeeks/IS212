@@ -25,6 +25,30 @@ describe('Role List Manager component tests', () => {
 
 })
 
+describe('Role List Manager loading tests', () => {
+    beforeAll(() => {
+        mockMatchMedia();
+    });
+
+    it ("should load data after a few seconds",() => {
+        render(
+            <Provider store={store}>
+                <BrowserRouter>
+                    <RoleListingManager/>
+                </BrowserRouter>
+            </Provider>)
+
+        expect(screen.getAllByTestId("skeleton-item")[0]).toBeInTheDocument();
+        
+        waitFor(() => {
+            expect(screen.queryAllByTestId("skeleton-item")).not.toBeInTheDocument();
+            expect(screen.getByText('HR Manager')).toBeInTheDocument();
+            expect(screen.getByText('IT Technician')).toBeInTheDocument();
+        });
+    });
+
+})
+
 describe('Role Listings component tests', () => {
     beforeAll(() => {
         mockMatchMedia();
@@ -56,16 +80,6 @@ describe('Role Listings component tests', () => {
     it ("able to click Open radio button", () => {
         userEvent.click(screen.getAllByText('Open')[0])
         expect(screen.getByLabelText('Open')).toBeChecked()
-    });
-
-    it('should load 3 seconds before displaying data', async () => {
-        expect(screen.getByTestId("skeleton-list")).toBeInTheDocument();
-
-        waitFor(() => {
-            expect( screen.queryByTestId("skeleton-list")).not.toBeInTheDocument();
-            expect( screen.getByText('HR Manager')).toBeInTheDocument();
-            expect( screen.getByText('IT Technician')).toBeInTheDocument();
-        });
     });
     
     it ("able to click edit icon and redirect to update page", async () => {
@@ -187,7 +201,6 @@ describe('Role Listings component tests', () => {
 
     it ("Engineer Manager should display closed status", async () => {
     waitFor(() => {
-        // screen.debug(undefined, Infinity);
         const statusElement = screen.getAllByTestId('status')[3];
         const itTechnicianElement = screen.getByText("IT Technician");
         const financeStaffElement = screen.getByText("Finance Staff");
@@ -256,4 +269,13 @@ describe('Role Listings component tests', () => {
         expect(departmentElement.compareDocumentPosition(engineeringManagerElement)).toBe(4);
     });
     });
+
+    it ("should display 4 applicants for Engineering Manager", async () => {
+        waitFor(() => {
+            const applicantsElement = screen.getAllByTestId('applicant-count')[1];
+            expect(applicantsElement).toBeInTheDocument();
+
+            expect(applicantsElement).toHaveTextContent('4');
+        }
+    )});
 })
