@@ -49,7 +49,7 @@ const RoleListing = ({
                         getRoles,
                         getRoleListings,
                         role: {roles, loading},
-                        roleListing: {rawRoleListings},
+                        roleListing: {rawRoleListings, filters},
                         roleListing: {roleListings},
                         auth: {user},
                     }: any) => {
@@ -123,9 +123,9 @@ const RoleListing = ({
         }
     }
 
-    const [roleType, setRoleType] = useState([] as any);
-    const [location, setLocation] = useState([] as any);
-    const [department, setDepartment] = useState([] as any);
+    const [roleType, setRoleType] = useState(filters.role);
+    const [location, setLocation] = useState(filters.location);
+    const [department, setDepartment] = useState(filters.department);
 
     const handleRoleTypeChange = (roleIds: number[]) => {
         dispatch(filterRoleListingsByRoleId({roleIds}) as any);
