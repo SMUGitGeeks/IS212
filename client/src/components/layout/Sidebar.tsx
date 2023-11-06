@@ -3,14 +3,16 @@ import type {MenuProps} from 'antd';
 import {Layout, Menu} from 'antd';
 import {Link, useLocation} from 'react-router-dom';
 import PropTypes from "prop-types";
-import {connect} from "react-redux";
+import {connect, useDispatch} from "react-redux";
 import {logout} from '../../actions/auth';
 import {AuditOutlined, HomeOutlined, LogoutOutlined, SearchOutlined} from '@ant-design/icons';
+import { filterRoleListingsByDepartment, filterRoleListingsByLocation, filterRoleListingsByRoleId } from '../../actions/roleListings';
 
 const {Sider} = Layout;
 
 const Sidebar = ({logout, auth: {isHR}}: any) => {
     const location = useLocation()
+    const dispatch = useDispatch();
     const pageName = location.pathname.split("/")[1]
     const items: MenuProps['items'] = [
         {
@@ -22,6 +24,11 @@ const Sidebar = ({logout, auth: {isHR}}: any) => {
             label: (<Link to={"/roleListing"}>{"Search Roles"}</Link>),
             key: 'roleListing',
             icon: <SearchOutlined/>,
+            onClick: () => {
+                dispatch(filterRoleListingsByRoleId({roleIds: []}) as any);
+                dispatch(filterRoleListingsByDepartment({departments: []}) as any);
+                dispatch(filterRoleListingsByLocation({locations: []}) as any);
+            }
         }
     ];
 

@@ -255,6 +255,11 @@ export const store = mockStore({
         },
         loading: false,
         error: {},
+        filters: {
+            role: [],
+            location: [],
+            department: []
+        }
     },
     auth: {
         user: 1,
