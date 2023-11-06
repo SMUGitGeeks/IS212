@@ -1,4 +1,4 @@
-import {Button, Col, Divider, Progress, Row, Space, Tag, Typography, Modal, Input, Skeleton,} from "antd";
+import {Button, Col, Divider, Progress, Row, Space, Tag, Typography, Modal, Input, Skeleton, Descriptions, DescriptionsProps,} from "antd";
 import {Container} from "react-bootstrap";
 import {AimOutlined, CheckCircleOutlined, ClockCircleOutlined, SolutionOutlined, LoadingOutlined} from "@ant-design/icons";
 import {rowGutterStyle} from "../../App";
@@ -205,6 +205,27 @@ Show withdraw when:
         return true;
     });
 
+    const today = new Date();
+
+    const items: DescriptionsProps['items'] = !dataloaded ? [] :
+    [
+        {
+            key: '2',
+            label: 'Listing Status',
+            children: new Date(roleListing.rl_close).getTime() > today.getTime() ?
+                        <Tag color="green">Open</Tag> :
+                        <Tag color="red">Closed</Tag>
+            ,
+            // span: 2,
+        },
+        {
+            key: '3',
+            label: 'Application Period',
+            children: <>{new Date(roleListing.rl_open).toLocaleDateString("en-SG")} - {new Date(roleListing.rl_close).toLocaleDateString("en-SG")}</>,
+            span: 2,
+        },
+    ];
+
     return (
         <Container>
             <Row gutter={rowGutterStyle} justify='center'>
@@ -304,6 +325,7 @@ Show withdraw when:
                                         }}
                                     >
                                     <Space direction="vertical">
+                                        <Descriptions items={items} colon={false} size="small" column={{xs: 1}}/>
                                         {
                                             roleListing && roleListing.rl_desc ?
                                                 <>
