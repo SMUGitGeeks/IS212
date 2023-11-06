@@ -13,6 +13,7 @@ import {
     LoadingOutlined,
     BankOutlined,
     SearchOutlined,
+    UserOutlined,
 } from '@ant-design/icons';
 import {getStaffListings} from "../../actions/staffListings";
 import {useNavigate} from "react-router-dom";
@@ -55,6 +56,7 @@ const RoleListingManager = ({
     const getHRName = (id: number) => {
         let staff = staffListing.staffListings.find((staffListing: any) => staffListing.staff_id === id);
         return staff.fname + " " + staff.lname;
+        // return "yo"
     }
 
     const today = new Date();
@@ -137,15 +139,24 @@ const RoleListingManager = ({
                                         renderItem={(item: any) => (
                                                 <List.Item
                                                     key={item.role_name}
-                                                    extra={ item.role_status === "active" ?
-                                                        <Space direction="vertical" size={30}>
-                                                            <Tooltip placement="top" title='Edit'>
-                                                            <span onClick={() => navigate("/listingManage/update/" + item.rl_id)} data-testid="edit-icon-click">
-                                                                <FormOutlined style={{fontSize: 20, cursor: "pointer"}}/>
-                                                            </span>
-                                                            </Tooltip>
-                                                        </Space>  :
-                                                        <></>
+                                                    extra={
+                                                        <Space direction="vertical" size={30} style={{display: "flex", alignItems: "flex-end"}}>
+                                                            { item.role_status === "active" ?
+                                                                <Tooltip placement="top" title='Edit'>
+                                                                <span onClick={() => navigate("/listingManage/update/" + item.rl_id)} data-testid="edit-icon-click">
+                                                                    <FormOutlined style={{fontSize: 20, cursor: "pointer"}}/>
+                                                                </span>
+                                                                </Tooltip> :
+                                                                <div></div>
+                                                            }
+                                                            
+                                                            <Space direction="vertical" size={0} style={{display: "flex", alignItems: "flex-end"}}>
+                                                                <div style={{fontSize: 30}} data-testid="applicant-count">
+                                                                    {item.application_count} <UserOutlined color="blue"/>
+                                                                </div>
+                                                                Applicants
+                                                            </Space>
+                                                        </Space>
                                                     }
                                                     style={{cursor: "pointer"}}
                                                 >
@@ -189,11 +200,6 @@ const RoleListingManager = ({
                                                             </span>
                                                         }
                                                     </Space>
-                                                        <br/>
-                                                        <span>
-                                                            <strong>Applicants: </strong>
-                                                            <span> {item.application_count} </span>
-                                                        </span>
                                                         <br/><br/>
                                                     <div>{item.rl_desc}</div>
                                                     </Link>
@@ -215,11 +221,11 @@ const RoleListingManager = ({
                                         renderItem={(item: any) => (
                                             <List.Item
                                                 key={item}
+                                                data-testid="skeleton-item"
                                             >
                                                 <Skeleton active title/>
                                             </List.Item>
                                         )}
-                                        data-testid="skeleton-list"
                                     />
                                 )
                             }
