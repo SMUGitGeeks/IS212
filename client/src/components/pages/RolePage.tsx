@@ -48,7 +48,7 @@ const RolePage = ({
     
     const {rl_id} = useParams();
     useEffect(() => {
-        getRoleListing(rl_id);
+        getRoleListing(rl_id, user);
         getRoleSkillsByRoleId(rl_id);
         getApplicationByStaffIdAndRLId(Number(rl_id))
         if (user) {
@@ -71,7 +71,7 @@ const RolePage = ({
 
     setTimeout(() => {
         setDataLoaded(true);
-    }, 2000);
+    }, 3000);
 
     // onclick function that uses postapplication action when button is clicked which sends rl_id, staff_id, status from both the role listing and the staff as payload
     // let isWithdrawn = false;
@@ -207,7 +207,7 @@ Show withdraw when:
 
     const today = new Date();
 
-    const items: DescriptionsProps['items'] = !dataloaded ? [] :
+    const items: DescriptionsProps['items'] = !dataloaded || roleListing === null ? [] :
     [
         {
             key: '2',
@@ -354,11 +354,11 @@ Show withdraw when:
                                             {!dataloaded ?
                                                 <LoadingOutlined style={{fontSize: 25}} data-testid="loading-icon"/>
                                                 :
-                                                <p style={{fontSize: 26, margin: "0"}}>{ dataloaded ? roleListing.skill_match : 0}%</p>
+                                                <p style={{fontSize: 26, margin: "0"}}>{ dataloaded && roleListing !== null? roleListing.skill_match : 0}%</p>
                                             }
                                             <p style={{fontSize: 12, color: "grey", margin: "0"}}>Skills<br/>Matched</p>
                                         </Space>
-                                        <Progress percent={dataloaded ? roleListing.skill_match : 0} showInfo={false}/>
+                                        <Progress percent={dataloaded && roleListing !== null ? roleListing.skill_match : 0} showInfo={false}/>
                                         <Divider orientation="left" orientationMargin="0">All Skills Required</Divider>
                                         {!dataloaded ?
                                             <Skeleton.Input style={{width: "100%"}} active={true} size="small"/> :

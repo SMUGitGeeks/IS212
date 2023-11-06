@@ -20,14 +20,14 @@ describe('RolePage component tests', () => {
             </Provider>);
     });
     it('Should see the Apply Now button', async () => {
-        jest.advanceTimersByTime(2000);
+        jest.advanceTimersByTime(3000);
         await waitFor(() => {
             const applyNowElement = screen.getByText("Apply Now");
             expect(applyNowElement).toBeInTheDocument();
         });
     })
     it('Should see All Skills', async () => {
-        jest.advanceTimersByTime(2000);
+        jest.advanceTimersByTime(3000);
         await waitFor(() => {
             const allSkillsElement = screen.getByText("All Skills Required");
             const communicationSkillElement = screen.getAllByText("Communication")[0];
@@ -38,7 +38,7 @@ describe('RolePage component tests', () => {
         });
     })
     it('Should show HR Manager', async () => {
-        jest.advanceTimersByTime(2000);
+        jest.advanceTimersByTime(3000);
         await waitFor(() => {
             const hrManagerElement = screen.getByText("HR Manager");
             expect(hrManagerElement).toBeInTheDocument();
@@ -61,7 +61,7 @@ describe('Loading tests', () => {
     });
 
     it('should load data after 2 seconds', async () => {
-    jest.advanceTimersByTime(2000);
+    jest.advanceTimersByTime(3000);
     await waitFor(() => {
         // Ensure that the data is displayed after 2 seconds
         expect(screen.getByText('Role Description')).toBeInTheDocument();
@@ -69,7 +69,7 @@ describe('Loading tests', () => {
     });
 
     it('should remove loading state after loading data', async () => {
-    jest.advanceTimersByTime(2000);
+    jest.advanceTimersByTime(3000);
     await waitFor(() => {
         // Ensure that the loading state is removed after data is loaded
         const skeletonElements = screen.queryByTestId('loading-icon');

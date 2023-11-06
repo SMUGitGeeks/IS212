@@ -18,10 +18,11 @@ const ManageRolePage = ({
                         roleListing: {roleListing, loading, error},
                         roleSkill: {roleSkills},
                         getRoleSkillsByRoleId,
+                        auth: {user}
                         }: any) => {
     const { rl_id } = useParams();
     useEffect(() => {
-        getRoleListing(rl_id);
+        getRoleListing(rl_id, user);
         getRoleSkillsByRoleId(rl_id);
     }, [getRoleListing, getRoleSkillsByRoleId]);
 
@@ -33,7 +34,7 @@ const ManageRolePage = ({
 
     const today = new Date();
 
-    const items: DescriptionsProps['items'] = !dataloaded ? [] :
+    const items: DescriptionsProps['items'] = !dataloaded || roleListing === null? [] :
     [
         {
             key: '1',
@@ -80,18 +81,24 @@ const ManageRolePage = ({
             children: <>{new Date(roleListing.rl_ts_create).toLocaleDateString("en-SG", { hour: '2-digit', minute: '2-digit', hour12: false })}</>,
             span: 2,
         },
-        {
+        
+    ];
+
+    if (dataloaded && roleListing!== null && roleListing.update_records.length > 0) {
+        items.push({
             key: '8',
             label: 'Last Updater',
             children: <>{roleListing.update_records[roleListing.update_records.length-1].rl_updater_name}</>,
-        },
-        {
-            key: '9',
-            label: 'Date Created',
-            children: <>{new Date(roleListing.update_records[roleListing.update_records.length-1].update_time).toLocaleDateString("en-SG", { hour: '2-digit', minute: '2-digit', hour12: false })}</>,
-            span: 2,
-        },
-    ];
+        });
+        items.push(
+            {
+                key: '9',
+                label: 'Date Created',
+                children: <>{new Date(roleListing.update_records[roleListing.update_records.length-1].update_time).toLocaleDateString("en-SG", { hour: '2-digit', minute: '2-digit', hour12: false })}</>,
+                span: 2,
+            }
+        );
+    }
 
     const columns: ColumnsType<any> = !dataloaded ? [] :
     [
@@ -143,7 +150,7 @@ const ManageRolePage = ({
 
                                 <Row gutter={rowGutterStyle} justify="space-between">
                                     <Col xs={24} sm={24} md={24} lg={15} xl={17}>
-                                        <Descriptions items={items} colon={false} size="small" column={{xs: 1}}/>
+                                        <Descriptions items={items} colon={false} column={{sm: 1, md: 1, lg: 1}}/>
                                         {
                                             roleListing.rl_desc ?
                                                 <>
@@ -184,28 +191,30 @@ const ManageRolePage = ({
                                         </Space>
                                     </Col>
                                 </Row>
-                                <Row gutter={rowGutterStyle}>
-                                    <Col xs={24}>
-                                        <Space direction="vertical" style={{width: "100%"}}>
-                                            <Divider orientation="left" orientationMargin="0" style={{fontSize: 23}}>
-                                                Update Records
-                                            </Divider>
-                                            <Table columns={columns} 
-                                                dataSource={roleListing.update_records} 
-                                                pagination={ 
-                                                    roleListing.update_records.length <= 5 ? false : 
-                                                    { 
-                                                        total: roleListing.update_records.length, 
-                                                        defaultCurrent: 1, 
-                                                        pageSize: 10, 
-                                                        responsive: true, 
-                                                        position: ['bottomCenter']
+                                { roleListing.update_records.length === 0 ? <></> :
+                                    <Row gutter={rowGutterStyle}>
+                                        <Col xs={24}>
+                                            <Space direction="vertical" style={{width: "100%"}}>
+                                                <Divider orientation="left" orientationMargin="0" style={{fontSize: 23}}>
+                                                    Update Records
+                                                </Divider>
+                                                <Table columns={columns} 
+                                                    dataSource={roleListing.update_records} 
+                                                    pagination={ 
+                                                        roleListing.update_records.length <= 5 ? false : 
+                                                        { 
+                                                            total: roleListing.update_records.length, 
+                                                            defaultCurrent: 1, 
+                                                            pageSize: 5, 
+                                                            responsive: true, 
+                                                            position: ['bottomCenter']
+                                                        }
                                                     }
-                                                }
-                                            />
-                                        </Space>
-                                    </Col>
-                                </Row>
+                                                />
+                                            </Space>
+                                        </Col>
+                                    </Row>
+                                }
                             </Space>
                         </Container>
                     )
@@ -221,11 +230,13 @@ ManageRolePage.propTypes = {
     roleListing: PropTypes.object.isRequired,
     roleSkill: PropTypes.object.isRequired,
     getRoleSkillsByRoleId: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state: any) => ({
     roleSkill: state.roleSkill,
     roleListing: state.roleListing,
+    auth: state.auth,
 });
 
 export default connect(mapStateToProps, {

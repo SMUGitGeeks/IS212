@@ -133,13 +133,16 @@ export const getRoleListings = (id: number) => async (dispatch: (action: ActionT
 }
     
 
-export const getRoleListing = (id: number) => async (dispatch: (action: ActionType) => void) => {
+export const getRoleListing = (id: number, userId: number) => async (dispatch: (action: ActionType) => void) => {
     try {
         const list_of_role_listing_details_by_id = await axios.get(`/api/role_listing/details/${id}`);
         const list_of_all_role_details = await axios.get('/api/role/details');
         const list_of_applications_details = await axios.get('/api/role_listing/applications');
         // get updater name and update time
         const list_of_staffs_details = await axios.get('/api/staff/details');
+        const list_of_skills_by_staff_id = await axios.get('/api/staff/skills/' + userId);             // get skill_id and ss_status from staff_id
+        const list_of_skills_details = await axios.get('/api/skill/details');                  // check skill status from skill_id
+        const list_of_skills_of_roles = await axios.get('/api/role/skills');                    // get skill_id from role_id
 
         let applicationCount = 0;
         // let output = null;
@@ -169,11 +172,12 @@ export const getRoleListing = (id: number) => async (dispatch: (action: ActionTy
             }
         }
 
+        list_of_role_listing_details_by_id.data[0].skill_match = calcSkillMatch(list_of_role_listing_details_by_id.data[0], list_of_skills_of_roles.data, list_of_skills_by_staff_id.data, list_of_skills_details.data);
+
         let update_records: any = [];
         await axios.get(`/api/role_listing/updater/${id}`)
             .then((list_of_all_updater_details) => {
                 // const list_of_all_updater_details = res.data;
-                console.log(list_of_all_updater_details.data);
                 for (let j = 0; j < list_of_role_listing_details_by_id.data.length; j++) {
                     for (let i = 0; i < list_of_all_updater_details.data.length; i++) {
                         for (let k = 0; k < list_of_staffs_details.data.length; k++) {
@@ -193,10 +197,8 @@ export const getRoleListing = (id: number) => async (dispatch: (action: ActionTy
             })
             .catch((err) => {
                 if (err.response?.status === 404) {
-                    list_of_role_listing_details_by_id.data[0].rl_updater = undefined;
-                    list_of_role_listing_details_by_id.data[0].update_time = undefined; 
+                    list_of_role_listing_details_by_id.data[0].update_records = [];
                 } else {
-                    console.log(err);
                     throw err;
                 }
             });
