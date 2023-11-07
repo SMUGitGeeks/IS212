@@ -3,18 +3,24 @@ import Profile from './Profile';
 import {store} from '../../mockStore';
 import {Provider} from 'react-redux';
 import {mockMatchMedia} from "../../setupTests";
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, MemoryRouter } from 'react-router-dom';
+import userEvent from '@testing-library/user-event';
 
 
 describe('Profile component tests', () => {
     beforeAll(() => {
         mockMatchMedia();
-        render(<BrowserRouter><Provider store={store}><Profile/></Provider></BrowserRouter>);
+        render(
+            <Provider store={store}>
+            <MemoryRouter initialEntries={['/profile']}>
+                <Profile/>
+            </MemoryRouter>
+            </Provider>);
     });
     afterEach(() => {  
         store.clearActions();
     });
-    it('Shouls see My Profile page', () => {
+    it('Should see My Profile page', () => {
         const myProfileElement = screen.getByText("My Profile");
         expect(myProfileElement).toBeInTheDocument();
     })
@@ -22,17 +28,35 @@ describe('Profile component tests', () => {
         const mySkillsElement = screen.getByText("My Skills");
         expect(mySkillsElement).toBeInTheDocument();
     })
-    it('Should see My Active Skills', () => {
+    it('Should click My Active Skills', () => {
+        waitFor(() => {
+
         const myActiveSkillsElement = screen.getByText("Active");
         expect(myActiveSkillsElement).toBeInTheDocument();
+        userEvent.click(myActiveSkillsElement);
+        expect(myActiveSkillsElement).toBeEnabled();
+        
+        })
     })
-    it('Should see My In Progress Skills', () => {
+    it('Should click My In Progress Skills', () => {
+        waitFor(() => {
+
         const myInProgressSkillsElement = screen.getByText("In Progress");
         expect(myInProgressSkillsElement).toBeInTheDocument();
+        userEvent.click(myInProgressSkillsElement);
+        expect(myInProgressSkillsElement).toBeEnabled();
+
+        })
     })
-    it('Should see My Unverified Skills', () => {
+    it('Should click My Unverified Skills', () => {
+        waitFor(() => {
+
         const myUnverifiedSkillsElement = screen.getByText("Unverified");
         expect(myUnverifiedSkillsElement).toBeInTheDocument();
+        userEvent.click(myUnverifiedSkillsElement);
+        expect(myUnverifiedSkillsElement).toBeEnabled();
+
+        })
     })
 })
 
