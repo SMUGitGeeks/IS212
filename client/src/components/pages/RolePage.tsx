@@ -270,6 +270,10 @@ Show withdraw when:
                                     <Skeleton.Button active size="large" style={{width: 130}}/>
                                     :
                                     isApplied ? (
+                                        roleListing.rl_status == "Closed" ? (
+                                            <Button type="primary" size="large" icon={<SolutionOutlined />} disabled = {true}>
+                                                Closed
+                                            </Button>):
                                         buttonDisabled ? (
                                             <Button type="primary" size="large" icon={<SolutionOutlined />} disabled = {true}>
                                             Withdrawn
