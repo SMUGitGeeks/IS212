@@ -124,20 +124,21 @@ const Home = ({
             render: (record: any) => 
                 <Skeleton active style={{width: "100%"}} paragraph={{width: "100%", rows: 1}} title={false} loading={!dataloaded}> 
                     <Space size={10}>
+                        <Tooltip placement="top" title="View Details">
+                            <Link to={"/roleListing/" + record.rl_id}>
+                                <FileTextOutlined style={{fontSize: 18}}/>
+                            </Link>
+                        </Tooltip>
                         {
+
                             record.role_app_status === "applied" && record.rl_status != "Closed"?
                                 <Tooltip placement="top" title="Withdraw" >
                                     <span onClick={() => showPromiseConfirm(record.rl_id)}>
                                         <WithdrawIcon style={{fontSize: 18}}/>
                                     </span>
                                 </Tooltip>
-                            : null
+                                : null
                         }
-                        <Tooltip placement="top" title="View Details">
-                            <Link to={"/roleListing/" + record.rl_id}>
-                                <FileTextOutlined style={{fontSize: 18}}/>
-                            </Link>
-                        </Tooltip>
                     </Space>
                 </Skeleton>
             ,
