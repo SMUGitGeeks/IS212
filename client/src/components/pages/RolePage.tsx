@@ -57,7 +57,6 @@ const RolePage = ({
     }, [getRoleListing]);
 
     useEffect(() => {
-        // console.log(rl_id)
         getApplicationByStaffIdAndRLId(Number(rl_id));
     }, [applications]);
 
@@ -74,7 +73,6 @@ const RolePage = ({
     }, 3000);
 
     // onclick function that uses postapplication action when button is clicked which sends rl_id, staff_id, status from both the role listing and the staff as payload
-    // let isWithdrawn = false;
     const [isApplyModalOpen, setIsApplyModalOpen] = useState(false); 
     const [buttonDisabled, setButtonDisabled] = useState(false); 
     const [isWithdrawModalOpen, setisWithdrawModalOpen] = useState(false);
@@ -84,18 +82,12 @@ const RolePage = ({
 
 
     const checkIfApplied = () => {
-        // console.log("isApplied: " + isApplied)
         if (application == null || application.length === 0) {
             setIsApplied(false);
         } else {
-            // console.log("status is withdrawn: ")
-            // console.log(application[0].role_app_status === "withdrawn")
             if (application[0].role_app_status === "withdrawn") {
-                // isWithdrawn = true
-                // console.log("button disabled: " + buttonDisabled)
                 setIsApplied(true);
                 setButtonDisabled(true)
-                // console.log("button disabled (after): " + buttonDisabled)
             } else {
                 setIsApplied(true);
                 setButtonDisabled(false)
@@ -103,18 +95,12 @@ const RolePage = ({
             }
         }
     }
-
-    // console.log("outside check"+buttonDisabled)
-
     const showModal = () => {
         setIsApplyModalOpen(true);
     };
 
 
     const handleOk = () => {
-        // console.log("clicked")
-        // console.log(application)
-
         if (application == null || application.length === 0) {
             let payload = {
                 "rl_id": roleListing.rl_id,
@@ -122,7 +108,6 @@ const RolePage = ({
                 "role_app_status": "applied",
                 "app_text": textBody,
             }
-            // console.log(payload)
             dispatch(postApplication(payload) as any)
             dispatch(getApplicationsByStaffId(user) as any)
             
@@ -146,7 +131,6 @@ const RolePage = ({
                 "rl_id": roleListing.rl_id,
                 "staff_id": user,
                 "role_app_status": "withdrawn",
-                // "app_text": textBody,
             }
             dispatch(updateApplication(payload) as any)
             dispatch(getApplicationsByStaffId(user) as any)
@@ -171,11 +155,9 @@ const RolePage = ({
     const handleWithdraw = () => {
         setisWithdrawModalOpen(true);
 
-        
-        // setIsApplied(false);
     }
 
-    /* 
+/* 
 Show apply when:
 - Staff has not applied for the role
     - getApplicationByStaffIdAndRLId returns empty array / null
@@ -215,8 +197,6 @@ Show withdraw when:
             children: new Date(roleListing.rl_close).getTime() > today.getTime() ?
                         <Tag color="green">Open</Tag> :
                         <Tag color="red">Closed</Tag>
-            ,
-            // span: 2,
         },
         {
             key: '3',
@@ -404,8 +384,6 @@ RolePage.propTypes = {
     roleListing: PropTypes.object.isRequired,
     staffSkill: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
-    // getApplicationsByStaffId: PropTypes.func.isRequired,
-    // postApplication: PropTypes.func.isRequired,
     getApplicationByStaffIdAndRLId: PropTypes.func.isRequired,
     getStaffSkillsByStaffId: PropTypes.func.isRequired,
 };
@@ -421,8 +399,6 @@ const mapStateToProps = (state: any) => ({
 export default connect(mapStateToProps, {
     getRoleSkillsByRoleId,
     getRoleListing,
-    // getApplicationsByStaffId,
-    // postApplication,
     getApplicationByStaffIdAndRLId,
     getStaffSkillsByStaffId,
 })(RolePage);

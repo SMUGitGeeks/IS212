@@ -23,7 +23,6 @@ interface filterOption {
     label: string;
 }
 
-// Sort Example:
 const sortOptions: filterOption[] = [
     {
         value: 'asc',
@@ -58,7 +57,7 @@ const RoleListing = ({
 
     // RoleList component ====================================================
     useEffect(() => {
-        if (roleListings.length === 0) {
+        if (roleListings.length === 0 || (filters.role.length === 0 && filters.department.length === 0 && filters.location.length === 0)) {
             getRoleListings(user);
         }
         if (roles.length === 0) {
@@ -70,7 +69,7 @@ const RoleListing = ({
 
     setTimeout(() => {
         setDataLoaded(true);
-    }, roleListings.length === 0 ? 3000 : 200);
+    }, 3000);
 
     const date = new Date();
     
@@ -253,7 +252,6 @@ const RoleListing = ({
                                                     <Space direction='vertical'>
                                                         <div style={{fontStyle: "italic"}}>Skill Match</div>
                                                         <Progress type="circle" size={60} percent={item.skill_match}
-                                                            // <Progress type="circle" size={80} percent={90}
                                                                 format={(percent) =>
                                                                     `${percent}%`
                                                                 }/>

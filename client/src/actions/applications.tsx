@@ -29,7 +29,6 @@ export const getApplicationsByStaffId = (payload: GetApplicationsByStaffIdPayloa
                     } else {
                         list_of_applications_by_staff_id.data[i].rl_status = "Open";
                     }
-                    // a
                 }
             }
         }
@@ -71,13 +70,6 @@ export const getApplicationByStaffIdAndRLId = (rl_id: number) => async (dispatch
 export const postApplication = (payload: PostApplicationPayloadType) => async (dispatch: (action: ActionType) => void) => {
     // post data retrieved from frontend with data retrieved from the frontend
     try {
-        console.log("got clicked")
-        
-        // let payload = {"rl_id": 1,
-        // "staff_id":1,                 // staff_id here has a different convention from the usual staffId used in payload
-        // "role_app_status": "applied"
-        // }
-        console.log(payload)
         const list_of_applications_by_staff_id = await axios.post('/api/staff/application/', payload)
 
         
@@ -93,17 +85,7 @@ export const postApplication = (payload: PostApplicationPayloadType) => async (d
 export const updateApplication = (payload: UploadApplicationPayloadType ) => async (dispatch: (action: ActionType) => void) => {
     // post data retrieved from frontend with data retrieved from the frontend
     try {
-        console.log("got clicked")
-        
-        // let payload = {"rl_id": 3,
-        // "staff_id":3,                 // staff_id here has a different convention from the usual staffId used in payload
-        // "role_app_status": "applied",
-        // "app_text": "Hello word"
-        // }
-        console.log(payload)
         const {rl_id, staff_id} = payload;
-        console.log("role_id: "+ rl_id)
-        console.log("staff_id: "+ staff_id)
         const list_of_applications_by_staff_id = await axios.put(`/api/staff/application/${rl_id}/${staff_id}`, payload)
 
         

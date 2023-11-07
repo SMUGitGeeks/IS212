@@ -129,7 +129,6 @@ const UpdateRoleListing = ({
                         <Form.Item name="applicationPeriod" label="Application Period" {...rangeConfig}>
                             <RangePicker
                                 format="DD-MM-YYYY"
-                                // disabledDate={disabledDate}
                             />
                         </Form.Item>
                         <Form.Item label="Skills">

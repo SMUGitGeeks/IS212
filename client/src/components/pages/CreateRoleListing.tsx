@@ -49,7 +49,6 @@ const CreateRoleListing = ({
         getRoleListings(user);
     }, [getRoles, getStaffListings,getRoleListings]);
 
-    // const dispatch = useDispatch();
     let roleTypes: SelectProps['options'] = [
         {
             label: "Loading...",
@@ -88,9 +87,6 @@ const CreateRoleListing = ({
         });
     }
 
-    // const newRLID = roleListing.roleListings.length + 1;
-    // review in future according to RL table if can
-
     const dispatch = useDispatch();
     const navigate = useNavigate();
     
@@ -100,7 +96,6 @@ const CreateRoleListing = ({
         const roleId = form.getFieldValue('roleName');
         for (let i = 0; i < role.roles.length; i++) {
             if (role.roles[i].role_id === roleId) {
-                console.log(role.roles[i].role_description)
                 form.setFieldsValue({ roleDescription: role.roles[i].role_description });
                 dispatch(getRoleSkillsByRoleId(roleId) as any);
                 return
@@ -132,7 +127,6 @@ const CreateRoleListing = ({
             department: fieldsValue['department'],
         }
         dispatch(postRoleListing(payload) as any);
-        console.log('Received values of form: ', payload);
     };
 
     return (
@@ -147,7 +141,6 @@ const CreateRoleListing = ({
                 form={form}
                 name="control-hooks"
                 onFinish={onFinish}
-                // style={{ maxWidth: 600 }}
                 scrollToFirstError
                 size="large"
                 colon={false}
@@ -176,7 +169,6 @@ const CreateRoleListing = ({
                     <Form.Item name="rl_source" label="Manager" rules={[{ required: true,  message: "Please input a manager"}]}>
                         <Select
                             showSearch
-                            // style={{width: '30%'}}
                             optionFilterProp={"label"}
                             options={staffList}
                             suffixIcon={<SearchOutlined/>}
@@ -191,7 +183,6 @@ const CreateRoleListing = ({
                     <Form.Item name="applicationPeriod" label="Application Period" {...rangeConfig}>
                         <RangePicker
                             format="DD-MM-YYYY"
-                            // disabledDate={disabledDate}
                         />
                     </Form.Item>
                     <Form.Item label="Skills">

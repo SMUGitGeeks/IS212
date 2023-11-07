@@ -5,7 +5,7 @@ import {Link, useLocation} from 'react-router-dom';
 import PropTypes from "prop-types";
 import {connect, useDispatch} from "react-redux";
 import {logout} from '../../actions/auth';
-import {AuditOutlined, HomeOutlined, LogoutOutlined, SearchOutlined, MenuOutlined} from '@ant-design/icons';
+import {AuditOutlined, HomeOutlined, LogoutOutlined, SearchOutlined, LeftOutlined, RightOutlined} from '@ant-design/icons';
 import { filterRoleListingsByDepartment, filterRoleListingsByLocation, filterRoleListingsByRoleId } from '../../actions/roleListings';
 
 const {Sider} = Layout;
@@ -47,32 +47,30 @@ const Sidebar = ({logout, auth: {isHR}}: any) => {
         icon: <LogoutOutlined/>,
     })
     const [collapsed, setCollapsed] = useState(false);
-    const [triggerStyle, setTriggerStyle] = useState({ top: 0, bottom: 'auto', left: 8, backgroundColor: 'white', height: 64, width: 50} as any)
+    const [trigger, setTrigger] = useState(null as any)
+    const [collapsedWidth, setCollapsedWidth] = useState(80)
     return (
         <Sider 
             collapsible 
             collapsed={collapsed}
             onCollapse={(value) => {
                 setCollapsed(value)
-                if (!value) {
-                    setTriggerStyle({top: 0, bottom: 'auto', left: 200,backgroundColor: 'white', height: 64, width: 50 })
+                if (value) {
+                    setTrigger(<RightOutlined />)
                 } else {
-                    setTriggerStyle({top: 0, bottom: 'auto', left: 8, backgroundColor: 'white', height: 64, width: 50})
+                    setTrigger(<LeftOutlined />)
                 }
-                // console.log(value)
             }}
-            trigger={<MenuOutlined style={{color: "black", fontSize: 25}}/>}
+            trigger={collapsedWidth !== 0 ? trigger : null}
             breakpoint="lg"
-            collapsedWidth="0"
+            collapsedWidth={collapsedWidth}
             onBreakpoint={(broken) => {
                 if (!broken) {
-                    setCollapsed(true);
-                    setTriggerStyle({top: 0, bottom: 'auto', left: 200,backgroundColor: 'white', height: 64, width: 50 })
+                    setCollapsedWidth(80)
+                } else {
+                    setCollapsedWidth(0)
                 }
-            // console.log(broken);
             }}
-            zeroWidthTriggerStyle={triggerStyle}
-            // zeroWidthTriggerStyle={{top: 0, bottom: 'auto', left: 8, backgroundColor: 'white', height: 68}}
         >
             <h3 style={{color: "white", textAlign: "center"}}>SPRB</h3>
             <Menu theme="dark" defaultSelectedKeys={pageName === "" ? ["/"] : [pageName]} mode="inline" items={items}/>

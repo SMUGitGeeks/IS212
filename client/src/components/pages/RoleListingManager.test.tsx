@@ -143,7 +143,6 @@ describe('Role Listings component tests', () => {
         const listItemElement = screen.getAllByTestId('one-listing');
 
         expect(listItemElement.length).toBe(2);
-        console.log(window.location.pathname)
     });
     });
 
