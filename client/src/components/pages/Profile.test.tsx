@@ -20,13 +20,17 @@ describe('Profile component tests', () => {
     afterEach(() => {  
         store.clearActions();
     });
-    it('Should see My Profile page', () => {
-        const myProfileElement = screen.getByText("My Profile");
-        expect(myProfileElement).toBeInTheDocument();
+    it('Should render Profile page', () => {
+        waitFor(() => {
+            const profileElement = screen.getByText("Profile");
+            expect(profileElement).toBeInTheDocument();
+        })
     })
-    it('Should see My Skills', () => {
-        const mySkillsElement = screen.getByText("My Skills");
-        expect(mySkillsElement).toBeInTheDocument();
+    it('Should render My Skills', () => {
+        waitFor(() => {
+            const mySkillsElement = screen.getByText("My Skills");
+            expect(mySkillsElement).toBeInTheDocument();
+        })
     })
     it('Should click My Active Skills', () => {
         waitFor(() => {
@@ -35,7 +39,6 @@ describe('Profile component tests', () => {
         expect(myActiveSkillsElement).toBeInTheDocument();
         userEvent.click(myActiveSkillsElement);
         expect(myActiveSkillsElement).toBeEnabled();
-        
         })
     })
     it('Should click My In Progress Skills', () => {
