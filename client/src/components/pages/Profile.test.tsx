@@ -3,7 +3,7 @@ import Profile from './Profile';
 import {store} from '../../mockStore';
 import {Provider} from 'react-redux';
 import {mockMatchMedia} from "../../setupTests";
-import { BrowserRouter, MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 
 
