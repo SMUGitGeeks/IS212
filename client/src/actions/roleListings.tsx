@@ -194,6 +194,12 @@ export const getRoleListing = (id: number, userId: number) => async (dispatch: (
                     }
                 }
                 list_of_role_listing_details_by_id.data[0].update_records = update_records;
+                let date = new Date();
+                if (date > new Date(list_of_role_listing_details_by_id.data[0]["rl_close"])) {
+                    list_of_role_listing_details_by_id.data[0].rl_status = "Closed";
+                } else {
+                    list_of_role_listing_details_by_id.data[0].rl_status = "Open";
+                }
             })
             .catch((err) => {
                 if (err.response?.status === 404) {
