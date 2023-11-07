@@ -57,7 +57,6 @@ const RoleListingManager = ({
     const getHRName = (id: number) => {
         let staff = staffListing.staffListings.find((staffListing: any) => staffListing.staff_id === id);
         return staff.fname + " " + staff.lname;
-        // return "yo"
     }
 
     const today = new Date();

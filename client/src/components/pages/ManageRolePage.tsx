@@ -49,15 +49,11 @@ const ManageRolePage = ({
             children: new Date(roleListing.rl_close).getTime() > today.getTime() ?
                         <Tag color="green">Open</Tag> :
                         <Tag color="red">Closed</Tag>
-            ,
-            // span: 2,
         },
-        
         {
             key: '5',
             label: 'Manager',
             children: <>{roleListing.source_name}</>,
-            // span: 3,
         },
         {
             key: '3',
@@ -110,8 +106,7 @@ const ManageRolePage = ({
         {
             title: 'Name',
             dataIndex: 'rl_updater_name',
-            key: 'name',
-            // render: (text) => <a>{text}</a>,
+            key: 'name'
         },
         {
             title: 'Date Edited',

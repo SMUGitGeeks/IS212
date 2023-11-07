@@ -28,7 +28,6 @@ const {Header, Footer, Sider, Content} = Layout;
 const footerStyle: React.CSSProperties = {
     textAlign: 'center',
     color: 'grey',
-    // backgroundColor: '#7dbcea',
 };
 
 const rowGutterStyle = {xs: 8, sm: 16, md: 24, lg: 32};

@@ -1,6 +1,5 @@
 import {render, screen, waitFor} from '@testing-library/react';
 import {filterRoleListingsByDepartment, filterRoleListingsByLocation, filterRoleListingsByRoleId} from '../../actions/roleListings';
-// import RoleList from './RoleList';
 import {store} from '../../mockStore';
 import {Provider} from 'react-redux';
 import {mockMatchMedia} from "../../setupTests";
@@ -48,7 +47,6 @@ describe('RoleSearchFilter component tests', () => {
         store.dispatch(filterRoleListingsByDepartment(payload) as any);
 
         const actions = store.getActions();
-        // console.log(actions);
         expect(actions).toEqual([expectedAction]);
     });
 

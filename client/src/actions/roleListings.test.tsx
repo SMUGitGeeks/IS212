@@ -1,4 +1,3 @@
-import {store} from '../mockStore';
 import {calcSkillMatch} from "./roleListings";
 
 // create a test script to test the calcSkillMatch function
