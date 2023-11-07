@@ -58,9 +58,9 @@ const RoleListing = ({
 
     // RoleList component ====================================================
     useEffect(() => {
-        if (roleListings.length === 0) {
+        // if (roleListings.length === 0) {
             getRoleListings(user);
-        }
+        // }
         if (roles.length === 0) {
             getRoles();
         }
