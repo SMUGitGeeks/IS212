@@ -249,9 +249,38 @@ export const store = mockStore({
             role_name: 'HR Manager',
             role_description: 'Manage HR department',
             role_status: 'active',
-            rl_updater_id: 1,
-            update_time: '2023-10-13T08:51:43.000Z',
-            rl_updater: 'John Doe'
+            application_count: 1,
+            source_name: 'John Doe',
+            creator_name: 'John Doe',
+            skill_match: 100,
+            update_records: [
+                {
+                rl_updater_id: 1,
+                rl_updater_name: 'John Doe',
+                update_time: '2023-10-13T08:02:37.000Z'
+                },
+                {
+                rl_updater_id: 1,
+                rl_updater_name: 'John Doe',
+                update_time: '2023-10-13T08:02:37.000Z'
+                },
+                {
+                rl_updater_id: 1,
+                rl_updater_name: 'John Doe',
+                update_time: '2023-10-13T08:02:37.000Z'
+                },
+                {
+                rl_updater_id: 1,
+                rl_updater_name: 'John Doe',
+                update_time: '2023-10-13T08:02:37.000Z'
+                },
+                {
+                rl_updater_id: 1,
+                rl_updater_name: 'John Doe',
+                update_time: '2023-10-13T08:02:37.000Z'
+                }
+            ]  
+
         },
         loading: false,
         error: {},

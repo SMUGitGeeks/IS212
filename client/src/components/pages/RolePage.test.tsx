@@ -19,9 +19,15 @@ describe('RolePage component tests', () => {
                 </MemoryRouter>
             </Provider>);
     });
+
+    afterEach(() => {
+        store.clearActions();
+    });
+
     it('Should see the Apply Now button', async () => {
         jest.advanceTimersByTime(3000);
         await waitFor(() => {
+            screen.debug(undefined, Infinity)
             const applyNowElement = screen.getByText("Apply Now");
             expect(applyNowElement).toBeInTheDocument();
         });
