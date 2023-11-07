@@ -49,7 +49,7 @@ const RoleListing = ({
                         getRoles,
                         getRoleListings,
                         role: {roles, loading},
-                        roleListing: {rawRoleListings},
+                        roleListing: {rawRoleListings, filters},
                         roleListing: {roleListings},
                         auth: {user},
                     }: any) => {
@@ -123,9 +123,9 @@ const RoleListing = ({
         }
     }
 
-    const [roleType, setRoleType] = useState([] as any);
-    const [location, setLocation] = useState([] as any);
-    const [department, setDepartment] = useState([] as any);
+    const [roleType, setRoleType] = useState(filters.role);
+    const [location, setLocation] = useState(filters.location);
+    const [department, setDepartment] = useState(filters.department);
 
     const handleRoleTypeChange = (roleIds: number[]) => {
         dispatch(filterRoleListingsByRoleId({roleIds}) as any);
@@ -244,7 +244,7 @@ const RoleListing = ({
                                 }}
                                 dataSource={roleListings}
                                 renderItem={(item: any) => (
-                                    item.role_status === "active" && item.rl_status == "Open"? 
+                                    item.role_status === "active" && item.rl_status == "Open" && new Date(item.rl_open).getTime() <= date.getTime() ? 
                                     <Link to={`/roleListing/${item.rl_id}`}>
                                         <List.Item
                                             key={item.role_name}
@@ -270,7 +270,7 @@ const RoleListing = ({
                                                 <div>
                                                     <ClockCircleOutlined/> Posted {Math.round((date.getTime() - new Date(item.rl_open).getTime()) / (1000 * 60 * 60 * 24)) + " days ago"}
                                                 </div>
-                                                <div><CalendarOutlined/> Closing Date: {new Date(item.rl_close).toLocaleDateString()}
+                                                <div><CalendarOutlined/> Closing Date: {new Date(item.rl_close).toLocaleDateString("en-SG")}
                                                 </div>
                                                 <div><EnvironmentOutlined/> {item.location}</div>
                                             </Space>

@@ -14,16 +14,9 @@ interface pageType {
 const pages: pageType = {
     "": "Welcome Back!",
     "roleListing": "Search Roles",
-    "hr": "HR",
     "listingManage": "Role Listing Management",
     "profile": "Profile",
-    "staffDetail": "Staff Detail",
-    "roleDetail": "Role Detail",
-    "roleListingDetail": "Role Listing Detail",
-    "roleListingManager": "Role Listing Manager",
-    "staffListingManager": "Staff Listing Manager",
-    "staffListingDetail": "Staff Listing Detail",
-    "staffListing": "Staff Listing"
+    "staff": "Staff Detail",
 }
 
 const Navbar = ({auth: {user, loading}}: any) => {
@@ -33,7 +26,7 @@ const Navbar = ({auth: {user, loading}}: any) => {
     return (
         <Container>
             <Row gutter={rowGutterStyle} align='middle' justify='space-between' style={{width: "100%"}}>
-                <Col>
+                <Col style={{marginLeft: 50}}>
                     <span style={{fontWeight: "bolder", fontSize: "16pt"}}>{pages[pageName]}
                     </span>
                 </Col>

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Col, Row, Select, SelectProps, Empty, List, Radio, RadioChangeEvent, Skeleton, Space, Tag, Tooltip} from "antd";
+import {Col, Row, Select, SelectProps, Empty, List, Radio, RadioChangeEvent, Skeleton, Space, Tag, Tooltip, Button} from "antd";
 import {Container} from "react-bootstrap";
 import {connect, useDispatch} from "react-redux";
 import PropTypes from "prop-types";
@@ -13,6 +13,8 @@ import {
     LoadingOutlined,
     BankOutlined,
     SearchOutlined,
+    UserOutlined,
+    PlusOutlined,
 } from '@ant-design/icons';
 import {getStaffListings} from "../../actions/staffListings";
 import {useNavigate} from "react-router-dom";
@@ -55,6 +57,7 @@ const RoleListingManager = ({
     const getHRName = (id: number) => {
         let staff = staffListing.staffListings.find((staffListing: any) => staffListing.staff_id === id);
         return staff.fname + " " + staff.lname;
+        // return "yo"
     }
 
     const today = new Date();
@@ -97,7 +100,7 @@ const RoleListingManager = ({
             <Space direction="vertical" size={40} style={{width: "100%"}}>
                 <div></div>
                 <Row gutter={rowGutterStyle} justify='center'>
-                    <Col span={22}>
+                    <Col xs={22} sm={22} md={22} lg={22} xl={17} xxl={18}>
                         <Select
                             mode="multiple"
                             showSearch
@@ -111,6 +114,12 @@ const RoleListingManager = ({
                             size="large"
                             allowClear
                         />
+                    </Col>
+                    <Col xs={22} sm={22} md={22} lg={22} xl={0} xxl={0} style={{margin: 8}}></Col>
+                    <Col xs={22} sm={22} md={22} lg={22} xl={5} xxl={4}>
+                        <Link to="/listingManage/create" style={{textDecoration: "none"}}  data-testid="createButton">
+                            <Button type="default" size="large" style={{width: "100%"}}><PlusOutlined />Create New Listing</Button>
+                        </Link>
                     </Col>
                 </Row>
                 <Row gutter={rowGutterStyle} justify='center'>
@@ -137,15 +146,24 @@ const RoleListingManager = ({
                                         renderItem={(item: any) => (
                                                 <List.Item
                                                     key={item.role_name}
-                                                    extra={ item.role_status === "active" ?
-                                                        <Space direction="vertical" size={30}>
-                                                            <Tooltip placement="top" title='Edit'>
-                                                            <span onClick={() => navigate("/listingManage/update/" + item.rl_id)} data-testid="edit-icon-click">
-                                                                <FormOutlined style={{fontSize: 20, cursor: "pointer"}}/>
-                                                            </span>
-                                                            </Tooltip>
-                                                        </Space>  :
-                                                        <></>
+                                                    extra={
+                                                        <Space direction="vertical" size={30} style={{display: "flex", alignItems: "flex-end"}}>
+                                                            { item.role_status === "active" ?
+                                                                <Tooltip placement="top" title='Edit'>
+                                                                <span onClick={() => navigate("/listingManage/update/" + item.rl_id)} data-testid="edit-icon-click">
+                                                                    <FormOutlined style={{fontSize: 20, cursor: "pointer"}}/>
+                                                                </span>
+                                                                </Tooltip> :
+                                                                <div></div>
+                                                            }
+                                                            
+                                                            <Space direction="vertical" size={0} style={{display: "flex", alignItems: "flex-end"}}>
+                                                                <div style={{fontSize: 30}} data-testid="applicant-count">
+                                                                    {item.application_count} <UserOutlined color="blue"/>
+                                                                </div>
+                                                                Applicants
+                                                            </Space>
+                                                        </Space>
                                                     }
                                                     style={{cursor: "pointer"}}
                                                 >
@@ -189,11 +207,6 @@ const RoleListingManager = ({
                                                             </span>
                                                         }
                                                     </Space>
-                                                        <br/>
-                                                        <span>
-                                                            <strong>Applicants: </strong>
-                                                            <span> {item.application_count} </span>
-                                                        </span>
                                                         <br/><br/>
                                                     <div>{item.rl_desc}</div>
                                                     </Link>
@@ -215,11 +228,11 @@ const RoleListingManager = ({
                                         renderItem={(item: any) => (
                                             <List.Item
                                                 key={item}
+                                                data-testid="skeleton-item"
                                             >
                                                 <Skeleton active title/>
                                             </List.Item>
                                         )}
-                                        data-testid="skeleton-list"
                                     />
                                 )
                             }
