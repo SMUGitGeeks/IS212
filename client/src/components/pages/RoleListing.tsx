@@ -57,7 +57,9 @@ const RoleListing = ({
 
     // RoleList component ====================================================
     useEffect(() => {
-        getRoleListings(user);
+        if (roleListings.length === 0 || (filters.role.length === 0 && filters.department.length === 0 && filters.location.length === 0)) {
+            getRoleListings(user);
+        }
         if (roles.length === 0) {
             getRoles();
         }
@@ -67,7 +69,7 @@ const RoleListing = ({
 
     setTimeout(() => {
         setDataLoaded(true);
-    }, roleListings.length === 0 ? 3000 : 200);
+    }, 3000);
 
     const date = new Date();
     
