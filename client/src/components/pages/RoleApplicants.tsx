@@ -18,7 +18,6 @@ interface filterOption {
     label: string;
 }
 
-// Sort Example:
 const sortOptions: filterOption[] = [
     {
         value: 'skillmatch',
@@ -106,7 +105,6 @@ const RoleApplicants = ({
                                                 <Space direction='vertical'>
                                                     <div style={{fontStyle: "italic"}}>Skill Match</div>
                                                     <Progress type="circle" size={60} percent={item.skill_match} data-testid="skill-match"
-                                                        // <Progress type="circle" size={80} percent={90}
                                                             format={(percent) =>
                                                                 `${percent}%`
                                                             }/>

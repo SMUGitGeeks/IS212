@@ -61,11 +61,9 @@ const Home = ({
                     "rl_id": id,
                     "staff_id": user,
                     "role_app_status": "withdrawn",
-                    // "app_text": textBody,
                 }
                 dispatch(updateApplication(payload) as any)
                     .catch(() => console.log('Oops errors!'));
-                // dispatch(getApplicationsByStaffId(user) as any)
             },
             onCancel() {},
             width: '30rem'
@@ -84,7 +82,6 @@ const Home = ({
             ,
             sorter: (a, b) => a.role_name.length - b.role_name.length,
             sortOrder: sortedInfo.columnKey === 'roleName' ? sortedInfo.order : null,
-            // ellipsis: true,
             width: '44rem',
         },
         {
@@ -97,7 +94,6 @@ const Home = ({
             ,
             sorter: (a, b) => new Date(a.app_ts).getTime() - new Date(b.app_ts).getTime(),
             sortOrder: sortedInfo.columnKey === 'dateApplied' ? sortedInfo.order : null,
-            // ellipsis: true,
             width: '44rem',
             responsive: ['md'],
         },
@@ -120,7 +116,6 @@ const Home = ({
         },
         {
             title: 'Actions',
-            // dataIndex: 'rl_id',
             render: (record: any) => 
                 <Skeleton active style={{width: "100%"}} paragraph={{width: "100%", rows: 1}} title={false} loading={!dataloaded}> 
                     <Space size={10}>

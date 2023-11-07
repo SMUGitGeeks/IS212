@@ -49,12 +49,6 @@ const Navbar = ({auth: {user, loading, isHR, logout}}: any) => {
     }, []);
 
     const items: MenuProps['items'] = [
-        // {
-        //     label: "SBRP",
-        //     key: 'logo',
-        //     disabled: true,
-        //     style: {height: 60, paddingTop: 10, cursor: "default"},
-        // },
         {
             label: (<Link to={"/"}>{"Home"}</Link>),
             key: '/',

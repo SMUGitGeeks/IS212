@@ -280,14 +280,8 @@ export const updateRoleListing = (id: number, payload: UpdateRoleListingLoadType
 
 export const postRoleListing = (payload: PostRoleListingPayloadType) => async (dispatch: (action: ActionType) => void) => {
     try {
-        console.log("postRL got clicked");
         const {rl_id, role_id, rl_desc, rl_source, rl_open, rl_close, rl_creator, location, department} = payload;
-        console.log(payload);
         const list_of_all_role_listing_details = await axios.post('/api/role_listing/', payload);
-        // dispatch({
-        //     type: POST_ROLE_LISTING,
-        //     payload: res.data
-        // });
 
     } catch (err: any) {
         dispatch({
