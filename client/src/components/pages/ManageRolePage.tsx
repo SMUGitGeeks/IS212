@@ -39,7 +39,8 @@ const ManageRolePage = ({
         {
             key: '1',
             label: 'Role status',
-            children: roleListing.role_status === "active" ?
+            children: 
+            roleListing.role_status === "active" ?
                         <Tag color="green">Active</Tag> :
                         <Tag color="red">Inactive</Tag>
         },
@@ -49,11 +50,16 @@ const ManageRolePage = ({
             children: new Date(roleListing.rl_close).getTime() > today.getTime() ?
                         <Tag color="green">Open</Tag> :
                         <Tag color="red">Closed</Tag>
+            ,
+            // span: 2,
+
         },
         {
             key: '5',
             label: 'Manager',
-            children: <>{roleListing.source_name}</>,
+            children: <div data-testid = "manager">{roleListing.source_name}</div>,
+            // span: 3,
+            
         },
         {
             key: '3',
@@ -138,7 +144,7 @@ const ManageRolePage = ({
                                     </Col>
                                     <Col xs={24} sm={24} md={9} lg={7} xl={3}>
                                         <Link to={"/listingManage/update/" + rl_id}>
-                                            <Button type="primary" size="large" block><EditOutlined />Edit</Button>
+                                            <Button type="primary" size="large" block><EditOutlined data-testid="edit-button"/>Edit</Button>
                                         </Link>
                                     </Col>
                                 </Row>
@@ -148,20 +154,20 @@ const ManageRolePage = ({
                                         <Descriptions items={items} colon={false} column={{sm: 1, md: 1, lg: 1}}/>
                                         {
                                             roleListing.rl_desc ?
-                                                <>
+                                                <div data-testid= "details">
                                                     <Divider orientation="left" orientationMargin="0"
                                                             style={{fontSize: 23}}>Details</Divider>
                                                     {roleListing.rl_desc}
-                                                </> : <></>
+                                                </div> : <></>
                                         }
                                         <p style={{padding: "2%"}}></p>
                                         {
                                             roleListing.role_description ?
-                                                <>
+                                                <div data-testid= "roleDesc">
                                                     <Divider orientation="left" orientationMargin="0" style={{fontSize: 23}}>Role
                                                         Description</Divider>
                                                     {roleListing.role_description}
-                                                </> : <></>
+                                                </div> : <></>
                                         }
                                         <p style={{padding: "2%"}}></p>
                                     </Col>
@@ -193,7 +199,7 @@ const ManageRolePage = ({
                                                 <Divider orientation="left" orientationMargin="0" style={{fontSize: 23}}>
                                                     Update Records
                                                 </Divider>
-                                                <Table columns={columns} 
+                                                <Table columns={columns} data-testid="update-records"
                                                     dataSource={roleListing.update_records} 
                                                     pagination={ 
                                                         roleListing.update_records.length <= 5 ? false : 
