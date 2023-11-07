@@ -24,7 +24,7 @@ export const getApplicationsByStaffId = (payload: GetApplicationsByStaffIdPayloa
                     list_of_applications_by_staff_id.data[i].role_name = list_of_all_role_listing_details.data[j].role_name;
                     list_of_applications_by_staff_id.data[i].rl_status = list_of_all_role_listing_details.data[j].rl_status;
                     const date = new Date();
-                    if (date > new Date(list_of_all_role_listing_details.data[i]["rl_close"])) {
+                    if (date > new Date(list_of_applications_by_staff_id.data[i]["rl_close"])) {
                         list_of_applications_by_staff_id.data[i].rl_status = "Closed";
                     } else {
                         list_of_applications_by_staff_id.data[i].rl_status = "Open";
