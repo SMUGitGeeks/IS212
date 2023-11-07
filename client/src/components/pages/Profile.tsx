@@ -52,7 +52,7 @@ const Profile = ({
     return (
         <Container>
             <Row justify='center'>
-                <Col span={16}>
+                <Col xs={22} sm={22} md={22} lg={16}>
                     <Card>
                         <Space size={20} direction="vertical" style={{width: "100%"}}>
                             <h2 style={{marginTop: 0}}>My Skills</h2>
@@ -68,7 +68,7 @@ const Profile = ({
                                     <Spin/>
                                 </div>
                                 : filteredSkills.length !== 0 ?
-                                <Space direction="horizontal" size={10}>
+                                <Space direction="horizontal" size={10} wrap>
                                     {filteredSkills.map((skill: any) => (
                                         <Tag style={{padding: 10}} color={color(skill.ss_status)}
                                             icon={tagIcon(skill.ss_status)} key={skill.skill_id}>
