@@ -172,7 +172,12 @@ const RoleListingManager = ({
                                                             <Space size={10}>
                                                             {item.role_name}
                                                                 <Space size={3} wrap>
-                                                                    <Tag color={item.rl_status === "Open" ? "green" : "red"} data-testid="status">{item.rl_status}</Tag>
+                                                                    { new Date(item.rl_open).getTime() > today.getTime() ?
+                                                                        <Tag color="gold" data-testid="status">Scheduled</Tag>
+                                                                        :
+                                                                        <Tag color={item.rl_status === "Open" ? "green" : "red"} data-testid="status">{item.rl_status}</Tag>
+                                                                    }
+                                                                    
                                                                     { item.role_status !== "active" ?
                                                                         <Tag data-testid="status">Inactive</Tag> :
                                                                         <></>
