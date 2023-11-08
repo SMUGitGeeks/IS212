@@ -3,9 +3,13 @@
 <h1 align="center" id="title">IS212 - G7T2 Project: Skill Based Role Portal</h1>
 <h2>🧐 Features</h2>
 
-Here're some of the project's best features:
+Here are some of the project's core features for the first release of SBRP:
 
-*   TBC
+* CRU of Role Listings by HR
+* View skills of role applicants by HR
+* Browse and Filter Role Listing
+* View Role-Skill Match between role listed and your possessed skills
+* Apply for one or more roles
 
 <h2>🛠️ Installation Steps:</h2>
 
@@ -28,7 +32,9 @@ npm install
 npm run dev
 ```
 
+<p>4. Access hosted SBRP on Render</p>
 
+Click on this website <link> https://is212.onrender.com/ </link> to access our SBRP system.
   
   
 <h2>💻 Built with</h2>
