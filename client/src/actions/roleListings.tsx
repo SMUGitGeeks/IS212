@@ -215,6 +215,10 @@ export const getRoleListing = (id: number, userId: number) => async (dispatch: (
             type: GET_ROLE_LISTING,
             payload: list_of_role_listing_details_by_id.data[0]
         });
+        dispatch({
+            type: ROLE_LISTINGS_ERROR,
+            payload: {}
+        });
     } catch (err: any) {
         dispatch({
             type: ROLE_LISTINGS_ERROR,
